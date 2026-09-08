@@ -1,0 +1,17 @@
+# Root gitignore for Khoj Marketplace
+
+node_modules/
+.env
+.env.local
+
+# Next.js build
+frontend/.next/
+frontend/out/
+
+# Log files
+*.log
+
+# OS & IDE
+.DS_Store
+.vscode/
+.idea/
