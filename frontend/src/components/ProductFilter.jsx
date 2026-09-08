@@ -1,21 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Filter, RefreshCcw, DollarSign, Tag, Check, Sparkles } from 'lucide-react';
-
-interface ProductFilterProps {
-  category: string;
-  setCategory: (val: string) => void;
-  condition: string;
-  setCondition: (val: string) => void;
-  minPrice: string;
-  setMinPrice: (val: string) => void;
-  maxPrice: string;
-  setMaxPrice: (val: string) => void;
-  sort: string;
-  setSort: (val: string) => void;
-  onReset: () => void;
-}
+import { Filter, RefreshCcw, Check } from 'lucide-react';
 
 const CATEGORIES = [
   'All',
@@ -36,7 +22,7 @@ const CONDITIONS = [
   { id: 'Used - Fair', label: 'Used - Fair', color: 'text-amber-400' }
 ];
 
-export const ProductFilter: React.FC<ProductFilterProps> = ({
+export const ProductFilter = ({
   category,
   setCategory,
   condition,
@@ -50,56 +36,52 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({
   onReset
 }) => {
   return (
-    <div className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-6">
-      
-      {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-        <div className="flex items-center gap-2 font-bold text-white text-sm">
+    <div className="glass-panel p-6 rounded-3xl border border-zinc-800 space-y-8 font-['Bai_Jamjuree']">
+      <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
+        <div className="flex items-center gap-2 font-bold text-white text-xs uppercase tracking-widest">
           <Filter className="w-4 h-4 text-indigo-400" />
           <span>Filter & Refine</span>
         </div>
         <button
           onClick={onReset}
-          className="text-xs text-slate-400 hover:text-indigo-400 flex items-center gap-1 transition-colors"
+          className="text-xs text-zinc-400 hover:text-indigo-400 flex items-center gap-1 transition-colors font-medium"
         >
           <RefreshCcw className="w-3 h-3" />
-          Reset All
+          Reset
         </button>
       </div>
 
-      {/* Sort By Selector */}
       <div>
-        <label className="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">
-          Sort Results By
+        <label className="block text-[11px] font-bold text-zinc-400 mb-2 uppercase tracking-widest">
+          Sort Catalog
         </label>
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="w-full px-3 py-2 bg-slate-900 text-slate-200 border border-slate-700/80 rounded-xl text-xs focus:outline-none focus:border-indigo-500 cursor-pointer"
+          className="w-full px-4 py-3 bg-zinc-950 text-zinc-200 border border-zinc-800 rounded-xl text-xs font-medium focus:outline-none focus:border-indigo-500 cursor-pointer"
         >
           <option value="newest">Newest Listed First</option>
           <option value="price_asc">Price: Low to High</option>
           <option value="price_desc">Price: High to Low</option>
-          <option value="views">Most Popular / Viewed</option>
+          <option value="views">Most Popular</option>
         </select>
       </div>
 
-      {/* Item Condition Filter */}
       <div>
-        <label className="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">
-          Item Condition
+        <label className="block text-[11px] font-bold text-zinc-400 mb-2 uppercase tracking-widest">
+          Condition Rating
         </label>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           {CONDITIONS.map((cond) => {
             const isSelected = condition === cond.id;
             return (
               <button
                 key={cond.id}
                 onClick={() => setCondition(cond.id)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
+                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs transition-all ${
                   isSelected
                     ? 'bg-indigo-600/20 text-indigo-300 font-bold border border-indigo-500/40'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-white border border-transparent'
+                    : 'text-zinc-400 hover:bg-zinc-900 hover:text-white border border-transparent'
                 }`}
               >
                 <span className={cond.color || ''}>{cond.label}</span>
@@ -110,22 +92,21 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({
         </div>
       </div>
 
-      {/* Category Selection */}
       <div>
-        <label className="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">
+        <label className="block text-[11px] font-bold text-zinc-400 mb-2 uppercase tracking-widest">
           Category
         </label>
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           {CATEGORIES.map((cat) => {
             const isSelected = category === cat;
             return (
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
-                className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all ${
+                className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs transition-all ${
                   isSelected
                     ? 'bg-purple-600/20 text-purple-300 font-bold border border-purple-500/40'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-white'
+                    : 'text-zinc-400 hover:bg-zinc-900 hover:text-white'
                 }`}
               >
                 {cat}
@@ -135,29 +116,27 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({
         </div>
       </div>
 
-      {/* Price Range */}
       <div>
-        <label className="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">
+        <label className="block text-[11px] font-bold text-zinc-400 mb-2 uppercase tracking-widest">
           Price Range ($)
         </label>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-3">
           <input
             type="number"
             placeholder="Min"
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
-            className="w-full px-3 py-2 bg-slate-900 text-slate-200 border border-slate-700/80 rounded-xl text-xs focus:outline-none focus:border-indigo-500"
+            className="w-full px-3.5 py-2.5 bg-zinc-950 text-zinc-200 border border-zinc-800 rounded-xl text-xs focus:outline-none focus:border-indigo-500 font-medium"
           />
           <input
             type="number"
             placeholder="Max"
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
-            className="w-full px-3 py-2 bg-slate-900 text-slate-200 border border-slate-700/80 rounded-xl text-xs focus:outline-none focus:border-indigo-500"
+            className="w-full px-3.5 py-2.5 bg-zinc-950 text-zinc-200 border border-zinc-800 rounded-xl text-xs focus:outline-none focus:border-indigo-500 font-medium"
           />
         </div>
       </div>
-
     </div>
   );
 };

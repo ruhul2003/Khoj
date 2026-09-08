@@ -4,8 +4,8 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductFilter } from '@/components/ProductFilter';
-import { Product, api } from '@/lib/api';
-import { Search, Tag, SlidersHorizontal, PackageX } from 'lucide-react';
+import { api } from '@/lib/api';
+import { Search, SlidersHorizontal, PackageX } from 'lucide-react';
 
 function BrowseContent() {
   const searchParams = useSearchParams();
@@ -13,7 +13,7 @@ function BrowseContent() {
   const initialCategory = searchParams.get('category') || 'All';
   const initialCondition = searchParams.get('condition') || 'All';
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState([]);
   const [search, setSearch] = useState(initialSearch);
   const [category, setCategory] = useState(initialCategory);
   const [condition, setCondition] = useState(initialCondition);
@@ -48,7 +48,7 @@ function BrowseContent() {
     }
   };
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
+  const handleSearchSubmit = (e) => {
     e.preventDefault();
     fetchFilteredProducts();
   };
@@ -64,31 +64,29 @@ function BrowseContent() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      
-      {/* Top Search Header */}
-      <div className="glass-panel p-4 sm:p-6 rounded-3xl border border-slate-800">
-        <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row items-center gap-3">
+    <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12 space-y-10 font-['Bai_Jamjuree']">
+      <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-zinc-800">
+        <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row items-center gap-4">
           <div className="relative flex-1 w-full">
             <input
               type="text"
-              placeholder="Search MacBook, Samsung, Honda, Office Chair, Shoes..."
+              placeholder="Search by keywords, brand, or model..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-slate-900 text-white placeholder-slate-400 rounded-xl text-sm border border-slate-800 focus:outline-none focus:border-indigo-500"
+              className="w-full pl-12 pr-4 py-4 bg-zinc-950 text-white placeholder-zinc-500 rounded-2xl text-sm border border-zinc-800 focus:outline-none focus:border-indigo-500 font-medium"
             />
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+            <Search className="w-4 h-4 text-zinc-400 absolute left-4 top-4.5" />
           </div>
           <button
             type="submit"
-            className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm rounded-xl transition-all"
+            className="w-full sm:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-widest rounded-2xl transition-all"
           >
-            Search Marketplace
+            Search Catalog
           </button>
           <button
             type="button"
             onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
-            className="md:hidden w-full px-4 py-2.5 bg-slate-900 border border-slate-800 text-xs text-slate-300 rounded-xl flex items-center justify-center gap-2"
+            className="lg:hidden w-full px-5 py-3.5 bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 rounded-2xl flex items-center justify-center gap-2"
           >
             <SlidersHorizontal className="w-4 h-4 text-indigo-400" />
             <span>Toggle Filters</span>
@@ -96,11 +94,8 @@ function BrowseContent() {
         </form>
       </div>
 
-      {/* Main Grid with Sidebar Filter */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        
-        {/* Desktop Sidebar Filter */}
-        <div className={`md:block ${isMobileFilterOpen ? 'block' : 'hidden'}`}>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div className={`lg:col-span-3 ${isMobileFilterOpen ? 'block' : 'hidden lg:block'}`}>
           <ProductFilter
             category={category}
             setCategory={setCategory}
@@ -116,53 +111,50 @@ function BrowseContent() {
           />
         </div>
 
-        {/* Product Grid Area */}
-        <div className="md:col-span-3 space-y-4">
-          <div className="flex items-center justify-between text-xs text-slate-400 pb-2 border-b border-slate-800">
-            <span>Showing <strong className="text-white">{products.length}</strong> items found</span>
+        <div className="lg:col-span-9 space-y-6">
+          <div className="flex items-center justify-between text-xs text-zinc-400 pb-3 border-b border-zinc-800">
+            <span>Found <strong className="text-white font-bold">{products.length}</strong> matching products</span>
             {(category !== 'All' || condition !== 'All' || search) && (
-              <span className="text-indigo-400 font-medium">Active filters applied</span>
+              <span className="text-indigo-400 font-semibold uppercase tracking-wider">Filtered View</span>
             )}
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="h-80 rounded-2xl bg-slate-900/60 animate-pulse border border-slate-800" />
+                <div key={i} className="h-88 rounded-3xl bg-zinc-900/60 animate-pulse border border-zinc-800" />
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="glass-panel p-16 text-center rounded-3xl border border-slate-800 space-y-4">
-              <PackageX className="w-12 h-12 text-slate-500 mx-auto" />
-              <h3 className="text-lg font-bold text-white">No Matching Products Found</h3>
-              <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                Try loosening your filters, changing condition parameters, or clearing search query.
+            <div className="glass-panel p-20 text-center rounded-3xl border border-zinc-800 space-y-4">
+              <PackageX className="w-14 h-14 text-zinc-600 mx-auto" />
+              <h3 className="text-xl font-bold text-white">No Products Found</h3>
+              <p className="text-xs text-zinc-400 max-w-sm mx-auto">
+                No items match your selected parameters. Try resetting your price or condition filters.
               </p>
               <button
                 onClick={handleResetFilters}
-                className="px-5 py-2.5 bg-indigo-600 text-white font-semibold text-xs rounded-xl"
+                className="px-6 py-3 bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl"
               >
-                Reset All Filters
+                Clear All Filters
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {products.map((p) => (
                 <ProductCard key={p._id} product={p} />
               ))}
             </div>
           )}
         </div>
-
       </div>
-
     </div>
   );
 }
 
 export default function BrowsePage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-slate-400">Loading Marketplace Catalog...</div>}>
+    <Suspense fallback={<div className="p-12 text-center text-zinc-400">Loading Catalog...</div>}>
       <BrowseContent />
     </Suspense>
   );

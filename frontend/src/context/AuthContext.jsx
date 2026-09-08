@@ -1,24 +1,11 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { api, User } from '@/lib/api';
+import { api } from '@/lib/api';
 
-interface AuthContextType {
-  user: User | null;
-  token: string | null;
-  isLoading: boolean;
-  login: (email: string, password?: string) => Promise<void>;
-  register: (name: string, email: string, password?: string, location?: string) => Promise<void>;
-  logout: () => void;
-  savedItemIds: string[];
-  toggleWishlist: (productId: string) => void;
-  isSaved: (productId: string) => boolean;
-}
+const AuthContext = createContext(undefined);
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Demo fallback user
-const DEFAULT_DEMO_USER: User = {
+const DEFAULT_DEMO_USER = {
   id: 'user_demo_2',
   name: 'Sabbir Hossain',
   email: 'sabbir@example.com',
@@ -27,11 +14,11 @@ const DEFAULT_DEMO_USER: User = {
   rating: 5.0
 };
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(DEFAULT_DEMO_USER);
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [savedItemIds, setSavedItemIds] = useState<string[]>([]);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(DEFAULT_DEMO_USER);
+  const [token, setToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [savedItemIds, setSavedItemIds] = useState([]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('khoj_token');
@@ -54,7 +41,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
         })
         .catch(() => {
-          // Keep demo user active for seamless offline UX
           setUser(DEFAULT_DEMO_USER);
         })
         .finally(() => setIsLoading(false));
@@ -63,16 +49,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = async (email: string, password = 'password123') => {
+  const login = async (email, password = 'password123') => {
     try {
       const res = await api.post('/auth/login', { email, password });
       const { token: newToken, user: authUser } = res.data;
       localStorage.setItem('khoj_token', newToken);
       setToken(newToken);
       setUser(authUser);
-    } catch (err: any) {
-      // Demo fallback login if API has network issue
-      const demoAuthUser: User = {
+    } catch (err) {
+      const demoAuthUser = {
         id: 'user_demo_2',
         name: email.split('@')[0] || 'Marketplace User',
         email,
@@ -86,15 +71,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (name: string, email: string, password = 'password123', location = 'Dhaka, Bangladesh') => {
+  const register = async (name, email, password = 'password123', location = 'Dhaka, Bangladesh') => {
     try {
       const res = await api.post('/auth/register', { name, email, password, location });
       const { token: newToken, user: authUser } = res.data;
       localStorage.setItem('khoj_token', newToken);
       setToken(newToken);
       setUser(authUser);
-    } catch (err: any) {
-      const newAuthUser: User = {
+    } catch (err) {
+      const newAuthUser = {
         id: 'user_' + Date.now(),
         name,
         email,
@@ -114,7 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
   };
 
-  const toggleWishlist = (productId: string) => {
+  const toggleWishlist = (productId) => {
     setSavedItemIds(prev => {
       const exists = prev.includes(productId);
       const updated = exists ? prev.filter(id => id !== productId) : [...prev, productId];
@@ -123,7 +108,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
-  const isSaved = (productId: string) => savedItemIds.includes(productId);
+  const isSaved = (productId) => savedItemIds.includes(productId);
 
   return (
     <AuthContext.Provider value={{ user, token, isLoading, login, register, logout, savedItemIds, toggleWishlist, isSaved }}>
