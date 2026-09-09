@@ -89,7 +89,7 @@ export default function SellPage() {
   return (
     <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12 space-y-10 font-['Bai_Jamjuree']">
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold uppercase tracking-widest">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0c9096]/15 text-[#0c9096] text-xs font-bold uppercase tracking-widest">
           <PlusCircle className="w-4 h-4" />
           Create Ad Listing
         </div>
@@ -109,7 +109,7 @@ export default function SellPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-              className="w-full px-5 py-4 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 text-sm font-medium"
+              className="w-full px-5 py-4 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096] text-sm font-medium"
             />
           </div>
 
@@ -121,7 +121,7 @@ export default function SellPage() {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 text-xs font-medium cursor-pointer"
+                className="w-full px-4 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096] text-xs font-medium cursor-pointer"
               >
                 {CATEGORIES.map((cat) => (
                   <option key={cat} value={cat}>{cat}</option>
@@ -136,7 +136,7 @@ export default function SellPage() {
               <select
                 value={condition}
                 onChange={(e) => setCondition(e.target.value)}
-                className="w-full px-4 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 text-xs font-medium cursor-pointer"
+                className="w-full px-4 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096] text-xs font-medium cursor-pointer"
               >
                 {CONDITIONS.map((c) => (
                   <option key={c.id} value={c.id}>{c.label}</option>
@@ -156,7 +156,7 @@ export default function SellPage() {
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 required
-                className="w-full px-5 py-3.5 bg-zinc-950 text-white font-extrabold text-lg rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500"
+                className="w-full px-5 py-3.5 bg-zinc-950 text-white font-extrabold text-lg rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096]"
               />
             </div>
 
@@ -169,7 +169,7 @@ export default function SellPage() {
                 placeholder="1999"
                 value={originalPrice}
                 onChange={(e) => setOriginalPrice(e.target.value)}
-                className="w-full px-5 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 text-sm font-medium"
+                className="w-full px-5 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096] text-sm font-medium"
               />
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function SellPage() {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 required
-                className="w-full px-5 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 text-sm font-medium"
+                className="w-full px-5 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096] text-sm font-medium"
               />
             </div>
 
@@ -199,7 +199,7 @@ export default function SellPage() {
                 value={sellerPhone}
                 onChange={(e) => setSellerPhone(e.target.value)}
                 required
-                className="w-full px-5 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 text-sm font-medium"
+                className="w-full px-5 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096] text-sm font-medium"
               />
             </div>
           </div>
@@ -214,7 +214,7 @@ export default function SellPage() {
                 placeholder="Paste image URL..."
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                className="flex-1 px-4 py-3 bg-zinc-950 text-xs text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 font-medium"
+                className="flex-1 px-4 py-3 bg-zinc-950 text-xs text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096] font-medium"
               />
               <button
                 type="button"
@@ -236,14 +236,14 @@ export default function SellPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              className="w-full px-5 py-4 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 text-xs leading-relaxed font-light"
+              className="w-full px-5 py-4 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096] text-xs leading-relaxed font-light"
             />
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-widest rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2"
+            className="w-full py-4 bg-gradient-to-r from-[#0a6c71] to-[#0c9096] hover:from-[#0c9096] hover:to-[#13a7ad] text-white font-bold text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-[#0c9096]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <Sparkles className="w-4 h-4" />
             <span>{isSubmitting ? 'Publishing...' : 'Publish Product Listing'}</span>
@@ -261,12 +261,12 @@ export default function SellPage() {
                   alt="Preview"
                   className="w-full h-full object-cover"
                 />
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-[11px] font-bold bg-indigo-600 text-white shadow">
+                <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-[11px] font-bold bg-[#0c9096] text-white shadow">
                   {condition}
                 </span>
               </div>
               <div className="p-5 space-y-3">
-                <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">{category}</span>
+                <span className="text-[10px] font-bold text-[#0c9096] uppercase tracking-widest">{category}</span>
                 <h4 className="text-base font-bold text-white leading-snug">
                   {title || 'Product Title Preview'}
                 </h4>

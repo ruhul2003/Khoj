@@ -73,13 +73,13 @@ function BrowseContent() {
               placeholder="Search by keywords, brand, or model..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-zinc-950 text-white placeholder-zinc-500 rounded-2xl text-sm border border-zinc-800 focus:outline-none focus:border-indigo-500 font-medium"
+              className="w-full pl-12 pr-4 py-4 bg-zinc-950 text-white placeholder-zinc-500 rounded-2xl text-sm border border-zinc-800 focus:outline-none focus:border-[#0c9096] font-medium"
             />
             <Search className="w-4 h-4 text-zinc-400 absolute left-4 top-4.5" />
           </div>
           <button
             type="submit"
-            className="w-full sm:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-widest rounded-2xl transition-all"
+            className="w-full sm:w-auto px-8 py-4 bg-[#0c9096] hover:bg-[#0a6c71] text-white font-bold text-xs uppercase tracking-widest rounded-2xl transition-all"
           >
             Search Catalog
           </button>
@@ -88,7 +88,7 @@ function BrowseContent() {
             onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
             className="lg:hidden w-full px-5 py-3.5 bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 rounded-2xl flex items-center justify-center gap-2"
           >
-            <SlidersHorizontal className="w-4 h-4 text-indigo-400" />
+            <SlidersHorizontal className="w-4 h-4 text-[#0c9096]" />
             <span>Toggle Filters</span>
           </button>
         </form>
@@ -115,7 +115,7 @@ function BrowseContent() {
           <div className="flex items-center justify-between text-xs text-zinc-400 pb-3 border-b border-zinc-800">
             <span>Found <strong className="text-white font-bold">{products.length}</strong> matching products</span>
             {(category !== 'All' || condition !== 'All' || search) && (
-              <span className="text-indigo-400 font-semibold uppercase tracking-wider">Filtered View</span>
+              <span className="text-[#0c9096] font-semibold uppercase tracking-wider">Filtered View</span>
             )}
           </div>
 
@@ -134,7 +134,7 @@ function BrowseContent() {
               </p>
               <button
                 onClick={handleResetFilters}
-                className="px-6 py-3 bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl"
+                className="px-6 py-3 bg-[#0c9096] hover:bg-[#0a6c71] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors"
               >
                 Clear All Filters
               </button>
