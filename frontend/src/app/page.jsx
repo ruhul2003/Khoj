@@ -43,7 +43,7 @@ export default function Home() {
       <section className="max-w-[1600px] mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-zinc-800/80">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-400 uppercase tracking-widest mb-1">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0c9096] uppercase tracking-widest mb-1">
               <Zap className="w-4 h-4 fill-current" />
               Handpicked Deals
             </div>
@@ -51,7 +51,7 @@ export default function Home() {
           </div>
           <Link
             href="/browse?featured=true"
-            className="flex items-center gap-2 text-xs font-bold text-indigo-400 hover:text-indigo-300 uppercase tracking-wider transition-colors"
+            className="flex items-center gap-2 text-xs font-bold text-[#0c9096] hover:text-[#689db8] uppercase tracking-wider transition-colors"
           >
             <span>Browse All Deals</span>
             <ArrowRight className="w-4 h-4" />
@@ -111,7 +111,7 @@ export default function Home() {
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-zinc-800/80">
           <div>
             <h2 className="text-3xl font-extrabold text-white flex items-center gap-3">
-              <Tag className="w-6 h-6 text-purple-400" />
+              <Tag className="w-6 h-6 text-[#689db8]" />
               Recently Added Listings ({filteredRecent.length})
             </h2>
             <p className="text-xs text-zinc-400 mt-1">Freshly posted products from verified community sellers</p>
@@ -119,7 +119,7 @@ export default function Home() {
 
           <Link
             href="/browse"
-            className="flex items-center gap-2 text-xs font-bold text-purple-400 hover:text-purple-300 uppercase tracking-wider"
+            className="flex items-center gap-2 text-xs font-bold text-[#689db8] hover:text-[#0c9096] uppercase tracking-wider transition-colors"
           >
             <span>Open Filter View</span>
             <ArrowRight className="w-4 h-4" />
@@ -137,7 +137,7 @@ export default function Home() {
             <p className="text-zinc-400 text-sm">No items found matching "{selectedCondition}".</p>
             <button
               onClick={() => setSelectedCondition('All')}
-              className="px-6 py-3 bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl"
+              className="px-6 py-3 bg-[#0c9096] hover:bg-[#0a6c71] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors"
             >
               Reset Condition Filter
             </button>
@@ -152,9 +152,9 @@ export default function Home() {
       </section>
 
       <section className="max-w-[1600px] mx-auto px-6 lg:px-12 pt-10">
-        <div className="glass-panel p-12 sm:p-16 rounded-3xl border border-zinc-800 bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 flex flex-col lg:flex-row items-center justify-between gap-10 text-center lg:text-left">
+        <div className="glass-panel p-12 sm:p-16 rounded-3xl border border-zinc-800 bg-gradient-to-r from-[#031615] via-[#032e2e] to-[#031615] flex flex-col lg:flex-row items-center justify-between gap-10 text-center lg:text-left shadow-2xl">
           <div className="space-y-4 max-w-2xl">
-            <span className="px-4 py-1.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold uppercase tracking-widest border border-indigo-500/30">
+            <span className="px-4 py-1.5 rounded-full bg-[#0c9096]/15 text-[#0c9096] text-xs font-bold uppercase tracking-widest border border-[#0c9096]/30">
               Zero Listing Fees
             </span>
             <h3 className="text-3xl sm:text-5xl font-extrabold text-white">
@@ -167,9 +167,9 @@ export default function Home() {
 
           <Link
             href="/sell"
-            className="px-10 py-5 bg-white text-zinc-950 hover:bg-zinc-200 font-extrabold text-xs uppercase tracking-widest rounded-2xl shadow-2xl flex items-center gap-3 transform hover:scale-105 transition-all shrink-0"
+            className="px-10 py-5 bg-white text-[#031615] hover:bg-zinc-100 font-extrabold text-xs uppercase tracking-widest rounded-2xl shadow-2xl flex items-center gap-3 transform hover:scale-105 transition-all shrink-0"
           >
-            <PlusCircle className="w-5 h-5 text-indigo-600" />
+            <PlusCircle className="w-5 h-5 text-[#0c9096]" />
             <span>Post Your Free Product Ad</span>
           </Link>
         </div>
