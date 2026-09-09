@@ -63,7 +63,7 @@ export const MakeOfferModal = ({ product, isOpen, onClose }) => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-[11px] font-bold uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0c9096]/15 text-[#0c9096] text-[11px] font-bold uppercase tracking-wider mb-2">
                 <DollarSign className="w-3.5 h-3.5" />
                 Make Proposal
               </div>
@@ -78,7 +78,7 @@ export const MakeOfferModal = ({ product, isOpen, onClose }) => {
               </div>
               <div className="text-right">
                 <span className="text-zinc-400 block font-medium">Your Proposal</span>
-                <span className="text-sm font-extrabold text-indigo-400">৳{offeredPrice.toLocaleString()}</span>
+                <span className="text-sm font-extrabold text-[#0c9096]">৳{offeredPrice.toLocaleString()}</span>
               </div>
             </div>
 
@@ -97,7 +97,7 @@ export const MakeOfferModal = ({ product, isOpen, onClose }) => {
                 max={product.price}
                 value={offeredPrice}
                 onChange={(e) => setOfferedPrice(Number(e.target.value))}
-                className="w-full px-4 py-3.5 bg-zinc-950 text-white font-extrabold text-xl rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500"
+                className="w-full px-4 py-3.5 bg-zinc-950 text-white font-extrabold text-xl rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096]"
               />
             </div>
 
@@ -108,14 +108,14 @@ export const MakeOfferModal = ({ product, isOpen, onClose }) => {
                 placeholder="e.g. Can meet in Gulshan today for cash payment."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full px-4 py-3 bg-zinc-950 text-xs text-white placeholder-zinc-500 rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500"
+                className="w-full px-4 py-3 bg-zinc-950 text-xs text-white placeholder-zinc-500 rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096]"
               />
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-widest rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-[#0c9096] hover:bg-[#0a6c71] text-white font-bold text-xs uppercase tracking-widest rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
             >
               <Send className="w-4 h-4" />
               <span>{isSubmitting ? 'Sending...' : 'Send Offer Proposal'}</span>

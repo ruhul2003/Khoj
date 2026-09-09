@@ -75,7 +75,7 @@ export const BuyModal = ({ product, isOpen, onClose }) => {
                 className="w-16 h-16 rounded-xl object-cover border border-zinc-700"
               />
               <div className="flex-1 min-w-0">
-                <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">{product.condition}</span>
+                <span className="text-[10px] font-bold text-[#689db8] uppercase tracking-widest">{product.condition}</span>
                 <h4 className="text-xs font-bold text-white truncate">{product.title}</h4>
                 <div className="text-sm font-black text-emerald-400 mt-1">৳{product.price.toLocaleString()}</div>
               </div>
@@ -83,7 +83,7 @@ export const BuyModal = ({ product, isOpen, onClose }) => {
 
             <div>
               <label className="block text-xs font-semibold text-zinc-300 mb-1.5 flex items-center gap-1">
-                <Truck className="w-3.5 h-3.5 text-indigo-400" />
+                <Truck className="w-3.5 h-3.5 text-[#0c9096]" />
                 Delivery / Meetup Address
               </label>
               <input
@@ -91,19 +91,19 @@ export const BuyModal = ({ product, isOpen, onClose }) => {
                 value={deliveryAddress}
                 onChange={(e) => setDeliveryAddress(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-zinc-950 text-xs text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500"
+                className="w-full px-4 py-3 bg-zinc-950 text-xs text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096]"
               />
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-zinc-300 mb-1.5 flex items-center gap-1">
-                <CreditCard className="w-3.5 h-3.5 text-purple-400" />
+                <CreditCard className="w-3.5 h-3.5 text-[#689db8]" />
                 Payment Option
               </label>
               <select
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value)}
-                className="w-full px-4 py-3 bg-zinc-950 text-xs text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 cursor-pointer"
+                className="w-full px-4 py-3 bg-zinc-950 text-xs text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096] cursor-pointer"
               >
                 <option value="Cash on Delivery / In-Person Meetup">Cash on Delivery / In-Person Meetup</option>
                 <option value="bKash / Nagad Mobile Banking">bKash / Nagad Mobile Banking</option>
