@@ -6,10 +6,10 @@ import { Shield, Sparkles, Truck, Lock, ArrowUpRight } from 'lucide-react';
 
 export const Footer = () => {
   return (
-    <footer className="mt-28 bg-[#06070a] border-t border-zinc-800/80 text-zinc-400 font-['Bai_Jamjuree']">
-      <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12 border-b border-zinc-900 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div className="flex items-center gap-5 p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/60">
-          <div className="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold shrink-0">
+    <footer className="mt-28 bg-[#031615] border-t border-[#264b5d]/40 text-zinc-400 font-['Bai_Jamjuree']">
+      <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12 border-b border-[#264b5d]/30 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="flex items-center gap-5 p-6 rounded-2xl bg-[#032e2e]/40 border border-[#264b5d]/40">
+          <div className="w-12 h-12 rounded-xl bg-[#0c9096]/15 text-[#38d4dc] flex items-center justify-center font-bold shrink-0">
             <Shield className="w-6 h-6" />
           </div>
           <div>
@@ -18,8 +18,8 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-5 p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/60">
-          <div className="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold shrink-0">
+        <div className="flex items-center gap-5 p-6 rounded-2xl bg-[#032e2e]/40 border border-[#264b5d]/40">
+          <div className="w-12 h-12 rounded-xl bg-[#0a6c71]/20 text-[#689db8] flex items-center justify-center font-bold shrink-0">
             <Sparkles className="w-6 h-6" />
           </div>
           <div>
@@ -28,8 +28,8 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-5 p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/60">
-          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold shrink-0">
+        <div className="flex items-center gap-5 p-6 rounded-2xl bg-[#032e2e]/40 border border-[#264b5d]/40">
+          <div className="w-12 h-12 rounded-xl bg-[#0c9096]/15 text-[#38d4dc] flex items-center justify-center font-bold shrink-0">
             <Truck className="w-6 h-6" />
           </div>
           <div>
@@ -38,8 +38,8 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-5 p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/60">
-          <div className="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center font-bold shrink-0">
+        <div className="flex items-center gap-5 p-6 rounded-2xl bg-[#032e2e]/40 border border-[#264b5d]/40">
+          <div className="w-12 h-12 rounded-xl bg-[#264b5d]/30 text-[#689db8] flex items-center justify-center font-bold shrink-0">
             <Lock className="w-6 h-6" />
           </div>
           <div>
@@ -52,7 +52,7 @@ export const Footer = () => {
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-16 grid grid-cols-1 md:grid-cols-5 gap-12 text-sm">
         <div className="md:col-span-2 space-y-5">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-black text-xl">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#0a6c71] to-[#0c9096] flex items-center justify-center text-white font-black text-xl shadow-lg shadow-[#0c9096]/20">
               K
             </div>
             <span className="text-2xl font-black text-white tracking-tight">Khoj Marketplace</span>
@@ -63,7 +63,7 @@ export const Footer = () => {
         </div>
 
         <div>
-          <h5 className="font-bold text-white mb-4 text-xs uppercase tracking-widest text-indigo-400">Categories</h5>
+          <h5 className="font-bold text-white mb-4 text-xs uppercase tracking-widest text-[#0c9096]">Categories</h5>
           <ul className="space-y-3 text-xs font-medium">
             <li><Link href="/browse?category=Electronics" className="hover:text-white transition-colors">Electronics & Laptops</Link></li>
             <li><Link href="/browse?category=Mobile+Phones" className="hover:text-white transition-colors">Mobile Phones</Link></li>
@@ -74,7 +74,7 @@ export const Footer = () => {
         </div>
 
         <div>
-          <h5 className="font-bold text-white mb-4 text-xs uppercase tracking-widest text-indigo-400">Navigation</h5>
+          <h5 className="font-bold text-white mb-4 text-xs uppercase tracking-widest text-[#0c9096]">Navigation</h5>
           <ul className="space-y-3 text-xs font-medium">
             <li><Link href="/browse" className="hover:text-white transition-colors">Browse Catalog</Link></li>
             <li><Link href="/sell" className="hover:text-white transition-colors">+ Post Product Ad</Link></li>
@@ -84,7 +84,7 @@ export const Footer = () => {
         </div>
 
         <div>
-          <h5 className="font-bold text-white mb-4 text-xs uppercase tracking-widest text-indigo-400">Guidelines</h5>
+          <h5 className="font-bold text-white mb-4 text-xs uppercase tracking-widest text-[#0c9096]">Guidelines</h5>
           <ul className="space-y-3 text-xs font-medium">
             <li className="flex items-center gap-1.5 hover:text-white cursor-pointer">Safety Guidelines <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" /></li>
             <li className="flex items-center gap-1.5 hover:text-white cursor-pointer">Condition Ratings <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" /></li>
