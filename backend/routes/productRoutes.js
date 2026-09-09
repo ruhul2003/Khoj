@@ -125,7 +125,7 @@ router.get('/:id', async (req, res) => {
 // POST /api/products - Create new ad / listing
 router.post('/', async (req, res) => {
   try {
-    const { title, category, condition, price, originalPrice, description, images, location, sellerId, sellerName, sellerAvatar } = req.body;
+    const { title, category, condition, price, originalPrice, description, images, location, sellerId, sellerName, sellerAvatar, sellerPhone } = req.body;
 
     if (!title || !category || !condition || !price || !description) {
       return res.status(400).json({ error: 'Please provide all required product details.' });
@@ -148,6 +148,7 @@ router.post('/', async (req, res) => {
       sellerName: sellerName || 'Tanvir Rahman',
       sellerRating: 4.9,
       sellerAvatar: sellerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      sellerPhone: sellerPhone || '+880 1712-345678',
       status: 'Available',
       isFeatured: false,
       views: 1,

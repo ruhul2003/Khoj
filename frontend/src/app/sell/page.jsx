@@ -42,6 +42,7 @@ export default function SellPage() {
   const [originalPrice, setOriginalPrice] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState(user?.location || 'Gulshan, Dhaka');
+  const [sellerPhone, setSellerPhone] = useState(user?.phone || '+880 1712-345678');
   const [imageUrl, setImageUrl] = useState('');
   const [images, setImages] = useState([
     "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1000&q=80"
@@ -72,7 +73,8 @@ export default function SellPage() {
         location,
         sellerId: user?.id || 'user_demo_2',
         sellerName: user?.name || 'Sabbir Hossain',
-        sellerAvatar: user?.avatar || ''
+        sellerAvatar: user?.avatar || '',
+        sellerPhone: sellerPhone || '+880 1712-345678'
       });
 
       const newProd = res.data;
@@ -172,18 +174,34 @@ export default function SellPage() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-zinc-300 mb-2 uppercase tracking-widest">
-              Location *
-            </label>
-            <input
-              type="text"
-              placeholder="Gulshan, Dhaka"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              required
-              className="w-full px-5 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 text-sm font-medium"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-zinc-300 mb-2 uppercase tracking-widest">
+                Location (Meetup / Handover Area) *
+              </label>
+              <input
+                type="text"
+                placeholder="Gulshan, Dhaka"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                required
+                className="w-full px-5 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 text-sm font-medium"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-zinc-300 mb-2 uppercase tracking-widest">
+                Contact Phone / WhatsApp *
+              </label>
+              <input
+                type="text"
+                placeholder="+880 1712-345678"
+                value={sellerPhone}
+                onChange={(e) => setSellerPhone(e.target.value)}
+                required
+                className="w-full px-5 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 text-sm font-medium"
+              />
+            </div>
           </div>
 
           <div>

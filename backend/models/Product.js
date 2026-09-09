@@ -21,6 +21,7 @@ const productSchema = new mongoose.Schema({
   sellerName: { type: String, default: 'Seller' },
   sellerRating: { type: Number, default: 4.9 },
   sellerAvatar: { type: String, default: '' },
+  sellerPhone: { type: String, default: '+880 1712-345678' },
   status: { type: String, enum: ['Available', 'Pending', 'Sold'], default: 'Available' },
   isFeatured: { type: Boolean, default: false },
   views: { type: Number, default: 0 },
