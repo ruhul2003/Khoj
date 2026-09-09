@@ -1,6 +1,7 @@
 import { Bai_Jamjuree } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
@@ -18,15 +19,17 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={baiJamjuree.variable}>
-      <body className={`${baiJamjuree.className} antialiased bg-[#080a0f] text-slate-100 flex flex-col min-h-screen selection:bg-indigo-500/30 selection:text-indigo-200`}>
-        <AuthProvider>
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </AuthProvider>
+    <html lang="en" className={`${baiJamjuree.variable} dark`} suppressHydrationWarning>
+      <body className={`${baiJamjuree.className} antialiased flex flex-col min-h-screen selection:bg-teal-500/30 selection:text-teal-200 transition-colors duration-200`}>
+        <ThemeProvider>
+          <AuthProvider>
+            <Navbar />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
