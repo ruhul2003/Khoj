@@ -92,9 +92,9 @@ export const ProductCard = ({ product }) => {
         <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between">
           <div>
             <div className="flex items-baseline gap-2">
-              <span className="text-xl font-extrabold text-white">${product.price.toLocaleString()}</span>
+              <span className="text-xl font-extrabold text-white">৳{product.price.toLocaleString()}</span>
               {product.originalPrice && product.originalPrice > product.price && (
-                <span className="text-xs text-zinc-500 line-through">${product.originalPrice.toLocaleString()}</span>
+                <span className="text-xs text-zinc-500 line-through">৳{product.originalPrice.toLocaleString()}</span>
               )}
             </div>
           </div>

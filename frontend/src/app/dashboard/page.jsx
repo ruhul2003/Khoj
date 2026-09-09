@@ -166,7 +166,7 @@ function DashboardContent() {
                     <div className="flex-1 min-w-0">
                       <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">{prod.condition}</span>
                       <h4 className="text-sm font-bold text-white truncate">{prod.title}</h4>
-                      <p className="text-base font-black text-emerald-400 mt-1">${prod.price}</p>
+                      <p className="text-base font-black text-emerald-400 mt-1">৳{prod.price?.toLocaleString()}</p>
                       <span className={`inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider mt-1 ${
                         prod.status === 'Sold' ? 'bg-rose-500/20 text-rose-400' : 'bg-emerald-500/20 text-emerald-400'
                       }`}>
@@ -221,7 +221,7 @@ function DashboardContent() {
                     <div>
                       <h4 className="font-bold text-white text-sm">{ord.productTitle}</h4>
                       <p className="text-zinc-400">Seller: {ord.sellerName} • {ord.deliveryAddress}</p>
-                      <span className="text-emerald-400 font-bold">${ord.productPrice} ({ord.paymentMethod})</span>
+                      <span className="text-emerald-400 font-bold">৳{ord.productPrice?.toLocaleString()} ({ord.paymentMethod})</span>
                     </div>
                   </div>
                   <span className="px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold uppercase tracking-wider">
@@ -250,7 +250,7 @@ function DashboardContent() {
                     <div>
                       <h4 className="font-bold text-white text-sm">{off.productTitle}</h4>
                       <p className="text-zinc-300">
-                        Buyer <span className="font-bold text-indigo-400">{off.buyerName}</span> proposed: <span className="text-emerald-400 font-extrabold">${off.offeredPrice}</span>
+                        Buyer <span className="font-bold text-indigo-400">{off.buyerName}</span> proposed: <span className="text-emerald-400 font-extrabold">৳{off.offeredPrice?.toLocaleString()}</span>
                       </p>
                     </div>
                   </div>

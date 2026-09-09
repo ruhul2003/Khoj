@@ -77,7 +77,7 @@ export const BuyModal = ({ product, isOpen, onClose }) => {
               <div className="flex-1 min-w-0">
                 <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">{product.condition}</span>
                 <h4 className="text-xs font-bold text-white truncate">{product.title}</h4>
-                <div className="text-sm font-black text-emerald-400 mt-1">${product.price}</div>
+                <div className="text-sm font-black text-emerald-400 mt-1">৳{product.price.toLocaleString()}</div>
               </div>
             </div>
 

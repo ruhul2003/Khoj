@@ -23,7 +23,7 @@ export const MakeOfferModal = ({ product, isOpen, onClose }) => {
         buyerId: user?.id || 'user_demo_2',
         buyerName: user?.name || 'Sabbir Hossain',
         offeredPrice: Number(offeredPrice),
-        message: message || `Hi ${product.sellerName}, I am offering $${offeredPrice} for this item.`
+        message: message || `Hi ${product.sellerName}, I am offering ৳${offeredPrice} for this item.`
       });
       setIsSuccess(true);
       setTimeout(() => {
@@ -57,7 +57,7 @@ export const MakeOfferModal = ({ product, isOpen, onClose }) => {
             </div>
             <h3 className="text-xl font-bold text-white">Offer Sent to Seller!</h3>
             <p className="text-xs text-zinc-300">
-              Your price offer of <span className="font-bold text-emerald-400">${offeredPrice}</span> has been sent to {product.sellerName}.
+              Your price offer of <span className="font-bold text-emerald-400">৳{offeredPrice.toLocaleString()}</span> has been sent to {product.sellerName}.
             </p>
           </div>
         ) : (
@@ -74,17 +74,17 @@ export const MakeOfferModal = ({ product, isOpen, onClose }) => {
             <div className="flex items-center justify-between p-3 rounded-2xl bg-zinc-950 border border-zinc-800 text-xs">
               <div>
                 <span className="text-zinc-400 block font-medium">Asking Price</span>
-                <span className="text-sm font-bold text-white">${product.price}</span>
+                <span className="text-sm font-bold text-white">৳{product.price.toLocaleString()}</span>
               </div>
               <div className="text-right">
                 <span className="text-zinc-400 block font-medium">Your Proposal</span>
-                <span className="text-sm font-extrabold text-indigo-400">${offeredPrice}</span>
+                <span className="text-sm font-extrabold text-indigo-400">৳{offeredPrice.toLocaleString()}</span>
               </div>
             </div>
 
             <div>
               <div className="flex justify-between items-center text-xs text-zinc-300 mb-2">
-                <label className="font-semibold">Your Price ($)</label>
+                <label className="font-semibold">Your Price (BDT / Tk)</label>
                 {discountPercent > 0 && (
                   <span className="text-emerald-400 font-bold">
                     {discountPercent}% discount

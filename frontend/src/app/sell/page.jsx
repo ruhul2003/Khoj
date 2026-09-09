@@ -146,11 +146,11 @@ export default function SellPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-bold text-zinc-300 mb-2 uppercase tracking-widest">
-                Price ($) *
+                Price (BDT / Tk) *
               </label>
               <input
                 type="number"
-                placeholder="750"
+                placeholder="1450"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 required
@@ -160,11 +160,11 @@ export default function SellPage() {
 
             <div>
               <label className="block text-xs font-bold text-zinc-300 mb-2 uppercase tracking-widest">
-                Original Price ($)
+                Original Price (BDT / Tk)
               </label>
               <input
                 type="number"
-                placeholder="999"
+                placeholder="1999"
                 value={originalPrice}
                 onChange={(e) => setOriginalPrice(e.target.value)}
                 className="w-full px-5 py-3.5 bg-zinc-950 text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 text-sm font-medium"
@@ -253,7 +253,7 @@ export default function SellPage() {
                   {title || 'Product Title Preview'}
                 </h4>
                 <div className="flex items-baseline justify-between pt-3 border-t border-zinc-800">
-                  <span className="text-2xl font-black text-white">${price || '0'}</span>
+                  <span className="text-2xl font-black text-white">৳{price ? Number(price).toLocaleString() : '0'}</span>
                   <span className="text-xs text-zinc-400">{location}</span>
                 </div>
               </div>

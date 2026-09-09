@@ -118,7 +118,7 @@ export const ProductFilter = ({
 
       <div>
         <label className="block text-[11px] font-bold text-zinc-400 mb-2 uppercase tracking-widest">
-          Price Range ($)
+          Price Range (BDT / Tk)
         </label>
         <div className="grid grid-cols-2 gap-3">
           <input

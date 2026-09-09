@@ -167,9 +167,9 @@ export default function ProductDetailPage({ params }) {
               <div>
                 <span className="text-[11px] text-zinc-400 uppercase tracking-widest block font-bold">Asking Price</span>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-black text-white">${product.price.toLocaleString()}</span>
+                  <span className="text-3xl font-black text-white">৳{product.price.toLocaleString()}</span>
                   {product.originalPrice && product.originalPrice > product.price && (
-                    <span className="text-sm text-zinc-500 line-through">${product.originalPrice.toLocaleString()}</span>
+                    <span className="text-sm text-zinc-500 line-through">৳{product.originalPrice.toLocaleString()}</span>
                   )}
                 </div>
               </div>
