@@ -84,9 +84,9 @@ export const ChatDrawer = ({ product, isOpen, onClose }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {product.sellerAvatar ? (
-              <img src={product.sellerAvatar} alt={product.sellerName} className="w-10 h-10 rounded-full object-cover border-2 border-indigo-500" />
+              <img src={product.sellerAvatar} alt={product.sellerName} className="w-10 h-10 rounded-full object-cover border-2 border-[#0c9096]" />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-indigo-600/30 text-indigo-300 flex items-center justify-center font-bold text-sm">
+              <div className="w-10 h-10 rounded-full bg-[#0c9096]/25 text-[#689db8] flex items-center justify-center font-bold text-sm">
                 {product.sellerName.charAt(0)}
               </div>
             )}
@@ -133,8 +133,8 @@ export const ChatDrawer = ({ product, isOpen, onClose }) => {
       </div>
 
       {/* Handover Notice */}
-      <div className="px-4 py-2 bg-indigo-950/40 border-b border-indigo-900/40 flex items-center gap-2 text-[11px] text-indigo-300">
-        <Handshake className="w-4 h-4 shrink-0 text-indigo-400" />
+      <div className="px-4 py-2 bg-[#032e2e]/60 border-b border-[#264b5d]/40 flex items-center gap-2 text-[11px] text-[#689db8]">
+        <Handshake className="w-4 h-4 shrink-0 text-[#0c9096]" />
         <p className="truncate">Discuss meetup spot, courier option, and inspect before paying.</p>
       </div>
 
@@ -142,7 +142,7 @@ export const ChatDrawer = ({ product, isOpen, onClose }) => {
       <div className="flex-1 p-4 overflow-y-auto space-y-3">
         {messages.length === 0 ? (
           <div className="py-10 text-center text-zinc-500 space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto text-indigo-400">
+            <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto text-[#0c9096]">
               <Handshake className="w-6 h-6" />
             </div>
             <div>
@@ -163,7 +163,7 @@ export const ChatDrawer = ({ product, isOpen, onClose }) => {
                 <div
                   className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-xs leading-relaxed ${
                     isMe
-                      ? 'bg-indigo-600 text-white rounded-tr-none'
+                      ? 'bg-[#0c9096] text-white rounded-tr-none'
                       : 'bg-zinc-900 border border-zinc-800 text-zinc-200 rounded-tl-none'
                   }`}
                 >
@@ -199,12 +199,12 @@ export const ChatDrawer = ({ product, isOpen, onClose }) => {
           placeholder={`Message ${product.sellerName} about handover...`}
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          className="flex-1 px-4 py-3 bg-zinc-950 text-xs text-white placeholder-zinc-500 rounded-2xl border border-zinc-800 focus:outline-none focus:border-indigo-500 font-medium"
+          className="flex-1 px-4 py-3 bg-zinc-950 text-xs text-white placeholder-zinc-500 rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096] font-medium"
         />
         <button
           type="submit"
           disabled={!inputText.trim()}
-          className="p-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-2xl shadow-md transition-all cursor-pointer"
+          className="p-3 bg-[#0c9096] hover:bg-[#0a6c71] disabled:opacity-50 text-white rounded-2xl shadow-md transition-all cursor-pointer"
         >
           <Send className="w-4 h-4" />
         </button>

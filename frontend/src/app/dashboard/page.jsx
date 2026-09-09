@@ -79,9 +79,9 @@ function DashboardContent() {
       <div className="glass-panel p-8 rounded-3xl border border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-5 text-center sm:text-left">
           {user?.avatar ? (
-            <img src={user.avatar} alt={user.name} className="w-16 h-16 rounded-full object-cover border-2 border-indigo-500 shadow-xl" />
+            <img src={user.avatar} alt={user.name} className="w-16 h-16 rounded-full object-cover border-2 border-[#0c9096] shadow-xl" />
           ) : (
-            <div className="w-16 h-16 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-2xl">
+            <div className="w-16 h-16 rounded-full bg-[#0c9096] text-white flex items-center justify-center font-bold text-2xl">
               {user?.name.charAt(0) || 'U'}
             </div>
           )}
@@ -97,9 +97,9 @@ function DashboardContent() {
 
         <Link
           href="/sell"
-          className="px-6 py-3 bg-white text-zinc-950 font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center gap-2"
+          className="px-6 py-3 bg-white text-[#031615] font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center gap-2 hover:bg-zinc-100 transition-colors"
         >
-          <PlusCircle className="w-4 h-4 text-indigo-600" />
+          <PlusCircle className="w-4 h-4 text-[#0c9096]" />
           <span>+ Post Product</span>
         </Link>
       </div>
@@ -108,7 +108,7 @@ function DashboardContent() {
         <button
           onClick={() => setActiveTab('listings')}
           className={`pb-4 px-5 flex items-center gap-2 border-b-2 transition-all whitespace-nowrap ${
-            activeTab === 'listings' ? 'border-indigo-500 text-indigo-400 font-extrabold' : 'border-transparent text-zinc-400 hover:text-white'
+            activeTab === 'listings' ? 'border-[#0c9096] text-[#0c9096] font-extrabold' : 'border-transparent text-zinc-400 hover:text-white'
           }`}
         >
           <Package className="w-4 h-4" />
@@ -118,7 +118,7 @@ function DashboardContent() {
         <button
           onClick={() => setActiveTab('purchases')}
           className={`pb-4 px-5 flex items-center gap-2 border-b-2 transition-all whitespace-nowrap ${
-            activeTab === 'purchases' ? 'border-purple-500 text-purple-400 font-extrabold' : 'border-transparent text-zinc-400 hover:text-white'
+            activeTab === 'purchases' ? 'border-[#689db8] text-[#689db8] font-extrabold' : 'border-transparent text-zinc-400 hover:text-white'
           }`}
         >
           <ShoppingBag className="w-4 h-4" />
@@ -153,7 +153,7 @@ function DashboardContent() {
               <Package className="w-12 h-12 text-zinc-600 mx-auto" />
               <h3 className="text-lg font-bold text-white">No Active Listings</h3>
               <p className="text-xs text-zinc-400">Post an ad for gadgets or furniture you want to sell.</p>
-              <Link href="/sell" className="inline-block px-5 py-2.5 bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl">
+              <Link href="/sell" className="inline-block px-5 py-2.5 bg-[#0c9096] hover:bg-[#0a6c71] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors">
                 + Post First Product
               </Link>
             </div>
@@ -164,7 +164,7 @@ function DashboardContent() {
                   <div className="flex gap-4">
                     <img src={prod.images[0]} alt="" className="w-20 h-20 rounded-2xl object-cover border border-zinc-700" />
                     <div className="flex-1 min-w-0">
-                      <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">{prod.condition}</span>
+                      <span className="text-[10px] font-bold text-[#689db8] uppercase tracking-widest">{prod.condition}</span>
                       <h4 className="text-sm font-bold text-white truncate">{prod.title}</h4>
                       <p className="text-base font-black text-emerald-400 mt-1">৳{prod.price?.toLocaleString()}</p>
                       <span className={`inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider mt-1 ${
@@ -208,7 +208,7 @@ function DashboardContent() {
             <div className="glass-panel p-16 text-center rounded-3xl border border-zinc-800 space-y-3">
               <ShoppingBag className="w-12 h-12 text-zinc-600 mx-auto" />
               <h3 className="text-lg font-bold text-white">No Order History</h3>
-              <Link href="/browse" className="inline-block px-5 py-2.5 bg-purple-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl">
+              <Link href="/browse" className="inline-block px-5 py-2.5 bg-[#0c9096] hover:bg-[#0a6c71] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors">
                 Browse Products
               </Link>
             </div>
@@ -250,7 +250,7 @@ function DashboardContent() {
                     <div>
                       <h4 className="font-bold text-white text-sm">{off.productTitle}</h4>
                       <p className="text-zinc-300">
-                        Buyer <span className="font-bold text-indigo-400">{off.buyerName}</span> proposed: <span className="text-emerald-400 font-extrabold">৳{off.offeredPrice?.toLocaleString()}</span>
+                        Buyer <span className="font-bold text-[#0c9096]">{off.buyerName}</span> proposed: <span className="text-emerald-400 font-extrabold">৳{off.offeredPrice?.toLocaleString()}</span>
                       </p>
                     </div>
                   </div>
