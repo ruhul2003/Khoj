@@ -1,60 +1,25 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Upload, 
-  Image as ImageIcon, 
   Trash2, 
   Star, 
   Loader2, 
   AlertCircle, 
-  CheckCircle2, 
-  Key, 
-  ExternalLink,
-  ChevronDown,
-  ChevronUp
+  CheckCircle2 
 } from 'lucide-react';
-import { uploadToImgbb, getStoredImgbbKey, setStoredImgbbKey } from '@/lib/imgbb';
+import { uploadToImgbb } from '@/lib/imgbb';
 
 export default function ImageUploader({ images = [], onChange }) {
   const [uploadingFiles, setUploadingFiles] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
-  const [apiKey, setApiKey] = useState('');
-  const [showKeyInput, setShowKeyInput] = useState(false);
-  const [tempKey, setTempKey] = useState('');
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    const key = getStoredImgbbKey();
-    setApiKey(key);
-    setTempKey(key);
-    if (!key) {
-      setShowKeyInput(true);
-    }
-  }, []);
-
-  const handleSaveKey = () => {
-    if (!tempKey.trim()) {
-      setErrorMsg('Please enter a valid ImgBB API key.');
-      return;
-    }
-    setStoredImgbbKey(tempKey.trim());
-    setApiKey(tempKey.trim());
-    setShowKeyInput(false);
-    setErrorMsg('');
-  };
 
   const handleFiles = async (files) => {
     if (!files || files.length === 0) return;
     setErrorMsg('');
-
-    const key = getStoredImgbbKey();
-    if (!key) {
-      setShowKeyInput(true);
-      setErrorMsg('Please enter your ImgBB API key first so we can upload your photos.');
-      return;
-    }
 
     const validFiles = Array.from(files).filter(file => {
       if (!file.type.startsWith('image/')) {
@@ -77,12 +42,12 @@ export default function ImageUploader({ images = [], onChange }) {
       setUploadingFiles(prev => [...prev, { id: uploadId, name: file.name, preview: previewUrl }]);
 
       try {
-        const uploadedUrl = await uploadToImgbb(file, key);
+        const uploadedUrl = await uploadToImgbb(file);
         onChange([...images, uploadedUrl]);
         setUploadingFiles(prev => prev.filter(item => item.id !== uploadId));
       } catch (err) {
         console.error('Upload failed:', err);
-        setErrorMsg(err.message || `Failed to upload ${file.name} to ImgBB.`);
+        setErrorMsg(err.message || `Failed to upload ${file.name}.`);
         setUploadingFiles(prev => prev.filter(item => item.id !== uploadId));
       } finally {
         URL.revokeObjectURL(previewUrl);
@@ -112,70 +77,14 @@ export default function ImageUploader({ images = [], onChange }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <label className="block text-xs font-bold text-zinc-300 uppercase tracking-widest">
-            Product Photos (Direct Upload via ImgBB) *
-          </label>
-          <p className="text-[11px] text-zinc-400 mt-0.5">
-            Select or drag & drop high-resolution photos of your item.
-          </p>
-        </div>
-
-        {/* ImgBB API Key Status & Toggle */}
-        <button
-          type="button"
-          onClick={() => setShowKeyInput(!showKeyInput)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all border ${
-            apiKey 
-              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20' 
-              : 'bg-amber-500/15 text-amber-300 border-amber-500/30 hover:bg-amber-500/25'
-          }`}
-        >
-          <Key className="w-3 h-3" />
-          <span>{apiKey ? 'ImgBB Key Configured' : 'Configure ImgBB Key'}</span>
-          {showKeyInput ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-        </button>
+      <div>
+        <label className="block text-xs font-bold text-zinc-300 uppercase tracking-widest">
+          Product Photos *
+        </label>
+        <p className="text-[11px] text-zinc-400 mt-0.5">
+          Select or drag & drop clear photos of your item.
+        </p>
       </div>
-
-      {/* API Key Drawer / Input Banner */}
-      {showKeyInput && (
-        <div className="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-700/80 space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-zinc-200 flex items-center gap-2">
-              <Key className="w-3.5 h-3.5 text-[#0c9096]" />
-              ImgBB API Key Setup
-            </span>
-            <a
-              href="https://api.imgbb.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[11px] text-[#0c9096] hover:underline flex items-center gap-1"
-            >
-              Get free key at api.imgbb.com <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <input
-              type="password"
-              placeholder="Paste your ImgBB API key here..."
-              value={tempKey}
-              onChange={(e) => setTempKey(e.target.value)}
-              className="flex-1 px-3.5 py-2 bg-zinc-950 text-white rounded-xl border border-zinc-700 text-xs focus:outline-none focus:border-[#0c9096]"
-            />
-            <button
-              type="button"
-              onClick={handleSaveKey}
-              className="px-4 py-2 bg-[#0c9096] hover:bg-[#0a6c71] text-white font-bold text-xs rounded-xl uppercase tracking-wider transition-colors"
-            >
-              Save Key
-            </button>
-          </div>
-          <p className="text-[10px] text-zinc-400">
-            Keys are safely stored locally in your browser session or can be configured via <code className="text-zinc-300 bg-zinc-800 px-1 py-0.5 rounded">NEXT_PUBLIC_IMGBB_API_KEY</code> in <code className="text-zinc-300 bg-zinc-800 px-1 py-0.5 rounded">frontend/.env.local</code>.
-          </p>
-        </div>
-      )}
 
       {/* Error Alert */}
       {errorMsg && (
@@ -208,14 +117,14 @@ export default function ImageUploader({ images = [], onChange }) {
 
         <div className="flex flex-col items-center justify-center gap-3">
           <div className="w-14 h-14 rounded-2xl bg-[#0c9096]/10 text-[#0c9096] flex items-center justify-center shadow-lg border border-[#0c9096]/20">
-            <Upload className="w-7 h-7 animate-bounce-slow" />
+            <Upload className="w-7 h-7" />
           </div>
           <div>
             <p className="text-sm font-bold text-white">
               Click to select or drag & drop photos
             </p>
             <p className="text-xs text-zinc-400 mt-1">
-              Supports JPG, PNG, WEBP & GIF up to 32MB directly to ImgBB
+              Supports JPG, PNG, WEBP & GIF up to 32MB
             </p>
           </div>
           <button
@@ -235,8 +144,7 @@ export default function ImageUploader({ images = [], onChange }) {
               <img src={file.preview} alt="" className="w-full h-full object-cover opacity-50 blur-[1px]" />
               <div className="absolute inset-0 flex flex-col items-center justify-center p-2 text-center bg-black/60">
                 <Loader2 className="w-6 h-6 text-[#0c9096] animate-spin mb-1" />
-                <span className="text-[10px] font-bold text-white truncate max-w-full">Uploading...</span>
-                <span className="text-[9px] text-[#0c9096] font-medium">To ImgBB</span>
+                <span className="text-[10px] font-bold text-white truncate max-w-full">Uploading photo...</span>
               </div>
             </div>
           ))}
@@ -249,7 +157,7 @@ export default function ImageUploader({ images = [], onChange }) {
           <div className="flex items-center justify-between text-xs text-zinc-400">
             <span className="font-bold uppercase tracking-wider">Uploaded Photos ({images.length})</span>
             <span className="text-[11px] text-[#0c9096] font-medium flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5" /> Hosted on ImgBB
+              <CheckCircle2 className="w-3.5 h-3.5" /> Uploaded successfully
             </span>
           </div>
 

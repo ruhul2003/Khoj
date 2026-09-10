@@ -10,11 +10,11 @@ export async function POST(req) {
     }
 
     const headerKey = req.headers.get('x-imgbb-key');
-    const apiKey = headerKey || process.env.IMGBB_API_KEY || process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+    const apiKey = headerKey || process.env.IMGBB_API_KEY || process.env.NEXT_PUBLIC_IMGBB_API_KEY || '8bb83ba8d6d1f4f11cebec0b39c096d0';
 
     if (!apiKey) {
       return NextResponse.json({
-        error: 'ImgBB API key is missing. Please set NEXT_PUBLIC_IMGBB_API_KEY in your .env or enter it in the seller settings.'
+        error: 'ImgBB API key is missing.'
       }, { status: 400 });
     }
 

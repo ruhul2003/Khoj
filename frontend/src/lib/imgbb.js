@@ -2,22 +2,10 @@
  * ImgBB Image Upload Service for Khoj Marketplace
  */
 
-export const getStoredImgbbKey = () => {
-  if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem('khoj_imgbb_key');
-    if (saved && saved.trim()) return saved.trim();
-  }
-  return process.env.NEXT_PUBLIC_IMGBB_API_KEY || '';
-};
+const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY || '8bb83ba8d6d1f4f11cebec0b39c096d0';
 
-export const setStoredImgbbKey = (key) => {
-  if (typeof window !== 'undefined') {
-    if (key && key.trim()) {
-      localStorage.setItem('khoj_imgbb_key', key.trim());
-    } else {
-      localStorage.removeItem('khoj_imgbb_key');
-    }
-  }
+export const getStoredImgbbKey = () => {
+  return IMGBB_API_KEY;
 };
 
 /**
