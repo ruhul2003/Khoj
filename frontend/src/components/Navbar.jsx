@@ -16,13 +16,30 @@ export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  const POPULAR_SEARCHES = ['iPhone 15', 'MacBook Air', 'PlayStation 5', 'Toyota Corolla', 'Smart TV'];
+  const POPULAR_CATEGORIES = ['Electronics', 'Mobile Phones', 'Vehicles', 'Home Appliances', 'Furniture'];
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    setIsSearchFocused(false);
     if (searchTerm.trim()) {
       router.push(`/browse?search=${encodeURIComponent(searchTerm.trim())}`);
     } else {
       router.push('/browse');
     }
+  };
+
+  const handleQuickSearch = (keyword) => {
+    setSearchTerm(keyword);
+    setIsSearchFocused(false);
+    router.push(`/browse?search=${encodeURIComponent(keyword)}`);
+  };
+
+  const handleQuickCategory = (cat) => {
+    setIsSearchFocused(false);
+    router.push(`/browse?category=${encodeURIComponent(cat)}`);
   };
 
   const handleLogout = () => {
@@ -49,14 +66,15 @@ export const Navbar = () => {
             </div>
           </Link>
 
-          {/* Minimal Search */}
-          <form onSubmit={handleSearchSubmit} className="flex-1 max-w-2xl hidden md:block">
-            <div className="relative">
+          {/* Minimal Search with Instant Suggestions */}
+          <div className="flex-1 max-w-2xl hidden md:block relative">
+            <form onSubmit={handleSearchSubmit} className="relative">
               <input
                 type="text"
                 placeholder="Search laptops, smartphones, vehicles, furniture, clothing..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
                 className="w-full pl-12 pr-28 py-3 bg-zinc-900/90 border border-zinc-800 rounded-2xl text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[#0c9096] focus:ring-1 focus:ring-[#0c9096]/50 transition-all font-medium"
               />
               <Search className="w-4 h-4 text-zinc-400 absolute left-4 top-4" />
@@ -66,8 +84,54 @@ export const Navbar = () => {
               >
                 Search
               </button>
-            </div>
-          </form>
+            </form>
+
+            {isSearchFocused && (
+              <>
+                <div
+                  className="fixed inset-0 z-30"
+                  onClick={() => setIsSearchFocused(false)}
+                />
+                <div className="absolute top-full left-0 right-0 mt-2 p-4 glass-panel rounded-2xl border border-zinc-800 shadow-2xl z-40 space-y-3 font-['Bai_Jamjuree']">
+                  <div>
+                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-2">
+                      Popular Searches
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {POPULAR_SEARCHES.map((query) => (
+                        <button
+                          key={query}
+                          type="button"
+                          onClick={() => handleQuickSearch(query)}
+                          className="px-3 py-1 rounded-xl bg-zinc-900/80 hover:bg-[#0c9096]/20 border border-zinc-800 hover:border-[#0c9096]/40 text-xs text-zinc-300 hover:text-white transition-all cursor-pointer"
+                        >
+                          {query}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-zinc-800/60">
+                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-2">
+                      Quick Categories
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {POPULAR_CATEGORIES.map((cat) => (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => handleQuickCategory(cat)}
+                          className="px-3 py-1 rounded-xl bg-zinc-900/80 hover:bg-emerald-500/20 border border-zinc-800 hover:border-emerald-500/40 text-xs text-zinc-300 hover:text-emerald-300 transition-all cursor-pointer"
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
 
           {/* Navigation Actions */}
           <div className="flex items-center gap-4 shrink-0">
