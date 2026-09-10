@@ -6,6 +6,7 @@ import { api } from '@/lib/api';
 import { MakeOfferModal } from '@/components/MakeOfferModal';
 import { ChatDrawer } from '@/components/ChatDrawer';
 import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/context/ToastContext';
 import {
   MapPin,
   Heart,
@@ -18,13 +19,15 @@ import {
   Phone,
   MessageCircle,
   Copy,
-  Check
+  Check,
+  Share2
 } from 'lucide-react';
 
 export default function ProductDetailPage({ params }) {
   const resolvedParams = use(params);
   const productId = resolvedParams.id;
   const { isSaved, toggleWishlist } = useAuth();
+  const { addToast } = useToast();
 
   const [product, setProduct] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -34,6 +37,45 @@ export default function ProductDetailPage({ params }) {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
+  const [isCopiedLink, setIsCopiedLink] = useState(false);
+
+  const handleShare = async () => {
+    if (!product) return;
+    const shareData = {
+      title: `${product.title} | Khoj`,
+      text: `Check out ${product.title} for ৳${product.price?.toLocaleString()} on Khoj!`,
+      url: typeof window !== 'undefined' ? window.location.href : ''
+    };
+
+    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData);
+        addToast('Shared successfully!', 'success');
+        return;
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.error("Web share failed", err);
+        }
+      }
+    }
+
+    if (typeof window !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      setIsCopiedLink(true);
+      addToast('Listing link copied to clipboard!', 'success');
+      setTimeout(() => setIsCopiedLink(false), 2500);
+    }
+  };
+
+  const handleWishlistToggle = () => {
+    if (!product) return;
+    toggleWishlist(product._id);
+    if (saved) {
+      addToast('Removed from your wishlist', 'info');
+    } else {
+      addToast('Saved to your wishlist!', 'success');
+    }
+  };
 
   useEffect(() => {
     fetchProductDetail();
@@ -82,7 +124,7 @@ export default function ProductDetailPage({ params }) {
 
   return (
     <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12 space-y-10 font-['Bai_Jamjuree']">
-      <div>
+      <div className="flex items-center justify-between">
         <Link
           href="/browse"
           className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400 hover:text-white transition-colors"
@@ -90,6 +132,30 @@ export default function ProductDetailPage({ params }) {
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Catalog</span>
         </Link>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleShare}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-zinc-300 hover:text-white transition-all cursor-pointer shadow-sm"
+            title="Share this listing"
+          >
+            {isCopiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5 text-[#0c9096]" />}
+            <span>{isCopiedLink ? 'Copied Link' : 'Share Listing'}</span>
+          </button>
+
+          <button
+            onClick={handleWishlistToggle}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-2xl border text-xs font-bold transition-all cursor-pointer shadow-sm ${
+              saved
+                ? 'bg-rose-500/20 border-rose-500/40 text-rose-400'
+                : 'bg-zinc-900/80 hover:bg-zinc-800 border-zinc-800 text-zinc-300 hover:text-white'
+            }`}
+            title={saved ? 'Remove from wishlist' : 'Save to wishlist'}
+          >
+            <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-rose-500 text-rose-500' : 'text-zinc-400'}`} />
+            <span>{saved ? 'Saved' : 'Save'}</span>
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -108,8 +174,8 @@ export default function ProductDetailPage({ params }) {
             </div>
 
             <button
-              onClick={() => toggleWishlist(product._id)}
-              className={`absolute top-5 right-5 p-3 rounded-full backdrop-blur-md border transition-all z-10 ${
+              onClick={handleWishlistToggle}
+              className={`absolute top-5 right-5 p-3 rounded-full backdrop-blur-md border transition-all z-10 cursor-pointer ${
                 saved
                   ? 'bg-rose-600 text-white border-rose-500 shadow-xl scale-110'
                   : 'bg-zinc-950/80 text-zinc-300 border-zinc-800 hover:text-white'
