@@ -2,11 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { MapPin, Heart, Eye } from 'lucide-react';
+import { Heart, Star, Eye } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 
-export const ProductCard = ({ product }) => {
+export const ProductCard = ({ product, countdown }) => {
   const { toggleWishlist, isSaved } = useAuth();
   const { addToast } = useToast();
   const saved = isSaved(product._id);
@@ -22,105 +22,115 @@ export const ProductCard = ({ product }) => {
     }
   };
 
-  const getConditionBadge = (cond) => {
-    switch (cond) {
-      case 'Brand New':
-        return { label: 'Brand New', bg: 'bg-[#0c9096]/20 text-[#38d4dc] border-[#0c9096]/40' };
-      case 'Used - Like New':
-        return { label: 'Used - Like New', bg: 'bg-[#0a6c71]/25 text-[#689db8] border-[#0a6c71]/40' };
-      case 'Used - Good':
-        return { label: 'Used - Good', bg: 'bg-[#264b5d]/40 text-[#93c5d6] border-[#264b5d]' };
-      default:
-        return { label: 'Used - Fair', bg: 'bg-amber-500/10 text-amber-400 border-amber-500/30' };
-    }
-  };
-
-  const badge = getConditionBadge(product.condition);
   const discountPercent = product.originalPrice && product.originalPrice > product.price
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-    : 0;
+    : (product.price > 100 ? 15 : 0);
+
+  const originalPriceVal = product.originalPrice && product.originalPrice > product.price
+    ? product.originalPrice
+    : (discountPercent > 0 ? Math.round(product.price * 1.2) : null);
+
+  // Formatting price to $ or ৳
+  const formattedPrice = `$${product.price.toLocaleString()}`;
+  const formattedOriginal = originalPriceVal ? `$${originalPriceVal.toLocaleString()}` : null;
 
   return (
-    <div className="group glass-card rounded-3xl overflow-hidden flex flex-col justify-between border border-zinc-800/70 font-['Bai_Jamjuree']">
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-950">
-        <img
-          src={product.images[0] || 'https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=800&q=80'}
-          alt={product.title}
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=800&q=80';
-          }}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-
-        <div className="absolute top-4 left-4 flex flex-col gap-2 items-start z-10">
-          <span className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border backdrop-blur-md ${badge.bg}`}>
-            {badge.label}
+    <div className="group bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-gray-300 hover:shadow-xl transition-all duration-300 flex flex-col justify-between font-['Bai_Jamjuree'] relative">
+      
+      {/* Product Image Area */}
+      <div className="relative aspect-square w-full p-4 bg-white flex items-center justify-center overflow-hidden">
+        
+        {/* Discount Badge */}
+        {discountPercent > 0 && (
+          <span className="absolute top-3 left-3 px-2 py-0.5 rounded bg-rose-600 text-white text-[11px] font-black tracking-wider z-10">
+            -{discountPercent}%
           </span>
-          {discountPercent > 0 && (
-            <span className="px-2.5 py-0.5 rounded-lg bg-rose-600 text-white text-[10px] font-extrabold shadow">
-              {discountPercent}% OFF
-            </span>
-          )}
-        </div>
+        )}
 
+        {/* Wishlist Heart Button */}
         <button
           onClick={handleWishlistToggle}
-          className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-md border transition-all duration-200 z-10 cursor-pointer ${
+          className={`absolute top-3 right-3 p-2 rounded-full border transition-all z-10 cursor-pointer ${
             saved
-              ? 'bg-rose-600 text-white border-rose-500 shadow-lg scale-110 active:scale-90'
-              : 'bg-zinc-950/70 text-zinc-300 border-zinc-800 hover:bg-zinc-900 hover:text-white active:scale-95'
+              ? 'bg-rose-500 text-white border-rose-500 shadow-md scale-105'
+              : 'bg-white/90 text-gray-400 border-gray-200 hover:text-rose-500 hover:border-rose-300 hover:bg-white'
           }`}
           title={saved ? 'Remove from wishlist' : 'Save to wishlist'}
         >
-          <Heart className={`w-4 h-4 transition-transform duration-200 ${saved ? 'fill-current scale-110' : ''}`} />
+          <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-current' : ''}`} />
         </button>
 
+        <img
+          src={product.images?.[0] || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80'}
+          alt={product.title}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80';
+          }}
+          className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+        />
+
         {product.status === 'Sold' && (
-          <div className="absolute inset-0 bg-zinc-950/85 backdrop-blur-xs flex items-center justify-center z-20">
-            <span className="px-5 py-2 bg-rose-600 text-white font-extrabold text-xs uppercase tracking-widest rounded-full border border-rose-400">
+          <div className="absolute inset-0 bg-white/80 backdrop-blur-xs flex items-center justify-center z-20">
+            <span className="px-4 py-1.5 bg-slate-900 text-white font-black text-xs uppercase tracking-widest rounded-full">
               Sold Out
             </span>
           </div>
         )}
       </div>
 
-      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-        <div>
-          <div className="flex items-center justify-between text-xs text-zinc-400 mb-2">
-            <span className="font-bold text-[#0c9096] uppercase tracking-widest text-[10px]">{product.category}</span>
-            <span className="flex items-center gap-1 text-[11px]">
-              <MapPin className="w-3.5 h-3.5 text-[#689db8]" />
-              {product.location}
-            </span>
+      {/* Product Details */}
+      <div className="p-4 pt-2 flex flex-col justify-between flex-1 border-t border-gray-100 space-y-2">
+        
+        {/* Optional Countdown Timer */}
+        {countdown ? (
+          <div className="text-center py-1 px-2 rounded-md bg-rose-50 text-rose-600 font-bold text-[11px] tracking-wider">
+            {countdown}
           </div>
+        ) : (
+          <div className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider">
+            {product.category || 'General'}
+          </div>
+        )}
 
-          <Link href={`/product/${product._id}`}>
-            <h3 className="text-base font-bold text-white group-hover:text-[#38d4dc] transition-colors line-clamp-2 leading-snug">
-              {product.title}
-            </h3>
-          </Link>
+        {/* Title */}
+        <Link href={`/product/${product._id}`}>
+          <h3 className="text-xs sm:text-sm font-bold text-gray-900 group-hover:text-amber-600 transition-colors line-clamp-2 leading-snug">
+            {product.title}
+          </h3>
+        </Link>
+
+        {/* Star Ratings */}
+        <div className="flex items-center gap-1">
+          {[1, 2, 3, 4, 5].map((s) => (
+            <Star key={s} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+          ))}
         </div>
 
-        <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between">
-          <div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-xl font-extrabold text-white">৳{product.price.toLocaleString()}</span>
-              {product.originalPrice && product.originalPrice > product.price && (
-                <span className="text-xs text-zinc-500 line-through">৳{product.originalPrice.toLocaleString()}</span>
-              )}
-            </div>
+        {/* Price Row */}
+        <div className="pt-2 flex items-baseline justify-between">
+          <div className="flex items-baseline gap-2">
+            {formattedOriginal && (
+              <span className="text-xs text-gray-400 line-through font-medium">
+                {formattedOriginal}
+              </span>
+            )}
+            <span className="text-base sm:text-lg font-black text-gray-900 tracking-tight">
+              {formattedPrice}
+            </span>
           </div>
 
           <Link
             href={`/product/${product._id}`}
-            className="px-4 py-2 bg-[#032e2e] hover:bg-[#0c9096] text-[#93c5d6] hover:text-white text-xs font-bold uppercase tracking-wider rounded-xl border border-[#264b5d] hover:border-[#0c9096] transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+            className="w-8 h-8 rounded-full bg-gray-100 hover:bg-amber-500 hover:text-slate-950 text-gray-600 flex items-center justify-center transition-colors shadow-xs"
+            title="View Details"
           >
-            <span>View</span>
-            <Eye className="w-3.5 h-3.5" />
+            <Eye className="w-4 h-4" />
           </Link>
         </div>
+
       </div>
+
     </div>
   );
 };
