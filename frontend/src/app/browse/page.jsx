@@ -25,7 +25,7 @@ function BrowseContent() {
 
   useEffect(() => {
     fetchFilteredProducts();
-  }, [category, condition, sort]);
+  }, [category, condition, sort, minPrice, maxPrice]);
 
   const fetchFilteredProducts = async () => {
     setLoading(true);
@@ -60,7 +60,6 @@ function BrowseContent() {
     setMinPrice('');
     setMaxPrice('');
     setSort('newest');
-    fetchFilteredProducts();
   };
 
   return (
@@ -112,11 +111,29 @@ function BrowseContent() {
         </div>
 
         <div className="lg:col-span-9 space-y-6">
-          <div className="flex items-center justify-between text-xs text-zinc-400 pb-3 border-b border-zinc-800">
-            <span>Found <strong className="text-white font-bold">{products.length}</strong> matching products</span>
-            {(category !== 'All' || condition !== 'All' || search) && (
-              <span className="text-[#0c9096] font-semibold uppercase tracking-wider">Filtered View</span>
-            )}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-zinc-400 pb-3 border-b border-zinc-800">
+            <div className="flex items-center gap-2">
+              <span>Found <strong className="text-white font-bold">{products.length}</strong> matching products</span>
+              {(category !== 'All' || condition !== 'All' || search || minPrice || maxPrice) && (
+                <span className="px-2 py-0.5 rounded-full bg-[#0c9096]/15 border border-[#0c9096]/30 text-[#38d4dc] font-semibold text-[10px] uppercase tracking-wider">
+                  Filtered
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-zinc-500 font-medium">Sort:</span>
+              <select
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+                className="bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs rounded-xl px-3 py-1.5 focus:outline-none focus:border-[#0c9096] cursor-pointer"
+              >
+                <option value="newest">Newest First</option>
+                <option value="price_asc">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+                <option value="views">Most Popular</option>
+              </select>
+            </div>
           </div>
 
           {loading ? (
