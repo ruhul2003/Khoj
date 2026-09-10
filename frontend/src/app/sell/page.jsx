@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
-import { PlusCircle, Sparkles, CheckCircle2 } from 'lucide-react';
+import { PlusCircle, Sparkles, CheckCircle2, AlertCircle, Image as ImageIcon } from 'lucide-react';
+import ImageUploader from '@/components/ImageUploader';
 
 const CATEGORIES = [
   'Electronics',
@@ -24,13 +25,6 @@ const CONDITIONS = [
   { id: 'Used - Fair', label: 'Used - Fair' }
 ];
 
-const SAMPLE_IMAGES = [
-  "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1000&q=80",
-  "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=1000&q=80",
-  "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=1000&q=80",
-  "https://images.unsplash.com/photo-1580481072645-022f9a6d1294?auto=format&fit=crop&w=1000&q=80"
-];
-
 export default function SellPage() {
   const router = useRouter();
   const { user } = useAuth();
@@ -43,22 +37,23 @@ export default function SellPage() {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState(user?.location || 'Gulshan, Dhaka');
   const [sellerPhone, setSellerPhone] = useState(user?.phone || '+880 1712-345678');
-  const [imageUrl, setImageUrl] = useState('');
-  const [images, setImages] = useState([
-    "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1000&q=80"
-  ]);
+  const [images, setImages] = useState([]);
+  const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleAddImage = () => {
-    if (imageUrl.trim()) {
-      setImages(prev => [...prev, imageUrl.trim()]);
-      setImageUrl('');
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title || !price || !description) return;
+    setFormError('');
+
+    if (!title || !price || !description) {
+      setFormError('Please fill out all required fields.');
+      return;
+    }
+
+    if (images.length === 0) {
+      setFormError('Please upload at least one product photo using the ImgBB uploader below.');
+      return;
+    }
 
     setIsSubmitting(true);
     try {
@@ -81,6 +76,7 @@ export default function SellPage() {
       router.push(`/product/${newProd._id || newProd.id || ''}`);
     } catch (err) {
       console.error("Failed to post ad", err);
+      setFormError(err.response?.data?.message || 'Failed to post product ad. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -204,27 +200,8 @@ export default function SellPage() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-zinc-300 mb-2 uppercase tracking-widest">
-              Image URL
-            </label>
-            <div className="flex gap-2 mb-2">
-              <input
-                type="url"
-                placeholder="Paste image URL..."
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                className="flex-1 px-4 py-3 bg-zinc-950 text-xs text-white rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096] font-medium"
-              />
-              <button
-                type="button"
-                onClick={handleAddImage}
-                className="px-5 py-3 bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-white rounded-2xl border border-zinc-700 uppercase tracking-wider"
-              >
-                Add
-              </button>
-            </div>
-          </div>
+          {/* Direct ImgBB Image Uploader */}
+          <ImageUploader images={images} onChange={setImages} />
 
           <div>
             <label className="block text-xs font-bold text-zinc-300 mb-2 uppercase tracking-widest">
@@ -240,27 +217,49 @@ export default function SellPage() {
             />
           </div>
 
+          {formError && (
+            <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center gap-3 text-rose-400 text-xs font-medium">
+              <AlertCircle className="w-5 h-5 shrink-0" />
+              <span>{formError}</span>
+            </div>
+          )}
+
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 bg-gradient-to-r from-[#0a6c71] to-[#0c9096] hover:from-[#0c9096] hover:to-[#13a7ad] text-white font-bold text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-[#0c9096]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-4 bg-gradient-to-r from-[#0a6c71] to-[#0c9096] hover:from-[#0c9096] hover:to-[#13a7ad] text-white font-bold text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-[#0c9096]/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
             <Sparkles className="w-4 h-4" />
-            <span>{isSubmitting ? 'Publishing...' : 'Publish Product Listing'}</span>
+            <span>{isSubmitting ? 'Publishing Listing...' : 'Publish Product Listing'}</span>
           </button>
         </form>
 
         <div className="lg:col-span-5 space-y-4">
           <div className="sticky top-28">
-            <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-3">Live Card Preview</h3>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Live Card Preview</h3>
+              {images.length > 0 && (
+                <span className="text-[11px] text-[#0c9096] font-bold">
+                  {images.length} photo{images.length > 1 ? 's' : ''} uploaded
+                </span>
+              )}
+            </div>
             
             <div className="glass-card rounded-3xl overflow-hidden border border-zinc-800 shadow-2xl">
-              <div className="relative aspect-[4/3] w-full bg-zinc-950">
-                <img
-                  src={images[0] || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80'}
-                  alt="Preview"
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative aspect-[4/3] w-full bg-zinc-950 flex items-center justify-center">
+                {images.length > 0 ? (
+                  <img
+                    src={images[0]}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-zinc-600 bg-zinc-900/40 p-6 text-center border-b border-zinc-800">
+                    <ImageIcon className="w-12 h-12 mb-2 text-zinc-700" />
+                    <span className="text-xs font-semibold text-zinc-400">No photos uploaded yet</span>
+                    <span className="text-[11px] text-zinc-600 mt-1">Upload images above to see your live preview</span>
+                  </div>
+                )}
                 <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-[11px] font-bold bg-[#0c9096] text-white shadow">
                   {condition}
                 </span>
