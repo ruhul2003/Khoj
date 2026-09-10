@@ -4,10 +4,23 @@ import React from 'react';
 import Link from 'next/link';
 import { MapPin, Heart, Eye } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/context/ToastContext';
 
 export const ProductCard = ({ product }) => {
   const { toggleWishlist, isSaved } = useAuth();
+  const { addToast } = useToast();
   const saved = isSaved(product._id);
+
+  const handleWishlistToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product._id);
+    if (saved) {
+      addToast(`Removed "${product.title.slice(0, 25)}..." from wishlist`, 'info');
+    } else {
+      addToast(`Saved "${product.title.slice(0, 25)}..." to wishlist`, 'success');
+    }
+  };
 
   const getConditionBadge = (cond) => {
     switch (cond) {
@@ -52,19 +65,15 @@ export const ProductCard = ({ product }) => {
         </div>
 
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleWishlist(product._id);
-          }}
-          className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-md border transition-all z-10 ${
+          onClick={handleWishlistToggle}
+          className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-md border transition-all duration-200 z-10 cursor-pointer ${
             saved
-              ? 'bg-rose-600 text-white border-rose-500 shadow-lg scale-110'
-              : 'bg-zinc-950/70 text-zinc-300 border-zinc-800 hover:bg-zinc-900 hover:text-white'
+              ? 'bg-rose-600 text-white border-rose-500 shadow-lg scale-110 active:scale-90'
+              : 'bg-zinc-950/70 text-zinc-300 border-zinc-800 hover:bg-zinc-900 hover:text-white active:scale-95'
           }`}
           title={saved ? 'Remove from wishlist' : 'Save to wishlist'}
         >
-          <Heart className={`w-4 h-4 ${saved ? 'fill-current' : ''}`} />
+          <Heart className={`w-4 h-4 transition-transform duration-200 ${saved ? 'fill-current scale-110' : ''}`} />
         </button>
 
         {product.status === 'Sold' && (
