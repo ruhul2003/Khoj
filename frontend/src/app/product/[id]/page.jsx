@@ -400,6 +400,28 @@ export default function ProductDetailPage({ params }) {
                 </button>
               </div>
             </div>
+
+            {/* Buyer Safety & Trust Box */}
+            <div className="p-5 rounded-2xl bg-zinc-950/60 border border-zinc-800/80 space-y-3">
+              <div className="flex items-center gap-2 text-emerald-400 font-bold uppercase tracking-wider text-[11px]">
+                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Khoj Buyer Safety Assurance</span>
+              </div>
+              <ul className="space-y-2 text-[11px] text-zinc-400 font-light">
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-400 font-bold">•</span>
+                  <span>Meet in a busy, well-lit public place (e.g. Metro station, shopping mall) for exchange.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-400 font-bold">•</span>
+                  <span>Inspect devices, verify IMEI/serial numbers, and test before completing payment.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-emerald-400 font-bold">•</span>
+                  <span>Never transfer advance money or share OTPs before receiving the item.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
