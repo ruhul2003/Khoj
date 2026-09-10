@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
+import { ToastProvider } from "@/context/ToastContext";
+
 const baiJamjuree = Bai_Jamjuree({
   weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
@@ -23,11 +25,13 @@ export default function RootLayout({ children }) {
       <body className={`${baiJamjuree.className} antialiased flex flex-col min-h-screen selection:bg-teal-500/30 selection:text-teal-200 transition-colors duration-200`}>
         <ThemeProvider>
           <AuthProvider>
-            <Navbar />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
+            <ToastProvider>
+              <Navbar />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </ToastProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>
