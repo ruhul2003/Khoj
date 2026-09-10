@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, PlusCircle, Heart, LogOut, Package, Tag, MessageSquare, Menu, X, ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/context/ToastContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 export const Navbar = () => {
   const router = useRouter();
   const { user, logout, savedItemIds } = useAuth();
+  const { addToast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -21,6 +23,12 @@ export const Navbar = () => {
     } else {
       router.push('/browse');
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    setIsUserMenuOpen(false);
+    addToast('Signed out successfully', 'info');
   };
 
   return (
@@ -72,7 +80,7 @@ export const Navbar = () => {
             </Link>
 
             <Link
-              href="/dashboard?tab=saved"
+              href="/wishlist"
               className="relative p-3 text-zinc-400 hover:text-white hover:bg-zinc-800/60 rounded-xl transition-colors"
               title="Saved Wishlist"
             >
@@ -125,6 +133,15 @@ export const Navbar = () => {
 
                     <div className="py-1">
                       <Link
+                        href="/wishlist"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-3 px-5 py-2.5 text-xs text-zinc-300 hover:bg-zinc-800/60 hover:text-white transition-colors"
+                      >
+                        <Heart className="w-4 h-4 text-rose-400" />
+                        Saved Wishlist ({savedItemIds.length})
+                      </Link>
+
+                      <Link
                         href="/dashboard?tab=listings"
                         onClick={() => setIsUserMenuOpen(false)}
                         className="flex items-center gap-3 px-5 py-2.5 text-xs text-zinc-300 hover:bg-zinc-800/60 hover:text-white transition-colors"
@@ -154,10 +171,7 @@ export const Navbar = () => {
 
                     <div className="border-t border-zinc-800/80 pt-1 mt-1">
                       <button
-                        onClick={() => {
-                          logout();
-                          setIsUserMenuOpen(false);
-                        }}
+                        onClick={handleLogout}
                         className="w-full flex items-center gap-3 px-5 py-2.5 text-xs text-rose-400 hover:bg-rose-500/10 transition-colors"
                       >
                         <LogOut className="w-4 h-4" />
@@ -208,12 +222,16 @@ export const Navbar = () => {
                 <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-3.5" />
               </div>
             </form>
-            <div className="grid grid-cols-2 gap-3 text-xs font-bold uppercase tracking-wider">
+            <div className="grid grid-cols-3 gap-2 text-xs font-bold uppercase tracking-wider">
               <Link href="/browse" onClick={() => setIsMobileMenuOpen(false)} className="p-3 rounded-xl bg-zinc-900 text-center text-zinc-300">
                 Catalog
               </Link>
+              <Link href="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="p-3 rounded-xl bg-zinc-900 text-center text-rose-400 flex items-center justify-center gap-1">
+                <Heart className="w-3.5 h-3.5 fill-rose-500/20" />
+                Wishlist
+              </Link>
               <Link href="/sell" onClick={() => setIsMobileMenuOpen(false)} className="p-3 rounded-xl bg-[#0c9096] hover:bg-[#0a6c71] text-center text-white">
-                + Sell Item
+                + Sell
               </Link>
             </div>
 
