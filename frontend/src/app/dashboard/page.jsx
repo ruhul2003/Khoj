@@ -104,6 +104,81 @@ function DashboardContent() {
         </Link>
       </div>
 
+      {/* Summary Metrics Overview Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <button
+          onClick={() => setActiveTab('listings')}
+          className={`glass-panel p-5 rounded-3xl border text-left transition-all cursor-pointer ${
+            activeTab === 'listings'
+              ? 'border-[#0c9096] bg-[#0c9096]/10 shadow-lg shadow-[#0c9096]/10'
+              : 'border-zinc-800 hover:border-zinc-700'
+          }`}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">My Listings</span>
+            <div className="w-8 h-8 rounded-xl bg-[#0c9096]/15 flex items-center justify-center text-[#0c9096]">
+              <Package className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="text-2xl sm:text-3xl font-black text-white">{myListings.length}</div>
+          <span className="text-[10px] text-zinc-500 mt-1 block">Active on marketplace</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('purchases')}
+          className={`glass-panel p-5 rounded-3xl border text-left transition-all cursor-pointer ${
+            activeTab === 'purchases'
+              ? 'border-[#689db8] bg-[#689db8]/10 shadow-lg shadow-[#689db8]/10'
+              : 'border-zinc-800 hover:border-zinc-700'
+          }`}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Orders</span>
+            <div className="w-8 h-8 rounded-xl bg-[#689db8]/15 flex items-center justify-center text-[#689db8]">
+              <ShoppingBag className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="text-2xl sm:text-3xl font-black text-white">{myPurchases.length}</div>
+          <span className="text-[10px] text-zinc-500 mt-1 block">Reserved & ordered</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('offers')}
+          className={`glass-panel p-5 rounded-3xl border text-left transition-all cursor-pointer ${
+            activeTab === 'offers'
+              ? 'border-emerald-500 bg-emerald-500/10 shadow-lg shadow-emerald-500/10'
+              : 'border-zinc-800 hover:border-zinc-700'
+          }`}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Offers Inbox</span>
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/15 flex items-center justify-center text-emerald-400">
+              <MessageSquare className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="text-2xl sm:text-3xl font-black text-white">{myOffers.length}</div>
+          <span className="text-[10px] text-zinc-500 mt-1 block">Price proposals</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('saved')}
+          className={`glass-panel p-5 rounded-3xl border text-left transition-all cursor-pointer ${
+            activeTab === 'saved'
+              ? 'border-rose-500 bg-rose-500/10 shadow-lg shadow-rose-500/10'
+              : 'border-zinc-800 hover:border-zinc-700'
+          }`}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Wishlist</span>
+            <div className="w-8 h-8 rounded-xl bg-rose-500/15 flex items-center justify-center text-rose-400">
+              <Heart className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="text-2xl sm:text-3xl font-black text-white">{savedProducts.length}</div>
+          <span className="text-[10px] text-zinc-500 mt-1 block">Bookmarked deals</span>
+        </button>
+      </div>
+
       <div className="flex border-b border-zinc-800 gap-3 overflow-x-auto text-xs font-bold uppercase tracking-wider">
         <button
           onClick={() => setActiveTab('listings')}
