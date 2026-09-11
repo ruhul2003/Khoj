@@ -6,15 +6,13 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/Khoj';
 
 // Global cached Mongo client for Next.js hot-reloading
 let client;
-let clientPromise;
 
-if (!global._mongoClientPromise) {
-  client = new MongoClient(MONGODB_URI);
-  global._mongoClientPromise = client.connect();
+if (!global._mongoClient) {
+  global._mongoClient = new MongoClient(MONGODB_URI);
 }
-clientPromise = global._mongoClientPromise;
+client = global._mongoClient;
 
-const db = client.db();
+const db = client.db('Khoj');
 
 export const auth = betterAuth({
   database: mongodbAdapter(db),

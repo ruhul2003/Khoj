@@ -305,11 +305,19 @@ const NavbarContent = () => {
                       <p className="text-[11px] text-slate-400 truncate">{user.email}</p>
                     </div>
                     <Link
+                      href="/profile"
+                      onClick={closeAllMenus}
+                      className="flex items-center gap-2.5 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+                    >
+                      <User className="w-4 h-4 text-emerald-400" />
+                      My Profile
+                    </Link>
+                    <Link
                       href="/dashboard"
                       onClick={closeAllMenus}
                       className="flex items-center gap-2.5 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
                     >
-                      <User className="w-4 h-4 text-cyan-400" />
+                      <Layers className="w-4 h-4 text-cyan-400" />
                       Account Dashboard
                     </Link>
                     <Link

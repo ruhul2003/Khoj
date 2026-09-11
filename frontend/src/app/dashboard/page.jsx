@@ -169,6 +169,14 @@ function DashboardContent() {
         </div>
 
         <div className="flex items-center gap-3">
+          <Link
+            href="/profile"
+            className="px-5 py-3 bg-zinc-900 hover:bg-zinc-850 text-zinc-200 hover:text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl border border-zinc-800 shadow-md flex items-center gap-2 transition-colors"
+          >
+            <Edit3 className="w-4 h-4 text-[#0c9096]" />
+            <span>Profile</span>
+          </Link>
+
           {userShop ? (
             <Link
               href={`/shop/${userShop.slug}`}

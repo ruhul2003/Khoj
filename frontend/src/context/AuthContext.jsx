@@ -42,58 +42,134 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const storedToken = typeof window !== 'undefined' ? localStorage.getItem('khoj_token') : null;
-    const storedWishlist = typeof window !== 'undefined' ? localStorage.getItem('khoj_wishlist') : null;
-    
-    if (storedWishlist) {
-      try {
-        setSavedItemIds(JSON.parse(storedWishlist));
-      } catch (e) {
-        console.error("Failed to parse wishlist", e);
-      }
-    }
+    let isMounted = true;
 
-    if (storedToken) {
-      setToken(storedToken);
-      api.get('/auth/me')
-        .then(res => {
-          if (res.data && res.data.user) {
+    const initAuth = async () => {
+      const storedWishlist = typeof window !== 'undefined' ? localStorage.getItem('khoj_wishlist') : null;
+      if (storedWishlist) {
+        try {
+          setSavedItemIds(JSON.parse(storedWishlist));
+        } catch (e) {
+          console.error("Failed to parse wishlist", e);
+        }
+      }
+
+      // Check stored token and stored user for instant UI rendering
+      const storedToken = typeof window !== 'undefined' ? localStorage.getItem('khoj_token') : null;
+      const storedUser = typeof window !== 'undefined' ? localStorage.getItem('khoj_user') : null;
+      
+      if (storedUser) {
+        try {
+          const parsed = JSON.parse(storedUser);
+          if (parsed && isMounted) {
+            setUser(parsed);
+          }
+        } catch (e) {}
+      }
+
+      // 1. Check Better Auth active session (e.g. from Google OAuth callback)
+      try {
+        const sessionRes = await authClient.getSession();
+        if (sessionRes?.data?.user) {
+          const sUser = sessionRes.data.user;
+          // Sync with Express backend to ensure JWT and DB synchronization
+          try {
+            const syncRes = await api.post('/auth/google-login', {
+              name: sUser.name,
+              email: sUser.email,
+              avatar: sUser.image
+            });
+            if (syncRes.data && syncRes.data.user) {
+              const mergedUser = {
+                ...syncRes.data.user,
+                avatar: sUser.image || syncRes.data.user.avatar,
+                name: sUser.name || syncRes.data.user.name
+              };
+              if (isMounted) {
+                setUser(mergedUser);
+                setToken(syncRes.data.token);
+                localStorage.setItem('khoj_token', syncRes.data.token);
+                localStorage.setItem('khoj_user', JSON.stringify(mergedUser));
+                fetchUserShop(mergedUser.id);
+                setIsLoading(false);
+              }
+              return;
+            }
+          } catch (syncErr) {
+            console.warn('Backend Google sync note:', syncErr.message);
+            const realUser = {
+              id: sUser.id || 'user_google_' + Date.now(),
+              name: sUser.name || 'Google User',
+              email: sUser.email,
+              avatar: sUser.image || '',
+              location: 'Dhaka, Bangladesh',
+              rating: 5.0,
+              hasShop: false,
+              shopId: null
+            };
+            if (isMounted) {
+              setUser(realUser);
+              localStorage.setItem('khoj_user', JSON.stringify(realUser));
+              setIsLoading(false);
+            }
+            return;
+          }
+        }
+      } catch (sessionErr) {
+        console.warn('Better Auth session check note:', sessionErr.message);
+      }
+
+      // 2. Validate stored JWT token with backend if no Better Auth session was returned
+      if (storedToken) {
+        setToken(storedToken);
+        try {
+          const res = await api.get('/auth/me');
+          if (res.data && res.data.user && isMounted) {
             setUser(res.data.user);
+            localStorage.setItem('khoj_user', JSON.stringify(res.data.user));
             fetchUserShop(res.data.user.id);
-          } else {
+          }
+        } catch (err) {
+          console.warn('Stored token expired or invalid:', err.message);
+          if (!storedUser && isMounted) {
             setUser(DEFAULT_DEMO_USER);
             fetchUserShop(DEFAULT_DEMO_USER.id);
           }
-        })
-        .catch(() => {
+        } finally {
+          if (isMounted) setIsLoading(false);
+        }
+      } else {
+        // If neither token nor session exists, fallback to demo user for exploration
+        if (!storedUser && isMounted) {
           setUser(DEFAULT_DEMO_USER);
           fetchUserShop(DEFAULT_DEMO_USER.id);
-        })
-        .finally(() => setIsLoading(false));
-    } else {
-      // Default to demo user for smooth immediate preview if no token
-      setUser(DEFAULT_DEMO_USER);
-      fetchUserShop(DEFAULT_DEMO_USER.id);
-      setIsLoading(false);
-    }
+        }
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    initAuth();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const login = async (email, password = 'password123') => {
     try {
-      // Attempt Better Auth client sign in
       try {
         await authClient.signIn.email({
           email,
           password,
         });
       } catch (betterAuthErr) {
-        console.warn('Better Auth client note:', betterAuthErr.message);
+        console.warn('Better Auth client sign in:', betterAuthErr.message);
       }
 
-      // Sync with Express backend
       const res = await api.post('/auth/login', { email, password });
       const { token: newToken, user: authUser } = res.data;
       localStorage.setItem('khoj_token', newToken);
+      localStorage.setItem('khoj_user', JSON.stringify(authUser));
       setToken(newToken);
       setUser(authUser);
       await fetchUserShop(authUser.id);
@@ -112,6 +188,7 @@ export const AuthProvider = ({ children }) => {
       setUser(demoAuthUser);
       setToken('demo_token_123');
       localStorage.setItem('khoj_token', 'demo_token_123');
+      localStorage.setItem('khoj_user', JSON.stringify(demoAuthUser));
       await fetchUserShop(demoAuthUser.id);
       return demoAuthUser;
     }
@@ -119,7 +196,6 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password = 'password123', location = 'Dhaka, Bangladesh') => {
     try {
-      // Attempt Better Auth client registration
       try {
         await authClient.signUp.email({
           name,
@@ -127,13 +203,13 @@ export const AuthProvider = ({ children }) => {
           password,
         });
       } catch (betterAuthErr) {
-        console.warn('Better Auth client note:', betterAuthErr.message);
+        console.warn('Better Auth client register note:', betterAuthErr.message);
       }
 
-      // Sync with Express backend
       const res = await api.post('/auth/register', { name, email, password, location });
       const { token: newToken, user: authUser } = res.data;
       localStorage.setItem('khoj_token', newToken);
+      localStorage.setItem('khoj_user', JSON.stringify(authUser));
       setToken(newToken);
       setUser(authUser);
       setUserShop(null);
@@ -152,6 +228,7 @@ export const AuthProvider = ({ children }) => {
       setUser(newAuthUser);
       setToken('demo_token_' + Date.now());
       localStorage.setItem('khoj_token', 'demo_token_' + Date.now());
+      localStorage.setItem('khoj_user', JSON.stringify(newAuthUser));
       setUserShop(null);
       return newAuthUser;
     }
@@ -159,40 +236,29 @@ export const AuthProvider = ({ children }) => {
 
   const loginWithGoogle = async (fallbackData = null) => {
     try {
-      // Trigger Better Auth Google Social Sign-in
       if (!fallbackData) {
-        try {
-          const authResult = await authClient.signIn.social({
-            provider: 'google',
-            callbackURL: typeof window !== 'undefined' ? `${window.location.origin}/dashboard` : '/dashboard'
-          });
-          if (authResult?.data?.user) {
-            fallbackData = {
-              name: authResult.data.user.name,
-              email: authResult.data.user.email,
-              avatar: authResult.data.user.image
-            };
-          }
-        } catch (socialErr) {
-          console.warn('Better Auth social provider note:', socialErr.message);
+        const callback = typeof window !== 'undefined' ? `${window.location.origin}/dashboard` : '/dashboard';
+        const res = await authClient.signIn.social({
+          provider: 'google',
+          callbackURL: callback
+        });
+        if (res?.data?.url) {
+          window.location.href = res.data.url;
         }
+        return res;
       }
 
-      // If simulated or fallback Google sign-in details provided
-      const googleUserPayload = fallbackData || {
-        name: 'Google User',
-        email: `google.user.${Date.now().toString().slice(-4)}@gmail.com`,
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
-      };
-
-      const res = await api.post('/auth/google-login', googleUserPayload);
+      const res = await api.post('/auth/google-login', fallbackData);
       const { token: newToken, user: authUser } = res.data;
       localStorage.setItem('khoj_token', newToken);
+      localStorage.setItem('khoj_user', JSON.stringify(authUser));
       setToken(newToken);
       setUser(authUser);
       await fetchUserShop(authUser.id);
       return authUser;
     } catch (err) {
+      console.error('Google sign in error:', err);
+      // Demo fallback if completely offline or local test
       const demoGoogleUser = {
         id: 'user_google_' + Date.now(),
         name: fallbackData?.name || 'Google Verified User',
@@ -206,8 +272,28 @@ export const AuthProvider = ({ children }) => {
       setUser(demoGoogleUser);
       setToken('demo_google_token_' + Date.now());
       localStorage.setItem('khoj_token', 'demo_google_token_' + Date.now());
+      localStorage.setItem('khoj_user', JSON.stringify(demoGoogleUser));
       setUserShop(null);
       return demoGoogleUser;
+    }
+  };
+
+  const updateProfile = async (profileData) => {
+    try {
+      const res = await api.put('/auth/profile', profileData);
+      if (res.data && res.data.user) {
+        setUser(res.data.user);
+        localStorage.setItem('khoj_user', JSON.stringify(res.data.user));
+        return res.data.user;
+      }
+    } catch (err) {
+      console.warn('Update profile backend note:', err.message);
+      setUser(prev => {
+        const updated = { ...prev, ...profileData };
+        localStorage.setItem('khoj_user', JSON.stringify(updated));
+        return updated;
+      });
+      return { ...user, ...profileData };
     }
   };
 
@@ -222,17 +308,20 @@ export const AuthProvider = ({ children }) => {
     const res = await api.post('/shops', payload);
     const newShop = res.data.shop;
     setUserShop(newShop);
-    setUser(prev => ({ ...prev, hasShop: true, shopId: newShop._id || newShop.id }));
+    setUser(prev => {
+      const updated = { ...prev, hasShop: true, shopId: newShop._id || newShop.id };
+      localStorage.setItem('khoj_user', JSON.stringify(updated));
+      return updated;
+    });
     return newShop;
   };
 
-  const logout = () => {
+  const logout = async () => {
     try {
-      authClient.signOut();
-    } catch (e) {
-      // Ignore
-    }
+      await authClient.signOut();
+    } catch (e) {}
     localStorage.removeItem('khoj_token');
+    localStorage.removeItem('khoj_user');
     setToken(null);
     setUser(null);
     setUserShop(null);
@@ -258,6 +347,7 @@ export const AuthProvider = ({ children }) => {
       login,
       register,
       loginWithGoogle,
+      updateProfile,
       createShop,
       fetchUserShop,
       setUserShop,

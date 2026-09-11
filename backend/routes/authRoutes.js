@@ -144,6 +144,19 @@ router.post('/google-login', async (req, res) => {
           avatar: avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
           location: 'Dhaka, Bangladesh'
         });
+      } else {
+        let changed = false;
+        if (avatar && user.avatar !== avatar) {
+          user.avatar = avatar;
+          changed = true;
+        }
+        if (name && (user.name === 'Google User' || !user.name)) {
+          user.name = name;
+          changed = true;
+        }
+        if (changed) {
+          await user.save();
+        }
       }
       const token = jwt.sign({ id: user._id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: '7d' });
       const userRes = await formatUserResponse(user);
@@ -162,6 +175,9 @@ router.post('/google-login', async (req, res) => {
           verifiedSeller: true
         };
         users.push(user);
+      } else {
+        if (avatar) user.avatar = avatar;
+        if (name) user.name = name;
       }
       const token = jwt.sign({ id: user._id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: '7d' });
       const userRes = await formatUserResponse(user);
@@ -171,6 +187,39 @@ router.post('/google-login', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// PUT /api/auth/profile
+router.put('/profile', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'No authorization token provided.' });
+  }
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const { name, avatar, location } = req.body;
+    if (getIsConnected()) {
+      const user = await User.findById(decoded.id);
+      if (!user) return res.status(404).json({ error: 'User not found.' });
+      if (name) user.name = name;
+      if (avatar) user.avatar = avatar;
+      if (location) user.location = location;
+      await user.save();
+      const userRes = await formatUserResponse(user);
+      return res.json({ user: userRes });
+    } else {
+      const user = users.find(u => u._id === decoded.id) || users[0];
+      if (name) user.name = name;
+      if (avatar) user.avatar = avatar;
+      if (location) user.location = location;
+      const userRes = await formatUserResponse(user);
+      return res.json({ user: userRes });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 // GET /api/auth/me
 router.get('/me', async (req, res) => {
