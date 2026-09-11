@@ -1,18 +1,28 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, DollarSign, Send, CheckCircle } from 'lucide-react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 
 export const MakeOfferModal = ({ product, isOpen, onClose }) => {
   const { user } = useAuth();
-  const [offeredPrice, setOfferedPrice] = useState(Math.round(product.price * 0.9));
+  const [offeredPrice, setOfferedPrice] = useState(Math.round((product?.price || 0) * 0.9));
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  if (!isOpen || !product) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +51,10 @@ export const MakeOfferModal = ({ product, isOpen, onClose }) => {
   const discountPercent = Math.round((discountAmount / product.price) * 100);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-md font-['Bai_Jamjuree']">
+    <div 
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-md font-['Bai_Jamjuree']"
+    >
       <div className="glass-panel w-full max-w-md p-6 rounded-3xl border border-zinc-800 shadow-2xl relative">
         <button
           onClick={onClose}
