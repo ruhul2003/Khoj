@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { api } from '@/lib/api';
 import { MakeOfferModal } from '@/components/MakeOfferModal';
 import { ChatDrawer } from '@/components/ChatDrawer';
+import { ProductCard } from '@/components/ProductCard';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -30,6 +31,7 @@ export default function ProductDetailPage({ params }) {
   const { addToast } = useToast();
 
   const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -86,6 +88,17 @@ export default function ProductDetailPage({ params }) {
     try {
       const res = await api.get(`/products/${productId}`);
       setProduct(res.data);
+      if (res.data?.category) {
+        try {
+          const relRes = await api.get('/products', { params: { category: res.data.category } });
+          const list = (relRes.data || [])
+            .filter(p => (p._id || p.id) !== productId)
+            .slice(0, 4);
+          setRelatedProducts(list);
+        } catch (e) {
+          console.error("Failed to load similar products", e);
+        }
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -438,6 +451,30 @@ export default function ProductDetailPage({ params }) {
           </div>
         </div>
       </div>
+
+      {/* Similar Products Recommendation Grid */}
+      {relatedProducts.length > 0 && (
+        <div className="pt-12 border-t border-zinc-800 space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold text-white">Similar Products in {product.category}</h3>
+              <p className="text-xs text-zinc-400">Discover more listings like this from verified sellers</p>
+            </div>
+            <Link
+              href={`/browse?category=${encodeURIComponent(product.category)}`}
+              className="text-xs font-bold text-amber-500 hover:text-amber-400 flex items-center gap-1"
+            >
+              <span>Explore All {product.category}</span>
+              <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {relatedProducts.map(item => (
+              <ProductCard key={item._id} product={item} />
+            ))}
+          </div>
+        </div>
+      )}
 
       <MakeOfferModal
         product={product}
