@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight, ShoppingCart } from 'lucide-react';
 
@@ -37,20 +37,29 @@ export const HeroBanner = () => {
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === SLIDES.length - 1 ? 0 : prev + 1));
+    setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
   };
+
+  // Automatic slide changing on its own every 4.5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+    }, 4500);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const slide = SLIDES[currentSlide];
 
   return (
-    <div className="relative font-['Bai_Jamjuree'] overflow-hidden">
-      <div className={`w-full ${slide.bgColor} transition-colors duration-500`}>
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 sm:py-16 lg:py-20 relative">
+    <div className="relative font-['Bai_Jamjuree'] overflow-hidden select-none">
+      <div className={`w-full ${slide.bgColor} transition-colors duration-700 min-h-[460px] sm:min-h-[500px] lg:min-h-[540px] flex items-center`}>
+        <div className="max-w-[1600px] w-full mx-auto px-6 lg:px-12 py-8 sm:py-10 relative">
           
           {/* Slider Arrow Buttons */}
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-lg transition-all z-20 cursor-pointer hover:scale-105"
+            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-lg transition-all z-20 cursor-pointer hover:scale-105 active:scale-95"
             aria-label="Previous Slide"
           >
             <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
@@ -58,27 +67,35 @@ export const HeroBanner = () => {
 
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-lg transition-all z-20 cursor-pointer hover:scale-105"
+            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-lg transition-all z-20 cursor-pointer hover:scale-105 active:scale-95"
             aria-label="Next Slide"
           >
             <ChevronRight className="w-5 h-5 stroke-[2.5]" />
           </button>
 
-          {/* Slide Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          {/* Slide Content Grid with locked height */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[360px] sm:min-h-[390px] lg:min-h-[420px]">
             
-            {/* Left Text Information */}
-            <div className="lg:col-span-6 space-y-5 text-left z-10 pl-4 sm:pl-8">
-              <span className="inline-block px-3.5 py-1.5 rounded-md bg-[#fed7aa] text-amber-950 font-black text-xs uppercase tracking-wider shadow-xs">
-                {slide.discountBadge}
-              </span>
+            {/* Left Text Information - Fixed Height Container with smooth transition */}
+            <div 
+              key={`text-${slide.id}`}
+              className="lg:col-span-6 space-y-4 text-left z-10 pl-4 sm:pl-8 flex flex-col justify-center min-h-[220px] sm:min-h-[260px] lg:min-h-[280px] animate-in fade-in duration-500"
+            >
+              <div>
+                <span className="inline-block px-3.5 py-1.5 rounded-md bg-[#fed7aa] text-amber-950 font-black text-xs uppercase tracking-wider shadow-xs">
+                  {slide.discountBadge}
+                </span>
+              </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.12]">
-                {slide.title}
-              </h1>
+              {/* Fixed height title box so varying text length never changes banner height */}
+              <div className="h-[72px] sm:h-[105px] lg:h-[125px] flex items-center overflow-hidden">
+                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.15] line-clamp-2">
+                  {slide.title}
+                </h1>
+              </div>
 
-              <div className="flex items-baseline gap-2 pt-1">
-                <span className="text-white text-lg sm:text-xl font-medium">From</span>
+              <div className="flex items-baseline gap-2 pt-0.5">
+                <span className="text-white text-base sm:text-lg font-medium">From</span>
                 <span className="text-white text-3xl sm:text-4xl font-black tracking-tight">{slide.price}</span>
               </div>
 
@@ -93,17 +110,34 @@ export const HeroBanner = () => {
               </div>
             </div>
 
-            {/* Right Product Showcase Cutout */}
+            {/* Right Product Showcase Cutout - Fixed locked dimensions */}
             <div className="lg:col-span-6 relative flex items-center justify-center">
-              <div className="relative w-full max-w-xl aspect-[16/10] overflow-hidden rounded-2xl shadow-2xl border-4 border-white/30 bg-white/10 backdrop-blur-xs">
+              <div className="relative w-full max-w-lg sm:max-w-xl h-[220px] sm:h-[280px] lg:h-[340px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl border-4 border-white/30 bg-white/10 backdrop-blur-xs">
                 <img
+                  key={`img-${slide.id}`}
                   src={slide.image}
                   alt={slide.title}
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover transform hover:scale-105 transition-all duration-700 animate-in fade-in zoom-in-95"
                 />
               </div>
             </div>
 
+          </div>
+
+          {/* Slide Indicator Dots */}
+          <div className="flex items-center justify-center gap-2.5 pt-4">
+            {SLIDES.map((s, idx) => (
+              <button
+                key={s.id}
+                onClick={() => setCurrentSlide(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={`h-2.5 rounded-full transition-all duration-500 cursor-pointer ${
+                  currentSlide === idx 
+                    ? 'w-10 bg-white shadow-lg shadow-white/30' 
+                    : 'w-2.5 bg-white/40 hover:bg-white/70'
+                }`}
+              />
+            ))}
           </div>
 
         </div>
