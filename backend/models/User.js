@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
   rating: { type: Number, default: 4.8 },
   reviewCount: { type: Number, default: 12 },
   verifiedSeller: { type: Boolean, default: true },
+  hasShop: { type: Boolean, default: false },
+  shopId: { type: String, default: null },
   createdAt: { type: Date, default: Date.now }
 });
 

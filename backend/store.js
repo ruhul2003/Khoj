@@ -878,6 +878,48 @@ let users = [...memoryUsers];
 let orders = [];
 let offers = [];
 let messages = [];
+let shops = [
+  {
+    _id: "shop_seed_1",
+    name: "TechNova Studio",
+    slug: "technova-studio",
+    ownerId: "user_demo_1",
+    ownerName: "Tanvir Rahman",
+    ownerEmail: "tanvir@example.com",
+    description: "Dhaka's leading certified seller for verified Apple gear, premium laptops, and gaming accessories with official warranty.",
+    category: "Electronics",
+    logo: "https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=300&q=80",
+    banner: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
+    location: "Gulshan 2, Dhaka",
+    phone: "+880 1711-223344",
+    email: "tanvir@technova.com",
+    website: "https://technova.khoj.store",
+    rating: 4.9,
+    reviewsCount: 38,
+    isVerified: true,
+    createdAt: new Date(Date.now() - 3600000 * 24 * 30).toISOString()
+  },
+  {
+    _id: "shop_seed_2",
+    name: "Dhaka Gadget Hub",
+    slug: "dhaka-gadget-hub",
+    ownerId: "user_demo_2",
+    ownerName: "Sabbir Hossain",
+    ownerEmail: "sabbir@example.com",
+    description: "Curated collection of flagship smartphones, mechanical keyboards, audiophile gear, and smart home tech.",
+    category: "Mobile Phones",
+    logo: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=300&q=80",
+    banner: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80",
+    location: "Dhanmondi, Dhaka",
+    phone: "+880 1812-345678",
+    email: "sabbir@gadgethub.bd",
+    website: "https://gadgethub.khoj.store",
+    rating: 5.0,
+    reviewsCount: 52,
+    isVerified: true,
+    createdAt: new Date(Date.now() - 3600000 * 24 * 45).toISOString()
+  }
+];
 
 module.exports = {
   products,
@@ -885,5 +927,7 @@ module.exports = {
   orders,
   offers,
   messages,
+  shops,
   seedProducts
 };
+

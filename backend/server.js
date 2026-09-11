@@ -24,6 +24,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/offers', require('./routes/offerRoutes'));
+app.use('/api/shops', require('./routes/shopRoutes'));
 app.use('/api/messages', require('./routes/messageRoutes'));
 app.use('/api/seed', require('./routes/seedRoutes'));
 

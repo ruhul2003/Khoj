@@ -21,6 +21,15 @@ const connectDB = async () => {
         await Product.insertMany(sanitized);
         console.log(`Seeded ${sanitized.length} initial products into MongoDB ${conn.connection.db.databaseName}.products`);
       }
+
+      const Shop = require('../models/Shop');
+      const shopCount = await Shop.countDocuments();
+      if (shopCount === 0) {
+        const { shops: seedShops } = require('../store');
+        const sanitizedShops = seedShops.map(({ _id, ...s }) => s);
+        await Shop.insertMany(sanitizedShops);
+        console.log(`Seeded ${sanitizedShops.length} initial shops into MongoDB ${conn.connection.db.databaseName}.shops`);
+      }
     } catch (seedErr) {
       console.warn('Seeding check note:', seedErr.message);
     }
