@@ -34,7 +34,8 @@ import {
   Layers,
   Compass,
   CheckCircle2,
-  DollarSign
+  DollarSign,
+  Store
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
@@ -67,7 +68,7 @@ const NavbarContent = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { user, logout, savedItemIds } = useAuth();
+  const { user, userShop, logout, savedItemIds } = useAuth();
   const { addToast } = useToast();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -163,7 +164,7 @@ const NavbarContent = () => {
   const isFlashActive = searchParams.get('deal') === 'flash';
 
   return (
-    <header ref={navContainerRef} className="sticky top-0 z-50 font-['Bai_Jamjuree'] shadow-md bg-white">
+    <header ref={navContainerRef} className="sticky top-0 z-50 font-['Bai_Jamjuree'] shadow-md bg-white dark:bg-[#121824] transition-colors">
       {/* 1. Top Dark Navy Header Bar */}
       <div className="bg-[#1e2837] text-white py-3.5 px-4 sm:px-8 border-b border-slate-800">
         <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-4 lg:gap-8">
@@ -182,19 +183,19 @@ const NavbarContent = () => {
 
           {/* Search Bar with Category Select and Live Suggestions */}
           <div className="hidden md:flex flex-1 max-w-2xl relative">
-            <form onSubmit={handleSearchSubmit} className="w-full flex items-center bg-white rounded-full p-1 shadow-inner">
-              <div className="relative pl-3 pr-2 border-r border-gray-200">
+            <form onSubmit={handleSearchSubmit} className="w-full flex items-center bg-white dark:bg-[#141d2b] rounded-full p-1 shadow-inner border border-transparent dark:border-slate-700 transition-colors">
+              <div className="relative pl-3 pr-2 border-r border-gray-200 dark:border-slate-700">
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="bg-transparent text-xs text-gray-700 font-semibold focus:outline-none pr-4 cursor-pointer py-2 appearance-none"
+                  className="bg-transparent text-xs text-gray-700 dark:text-slate-200 font-semibold focus:outline-none pr-4 cursor-pointer py-2 appearance-none"
                 >
-                  <option value="All Categories">All Categories</option>
+                  <option value="All Categories" className="bg-white dark:bg-[#1b2432] text-slate-800 dark:text-slate-100">All Categories</option>
                   {CATEGORIES.map(cat => (
-                    <option key={cat.name} value={cat.name}>{cat.name}</option>
+                    <option key={cat.name} value={cat.name} className="bg-white dark:bg-[#1b2432] text-slate-800 dark:text-slate-100">{cat.name}</option>
                   ))}
                 </select>
-                <ChevronDown className="w-3.5 h-3.5 text-gray-500 absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <ChevronDown className="w-3.5 h-3.5 text-gray-500 dark:text-slate-400 absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
 
               <input
@@ -204,7 +205,7 @@ const NavbarContent = () => {
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="flex-1 px-4 py-2 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none bg-transparent"
+                className="flex-1 px-4 py-2 text-xs sm:text-sm text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-400 focus:outline-none bg-transparent"
               />
 
               <button
@@ -218,10 +219,10 @@ const NavbarContent = () => {
 
             {/* Live Search Auto-Suggest Dropdown */}
             {isSearchFocused && searchTerm.trim().length > 1 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 z-50 text-slate-800 animate-in fade-in slide-in-from-top-1 duration-150">
-                <div className="px-2 py-1 flex items-center justify-between text-[11px] font-bold text-gray-400 border-b border-gray-100 mb-2">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#182230] rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 p-3 z-50 text-slate-800 dark:text-slate-100 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="px-2 py-1 flex items-center justify-between text-[11px] font-bold text-gray-400 dark:text-slate-400 border-b border-gray-100 dark:border-slate-700 mb-2">
                   <span>Quick Search Results</span>
-                  <span className="text-amber-600 font-extrabold">Press Enter ↵</span>
+                  <span className="text-amber-600 dark:text-amber-400 font-extrabold">Press Enter ↵</span>
                 </div>
 
                 <div className="space-y-1">
@@ -230,11 +231,11 @@ const NavbarContent = () => {
                       router.push(`/browse?search=${encodeURIComponent(searchTerm.trim())}`);
                       setIsSearchFocused(false);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-gray-800 hover:bg-amber-50 hover:text-amber-700 flex items-center justify-between transition-colors cursor-pointer"
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-gray-800 dark:text-slate-200 hover:bg-amber-50 dark:hover:bg-slate-800 hover:text-amber-700 dark:hover:text-amber-400 flex items-center justify-between transition-colors cursor-pointer"
                   >
                     <div className="flex items-center gap-2">
                       <Search className="w-3.5 h-3.5 text-amber-500" />
-                      <span>Search for &quot;<strong className="text-slate-900">{searchTerm.trim()}</strong>&quot; in {selectedCategory}</span>
+                      <span>Search for &quot;<strong className="text-slate-900 dark:text-white">{searchTerm.trim()}</strong>&quot; in {selectedCategory}</span>
                     </div>
                     <ArrowRight className="w-3 h-3 text-gray-400" />
                   </button>
@@ -248,7 +249,7 @@ const NavbarContent = () => {
                           router.push(`/browse?category=${encodeURIComponent(cat.name)}&search=${encodeURIComponent(searchTerm.trim())}`);
                           setIsSearchFocused(false);
                         }}
-                        className="w-full text-left px-3 py-2 rounded-xl text-xs text-gray-700 hover:bg-amber-50 hover:text-amber-700 flex items-center justify-between transition-colors cursor-pointer"
+                        className="w-full text-left px-3 py-2 rounded-xl text-xs text-gray-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-slate-800 hover:text-amber-700 dark:hover:text-amber-400 flex items-center justify-between transition-colors cursor-pointer"
                       >
                         <div className="flex items-center gap-2">
                           <CatIcon className="w-3.5 h-3.5 text-gray-400" />
@@ -318,6 +319,14 @@ const NavbarContent = () => {
                     >
                       <Package className="w-4 h-4 text-amber-400" />
                       My Listings
+                    </Link>
+                    <Link
+                      href={userShop ? `/shop/${userShop.slug}` : "/shop/create"}
+                      onClick={closeAllMenus}
+                      className="flex items-center gap-2.5 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+                    >
+                      <Store className="w-4 h-4 text-emerald-400" />
+                      <span>{userShop ? `My Store (${userShop.name})` : "Open A Shop"}</span>
                     </Link>
                     <Link
                       href="/wishlist"
@@ -395,8 +404,8 @@ const NavbarContent = () => {
         </div>
       </div>
 
-      {/* 2. Sub-Navbar (Clean White Bar with Dropdown Navigation) */}
-      <div className="bg-white border-b border-gray-200 text-slate-800 px-4 sm:px-8 relative">
+      {/* 2. Sub-Navbar (Clean Bar with Dropdown Navigation) */}
+      <div className="bg-white dark:bg-[#121824] border-b border-gray-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 px-4 sm:px-8 relative transition-colors">
         <div className="max-w-[1600px] mx-auto flex items-center justify-between h-14">
           
           <div className="flex items-center gap-6 xl:gap-8">
@@ -418,13 +427,13 @@ const NavbarContent = () => {
               {/* Categories Button Dropdown Menu */}
               {activeMenu === 'categories-btn' && (
                 <div 
-                  className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 py-3 z-50 font-medium animate-in fade-in slide-in-from-top-2 duration-150"
+                  className="absolute top-full left-0 mt-2 w-72 bg-white dark:bg-[#182230] rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 py-3 z-50 font-medium animate-in fade-in slide-in-from-top-2 duration-150"
                   onMouseEnter={() => handleMouseEnter('categories-btn')}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="px-4 pb-2 mb-1 border-b border-gray-100 flex items-center justify-between text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                  <div className="px-4 pb-2 mb-1 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between text-[11px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider">
                     <span>Marketplace Categories</span>
-                    <span className="text-amber-600 font-extrabold">{CATEGORIES.length}</span>
+                    <span className="text-amber-600 dark:text-amber-400 font-extrabold">{CATEGORIES.length}</span>
                   </div>
 
                   <div className="py-1">
@@ -435,15 +444,15 @@ const NavbarContent = () => {
                           key={cat.name}
                           href={`/browse?category=${encodeURIComponent(cat.name)}`}
                           onClick={closeAllMenus}
-                          className="flex items-center justify-between px-4 py-2.5 text-xs text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition-colors group"
+                          className="flex items-center justify-between px-4 py-2.5 text-xs text-gray-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-slate-800/80 hover:text-amber-600 dark:hover:text-amber-400 transition-colors group"
                         >
                           <div className="flex items-center gap-3">
-                            <div className="w-7 h-7 rounded-lg bg-gray-50 group-hover:bg-amber-100 flex items-center justify-center text-gray-600 group-hover:text-amber-600 transition-colors">
+                            <div className="w-7 h-7 rounded-lg bg-gray-50 dark:bg-slate-800 group-hover:bg-amber-100 dark:group-hover:bg-amber-500/20 flex items-center justify-center text-gray-600 dark:text-slate-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                               <Icon className="w-3.5 h-3.5" />
                             </div>
                             <span className="font-semibold">{cat.name}</span>
                           </div>
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 group-hover:bg-amber-200/60 group-hover:text-amber-900 transition-colors">
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 group-hover:bg-amber-200/60 dark:group-hover:bg-amber-500/20 group-hover:text-amber-900 dark:group-hover:text-amber-300 transition-colors">
                             {cat.badge}
                           </span>
                         </Link>
@@ -451,11 +460,11 @@ const NavbarContent = () => {
                     })}
                   </div>
 
-                  <div className="pt-2 mt-1 border-t border-gray-100 px-3">
+                  <div className="pt-2 mt-1 border-t border-gray-100 dark:border-slate-700 px-3">
                     <Link
                       href="/browse"
                       onClick={closeAllMenus}
-                      className="flex items-center justify-center gap-2 py-2 px-3 text-xs font-bold text-amber-600 hover:text-amber-700 bg-amber-50/70 hover:bg-amber-100/70 rounded-xl transition-colors"
+                      className="flex items-center justify-center gap-2 py-2 px-3 text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 bg-amber-50/70 dark:bg-amber-500/15 hover:bg-amber-100/70 dark:hover:bg-amber-500/25 rounded-xl transition-colors"
                     >
                       <span>View All Categories</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -466,15 +475,15 @@ const NavbarContent = () => {
             </div>
 
             {/* B. Navigation Links (Home, Shop, Categories, Products, Top Deals, Elements) */}
-            <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-xs font-bold text-gray-700">
+            <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-xs font-bold text-gray-700 dark:text-slate-300">
               {/* 1. Home */}
               <Link 
                 href="/" 
                 onClick={closeAllMenus}
                 className={`transition-all py-2 ${
                   isHome 
-                    ? 'text-amber-600 hover:text-amber-700 pb-1 border-b-2 border-amber-500 font-extrabold' 
-                    : 'text-gray-700 hover:text-amber-600'
+                    ? 'text-amber-600 dark:text-amber-400 hover:text-amber-700 pb-1 border-b-2 border-amber-500 font-extrabold' 
+                    : 'text-gray-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400'
                 }`}
               >
                 Home
@@ -488,8 +497,8 @@ const NavbarContent = () => {
               >
                 <button
                   onClick={() => toggleMenu('shop')}
-                  className={`hover:text-amber-600 transition-colors flex items-center gap-1 cursor-pointer ${
-                    activeMenu === 'shop' ? 'text-amber-600 font-extrabold' : 'text-gray-700'
+                  className={`hover:text-amber-600 dark:hover:text-amber-400 transition-colors flex items-center gap-1 cursor-pointer ${
+                    activeMenu === 'shop' ? 'text-amber-600 dark:text-amber-400 font-extrabold' : 'text-gray-700 dark:text-slate-300'
                   }`}
                 >
                   <span>Shop</span>
@@ -498,34 +507,34 @@ const NavbarContent = () => {
 
                 {activeMenu === 'shop' && (
                   <div 
-                    className="absolute top-full left-0 mt-2 w-[580px] bg-white rounded-2xl shadow-2xl border border-gray-100 p-5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 font-normal"
+                    className="absolute top-full left-0 mt-2 w-[580px] bg-white dark:bg-[#182230] rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 p-5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 font-normal"
                     onMouseEnter={() => handleMouseEnter('shop')}
                     onMouseLeave={handleMouseLeave}
                   >
                     <div className="grid grid-cols-3 gap-6">
                       {/* Col 1: Explore */}
                       <div className="space-y-2">
-                        <p className="text-[11px] font-black text-gray-400 uppercase tracking-wider pb-1 border-b border-gray-100 flex items-center gap-1.5">
+                        <p className="text-[11px] font-black text-gray-400 dark:text-slate-400 uppercase tracking-wider pb-1 border-b border-gray-100 dark:border-slate-700 flex items-center gap-1.5">
                           <Package className="w-3.5 h-3.5 text-amber-500" />
                           <span>Catalog</span>
                         </p>
                         <div className="flex flex-col space-y-1 text-xs">
-                          <Link href="/browse" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-amber-50 hover:text-amber-600 font-semibold transition-colors flex items-center justify-between">
+                          <Link href="/browse" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-slate-800/80 hover:text-amber-600 dark:hover:text-amber-400 font-semibold transition-colors flex items-center justify-between">
                             <span>All Products</span>
-                            <ArrowRight className="w-3 h-3 text-gray-300" />
+                            <ArrowRight className="w-3 h-3 text-gray-300 dark:text-slate-600" />
                           </Link>
-                          <Link href="/browse?sort=newest" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-amber-50 hover:text-amber-600 font-semibold transition-colors flex items-center justify-between">
+                          <Link href="/browse?sort=newest" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-slate-800/80 hover:text-amber-600 dark:hover:text-amber-400 font-semibold transition-colors flex items-center justify-between">
                             <span>New Arrivals</span>
-                            <span className="text-[9px] px-1 bg-amber-100 text-amber-700 rounded font-bold">NEW</span>
+                            <span className="text-[9px] px-1 bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 rounded font-bold">NEW</span>
                           </Link>
-                          <Link href="/browse?sort=views" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-amber-50 hover:text-amber-600 font-semibold transition-colors flex items-center justify-between">
+                          <Link href="/browse?sort=views" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-slate-800/80 hover:text-amber-600 dark:hover:text-amber-400 font-semibold transition-colors flex items-center justify-between">
                             <span>Most Viewed</span>
                             <Flame className="w-3 h-3 text-rose-500" />
                           </Link>
-                          <Link href="/browse?sort=price_asc" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-amber-50 hover:text-amber-600 font-semibold transition-colors flex items-center justify-between">
+                          <Link href="/browse?sort=price_asc" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-slate-800/80 hover:text-amber-600 dark:hover:text-amber-400 font-semibold transition-colors flex items-center justify-between">
                             <span>Price: Low to High</span>
                           </Link>
-                          <Link href="/browse?sort=price_desc" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-amber-50 hover:text-amber-600 font-semibold transition-colors flex items-center justify-between">
+                          <Link href="/browse?sort=price_desc" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-slate-800/80 hover:text-amber-600 dark:hover:text-amber-400 font-semibold transition-colors flex items-center justify-between">
                             <span>Price: High to Low</span>
                           </Link>
                         </div>
@@ -533,24 +542,24 @@ const NavbarContent = () => {
 
                       {/* Col 2: By Condition */}
                       <div className="space-y-2">
-                        <p className="text-[11px] font-black text-gray-400 uppercase tracking-wider pb-1 border-b border-gray-100 flex items-center gap-1.5">
+                        <p className="text-[11px] font-black text-gray-400 dark:text-slate-400 uppercase tracking-wider pb-1 border-b border-gray-100 dark:border-slate-700 flex items-center gap-1.5">
                           <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                           <span>Condition</span>
                         </p>
                         <div className="flex flex-col space-y-1 text-xs">
-                          <Link href="/browse?condition=Brand%20New" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 font-semibold transition-colors flex items-center justify-between">
+                          <Link href="/browse?condition=Brand%20New" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-700 dark:hover:text-emerald-400 font-semibold transition-colors flex items-center justify-between">
                             <span>Brand New (Sealed)</span>
                             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                           </Link>
-                          <Link href="/browse?condition=Used%20-%20Like%20New" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 font-semibold transition-colors flex items-center justify-between">
+                          <Link href="/browse?condition=Used%20-%20Like%20New" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-700 dark:hover:text-emerald-400 font-semibold transition-colors flex items-center justify-between">
                             <span>Used - Like New</span>
                             <span className="w-2 h-2 rounded-full bg-cyan-500"></span>
                           </Link>
-                          <Link href="/browse?condition=Used%20-%20Good" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 font-semibold transition-colors flex items-center justify-between">
+                          <Link href="/browse?condition=Used%20-%20Good" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-700 dark:hover:text-emerald-400 font-semibold transition-colors flex items-center justify-between">
                             <span>Used - Good</span>
                             <span className="w-2 h-2 rounded-full bg-amber-500"></span>
                           </Link>
-                          <Link href="/browse?condition=Used%20-%20Fair" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 font-semibold transition-colors flex items-center justify-between">
+                          <Link href="/browse?condition=Used%20-%20Fair" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-700 dark:hover:text-emerald-400 font-semibold transition-colors flex items-center justify-between">
                             <span>Used - Fair</span>
                             <span className="w-2 h-2 rounded-full bg-orange-400"></span>
                           </Link>
@@ -559,34 +568,34 @@ const NavbarContent = () => {
 
                       {/* Col 3: Quick Price Filters */}
                       <div className="space-y-2">
-                        <p className="text-[11px] font-black text-gray-400 uppercase tracking-wider pb-1 border-b border-gray-100 flex items-center gap-1.5">
+                        <p className="text-[11px] font-black text-gray-400 dark:text-slate-400 uppercase tracking-wider pb-1 border-b border-gray-100 dark:border-slate-700 flex items-center gap-1.5">
                           <DollarSign className="w-3.5 h-3.5 text-blue-500" />
                           <span>Price Range</span>
                         </p>
                         <div className="flex flex-col space-y-1 text-xs">
-                          <Link href="/browse?maxPrice=5000" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-semibold transition-colors">
+                          <Link href="/browse?maxPrice=5000" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-950/40 hover:text-blue-600 dark:hover:text-blue-400 font-semibold transition-colors">
                             Under ৳5,000
                           </Link>
-                          <Link href="/browse?minPrice=5000&maxPrice=25000" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-semibold transition-colors">
+                          <Link href="/browse?minPrice=5000&maxPrice=25000" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-950/40 hover:text-blue-600 dark:hover:text-blue-400 font-semibold transition-colors">
                             ৳5,000 – ৳25,000
                           </Link>
-                          <Link href="/browse?minPrice=25000&maxPrice=75000" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-semibold transition-colors">
+                          <Link href="/browse?minPrice=25000&maxPrice=75000" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-950/40 hover:text-blue-600 dark:hover:text-blue-400 font-semibold transition-colors">
                             ৳25,000 – ৳75,000
                           </Link>
-                          <Link href="/browse?minPrice=75000" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-semibold transition-colors flex items-center justify-between">
+                          <Link href="/browse?minPrice=75000" onClick={closeAllMenus} className="p-2 rounded-xl text-gray-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-950/40 hover:text-blue-600 dark:hover:text-blue-400 font-semibold transition-colors flex items-center justify-between">
                             <span>৳75,000+ Premium</span>
-                            <span className="text-[9px] px-1 bg-blue-100 text-blue-700 rounded font-bold">LUXURY</span>
+                            <span className="text-[9px] px-1 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 rounded font-bold">LUXURY</span>
                           </Link>
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                    <div className="mt-4 pt-3 border-t border-gray-100 dark:border-slate-700 flex items-center justify-between text-xs text-gray-500 dark:text-slate-400">
                       <span className="flex items-center gap-1.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                         Verified local listings with seller ratings
                       </span>
-                      <Link href="/browse" onClick={closeAllMenus} className="font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1">
+                      <Link href="/browse" onClick={closeAllMenus} className="font-bold text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 flex items-center gap-1">
                         Go to Catalog <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
@@ -602,29 +611,29 @@ const NavbarContent = () => {
               >
                 <button
                   onClick={() => toggleMenu('categories')}
-                  className={`hover:text-amber-600 transition-colors flex items-center gap-1.5 cursor-pointer ${
-                    activeMenu === 'categories' ? 'text-amber-600 font-extrabold' : 'text-gray-700'
+                  className={`hover:text-amber-600 dark:hover:text-amber-400 transition-colors flex items-center gap-1.5 cursor-pointer ${
+                    activeMenu === 'categories' ? 'text-amber-600 dark:text-amber-400 font-extrabold' : 'text-gray-700 dark:text-slate-300'
                   }`}
                 >
                   <span>Categories</span>
                   <span className="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-emerald-500 text-white leading-none shadow-sm">
                     SALE
                   </span>
-                  <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${activeMenu === 'categories' ? 'rotate-180 text-amber-600' : ''}`} />
+                  <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${activeMenu === 'categories' ? 'rotate-180 text-amber-600 dark:text-amber-400' : ''}`} />
                 </button>
 
                 {activeMenu === 'categories' && (
                   <div 
-                    className="absolute top-full left-0 mt-2 w-[560px] bg-white rounded-2xl shadow-2xl border border-gray-100 p-5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 font-normal"
+                    className="absolute top-full left-0 mt-2 w-[560px] bg-white dark:bg-[#182230] rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 p-5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 font-normal"
                     onMouseEnter={() => handleMouseEnter('categories')}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-100">
+                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-100 dark:border-slate-700">
                       <div>
-                        <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">Discounted Categories</h4>
-                        <p className="text-[11px] text-gray-400">Exclusive season deals across top product departments</p>
+                        <h4 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">Discounted Categories</h4>
+                        <p className="text-[11px] text-gray-400 dark:text-slate-400">Exclusive season deals across top product departments</p>
                       </div>
-                      <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-extrabold border border-emerald-200">
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-[10px] font-extrabold border border-emerald-200 dark:border-emerald-800">
                         Up to 50% OFF
                       </span>
                     </div>
@@ -637,26 +646,26 @@ const NavbarContent = () => {
                             key={cat.name}
                             href={`/browse?category=${encodeURIComponent(cat.name)}`}
                             onClick={closeAllMenus}
-                            className="flex items-center gap-3 p-2.5 rounded-xl border border-transparent hover:border-amber-200 hover:bg-amber-50/60 transition-all group"
+                            className="flex items-center gap-3 p-2.5 rounded-xl border border-transparent hover:border-amber-200 dark:hover:border-amber-500/30 hover:bg-amber-50/60 dark:hover:bg-slate-800/80 transition-all group"
                           >
-                            <div className="w-9 h-9 rounded-xl bg-gray-50 group-hover:bg-amber-500 text-gray-700 group-hover:text-slate-950 flex items-center justify-center shrink-0 transition-colors shadow-sm">
+                            <div className="w-9 h-9 rounded-xl bg-gray-50 dark:bg-slate-800 group-hover:bg-amber-500 text-gray-700 dark:text-slate-300 group-hover:text-slate-950 flex items-center justify-center shrink-0 transition-colors shadow-sm">
                               <Icon className="w-4 h-4" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between">
-                                <span className="text-xs font-bold text-gray-800 group-hover:text-amber-700 truncate">{cat.name}</span>
-                                <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">{cat.badge}</span>
+                                <span className="text-xs font-bold text-gray-800 dark:text-slate-200 group-hover:text-amber-700 dark:group-hover:text-amber-400 truncate">{cat.name}</span>
+                                <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300">{cat.badge}</span>
                               </div>
-                              <p className="text-[10px] text-gray-400 truncate">{cat.desc}</p>
+                              <p className="text-[10px] text-gray-400 dark:text-slate-400 truncate">{cat.desc}</p>
                             </div>
                           </Link>
                         );
                       })}
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-                      <span className="text-[11px] text-gray-500">Looking for something specific?</span>
-                      <Link href="/browse" onClick={closeAllMenus} className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1">
+                    <div className="mt-4 pt-3 border-t border-gray-100 dark:border-slate-700 flex items-center justify-between">
+                      <span className="text-[11px] text-gray-500 dark:text-slate-400">Looking for something specific?</span>
+                      <Link href="/browse" onClick={closeAllMenus} className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 flex items-center gap-1">
                         View All Categories <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
@@ -672,32 +681,32 @@ const NavbarContent = () => {
               >
                 <button
                   onClick={() => toggleMenu('products')}
-                  className={`hover:text-amber-600 transition-colors flex items-center gap-1.5 cursor-pointer ${
-                    activeMenu === 'products' ? 'text-amber-600 font-extrabold' : 'text-gray-700'
+                  className={`hover:text-amber-600 dark:hover:text-amber-400 transition-colors flex items-center gap-1.5 cursor-pointer ${
+                    activeMenu === 'products' ? 'text-amber-600 dark:text-amber-400 font-extrabold' : 'text-gray-700 dark:text-slate-300'
                   }`}
                 >
                   <span>Products</span>
                   <span className="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-rose-500 text-white leading-none shadow-sm">
                     HOT
                   </span>
-                  <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${activeMenu === 'products' ? 'rotate-180 text-amber-600' : ''}`} />
+                  <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${activeMenu === 'products' ? 'rotate-180 text-amber-600 dark:text-amber-400' : ''}`} />
                 </button>
 
                 {activeMenu === 'products' && (
                   <div 
-                    className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150 font-normal"
+                    className="absolute top-full left-0 mt-2 w-80 bg-white dark:bg-[#182230] rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150 font-normal"
                     onMouseEnter={() => handleMouseEnter('products')}
                     onMouseLeave={handleMouseLeave}
                   >
                     <div className="space-y-1">
-                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider px-3 pb-1">Trending & Spotlight</p>
+                      <p className="text-[10px] font-black text-gray-400 dark:text-slate-400 uppercase tracking-wider px-3 pb-1">Trending & Spotlight</p>
 
                       <Link
                         href="/browse?sort=views"
                         onClick={closeAllMenus}
-                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-rose-50 text-gray-800 hover:text-rose-700 transition-colors group"
+                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/30 text-gray-800 dark:text-slate-200 hover:text-rose-700 dark:hover:text-rose-400 transition-colors group"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
                           <Flame className="w-4 h-4" />
                         </div>
                         <div>
@@ -705,16 +714,16 @@ const NavbarContent = () => {
                             <span>Most Popular Products</span>
                             <span className="text-[9px] px-1 bg-rose-500 text-white rounded font-black">HOT</span>
                           </div>
-                          <p className="text-[10px] text-gray-400">High demand & buyer inquiries</p>
+                          <p className="text-[10px] text-gray-400 dark:text-slate-400">High demand & buyer inquiries</p>
                         </div>
                       </Link>
 
                       <Link
                         href="/browse?deal=flash"
                         onClick={closeAllMenus}
-                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-amber-50 text-gray-800 hover:text-amber-700 transition-colors group"
+                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-amber-50 dark:hover:bg-amber-950/30 text-gray-800 dark:text-slate-200 hover:text-amber-700 dark:hover:text-amber-400 transition-colors group"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
                           <Zap className="w-4 h-4 fill-amber-500" />
                         </div>
                         <div>
@@ -722,16 +731,16 @@ const NavbarContent = () => {
                             <span>Flash Deal Products</span>
                             <span className="text-[9px] px-1 bg-amber-500 text-slate-950 rounded font-black">FLASH</span>
                           </div>
-                          <p className="text-[10px] text-gray-400">Active price cuts & discounts</p>
+                          <p className="text-[10px] text-gray-400 dark:text-slate-400">Active price cuts & discounts</p>
                         </div>
                       </Link>
 
                       <Link
                         href="/browse?featured=true"
                         onClick={closeAllMenus}
-                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-emerald-50 text-gray-800 hover:text-emerald-700 transition-colors group"
+                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-950/30 text-gray-800 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors group"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
                           <Sparkles className="w-4 h-4" />
                         </div>
                         <div>
@@ -739,32 +748,32 @@ const NavbarContent = () => {
                             <span>Featured Listings</span>
                             <span className="text-[9px] px-1 bg-emerald-500 text-white rounded font-black">VERIFIED</span>
                           </div>
-                          <p className="text-[10px] text-gray-400">Spotlight items from top sellers</p>
+                          <p className="text-[10px] text-gray-400 dark:text-slate-400">Spotlight items from top sellers</p>
                         </div>
                       </Link>
 
                       <Link
                         href="/browse?sort=newest"
                         onClick={closeAllMenus}
-                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-blue-50 text-gray-800 hover:text-blue-700 transition-colors group"
+                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950/30 text-gray-800 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-400 transition-colors group"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
                           <TrendingUp className="w-4 h-4" />
                         </div>
                         <div>
                           <div className="text-xs font-bold">Newest Additions</div>
-                          <p className="text-[10px] text-gray-400">Fresh products listed today</p>
+                          <p className="text-[10px] text-gray-400 dark:text-slate-400">Fresh products listed today</p>
                         </div>
                       </Link>
                     </div>
 
-                    <div className="mt-3 pt-3 border-t border-gray-100">
+                    <div className="mt-3 pt-3 border-t border-gray-100 dark:border-slate-700">
                       <Link
                         href="/sell"
                         onClick={closeAllMenus}
-                        className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
+                        className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-slate-950 text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
                       >
-                        <PlusCircle className="w-3.5 h-3.5 text-amber-400" />
+                        <PlusCircle className="w-3.5 h-3.5 text-amber-400 dark:text-slate-950" />
                         <span>Post Your Product</span>
                       </Link>
                     </div>
@@ -780,21 +789,21 @@ const NavbarContent = () => {
               >
                 <button
                   onClick={() => toggleMenu('deals')}
-                  className={`hover:text-amber-600 transition-colors flex items-center gap-1 cursor-pointer ${
-                    activeMenu === 'deals' ? 'text-amber-600 font-extrabold' : 'text-gray-700'
+                  className={`hover:text-amber-600 dark:hover:text-amber-400 transition-colors flex items-center gap-1 cursor-pointer ${
+                    activeMenu === 'deals' ? 'text-amber-600 dark:text-amber-400 font-extrabold' : 'text-gray-700 dark:text-slate-300'
                   }`}
                 >
                   <span>Top Deals</span>
-                  <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${activeMenu === 'deals' ? 'rotate-180 text-amber-600' : ''}`} />
+                  <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${activeMenu === 'deals' ? 'rotate-180 text-amber-600 dark:text-amber-400' : ''}`} />
                 </button>
 
                 {activeMenu === 'deals' && (
                   <div 
-                    className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150 font-normal"
+                    className="absolute top-full left-0 mt-2 w-72 bg-white dark:bg-[#182230] rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150 font-normal"
                     onMouseEnter={() => handleMouseEnter('deals')}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider px-2 pb-2 border-b border-gray-100 flex items-center justify-between">
+                    <p className="text-[10px] font-black text-gray-400 dark:text-slate-400 uppercase tracking-wider px-2 pb-2 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between">
                       <span>Curated Deal Filters</span>
                       <Zap className="w-3.5 h-3.5 text-amber-500" />
                     </p>
@@ -803,69 +812,69 @@ const NavbarContent = () => {
                       <Link
                         href="/browse?deal=flash"
                         onClick={closeAllMenus}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-amber-50 text-gray-800 hover:text-amber-700 transition-colors"
+                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-amber-50 dark:hover:bg-slate-800/80 text-gray-800 dark:text-slate-200 hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
                       >
                         <div className="flex items-center gap-2.5">
                           <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
                           <span>Flash Deal Specials</span>
                         </div>
-                        <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded">SAVE</span>
+                        <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/20 px-1.5 py-0.5 rounded">SAVE</span>
                       </Link>
 
                       <Link
                         href="/browse?featured=true"
                         onClick={closeAllMenus}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-emerald-50 text-gray-800 hover:text-emerald-700 transition-colors"
+                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-emerald-50 dark:hover:bg-slate-800/80 text-gray-800 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
                       >
                         <div className="flex items-center gap-2.5">
                           <Sparkles className="w-4 h-4 text-emerald-500" />
                           <span>Handpicked Featured</span>
                         </div>
-                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">TOP</span>
+                        <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-500/20 px-1.5 py-0.5 rounded">TOP</span>
                       </Link>
 
                       <Link
                         href="/browse?maxPrice=5000"
                         onClick={closeAllMenus}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-blue-50 text-gray-800 hover:text-blue-700 transition-colors"
+                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-blue-50 dark:hover:bg-slate-800/80 text-gray-800 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-400 transition-colors"
                       >
                         <div className="flex items-center gap-2.5">
                           <Tag className="w-4 h-4 text-blue-500" />
                           <span>Under ৳5,000 Steals</span>
                         </div>
-                        <span className="text-[10px] font-bold text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded">BUDGET</span>
+                        <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-500/20 px-1.5 py-0.5 rounded">BUDGET</span>
                       </Link>
 
                       <Link
                         href="/browse?minPrice=5000&maxPrice=25000"
                         onClick={closeAllMenus}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-purple-50 text-gray-800 hover:text-purple-700 transition-colors"
+                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-purple-50 dark:hover:bg-slate-800/80 text-gray-800 dark:text-slate-200 hover:text-purple-700 dark:hover:text-purple-400 transition-colors"
                       >
                         <div className="flex items-center gap-2.5">
                           <DollarSign className="w-4 h-4 text-purple-500" />
                           <span>৳5K – ৳25K Best Value</span>
                         </div>
-                        <span className="text-[10px] font-bold text-purple-700 bg-purple-100 px-1.5 py-0.5 rounded">MID</span>
+                        <span className="text-[10px] font-bold text-purple-700 dark:text-purple-300 bg-purple-100 dark:bg-purple-500/20 px-1.5 py-0.5 rounded">MID</span>
                       </Link>
 
                       <Link
                         href="/browse?minPrice=75000"
                         onClick={closeAllMenus}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-100 text-gray-800 hover:text-slate-900 transition-colors"
+                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 text-gray-800 dark:text-slate-200 transition-colors"
                       >
                         <div className="flex items-center gap-2.5">
-                          <Package className="w-4 h-4 text-slate-700" />
+                          <Package className="w-4 h-4 text-slate-700 dark:text-slate-300" />
                           <span>Luxury & Flagships</span>
                         </div>
-                        <span className="text-[10px] font-bold text-slate-800 bg-slate-200 px-1.5 py-0.5 rounded">VIP</span>
+                        <span className="text-[10px] font-bold text-slate-800 dark:text-slate-200 bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded">VIP</span>
                       </Link>
                     </div>
 
-                    <div className="pt-2 border-t border-gray-100">
+                    <div className="pt-2 border-t border-gray-100 dark:border-slate-700">
                       <Link
                         href="/browse?sort=price_asc"
                         onClick={closeAllMenus}
-                        className="w-full flex items-center justify-center gap-1.5 py-2 text-xs font-bold text-amber-600 hover:text-amber-700 bg-amber-50 rounded-xl transition-colors"
+                        className="w-full flex items-center justify-center gap-1.5 py-2 text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 bg-amber-50 dark:bg-amber-500/15 hover:bg-amber-100 dark:hover:bg-amber-500/25 rounded-xl transition-colors"
                       >
                         <span>Sort By Lowest Price</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -883,24 +892,24 @@ const NavbarContent = () => {
               >
                 <button
                   onClick={() => toggleMenu('elements')}
-                  className={`hover:text-amber-600 transition-colors flex items-center gap-1 cursor-pointer ${
-                    activeMenu === 'elements' ? 'text-amber-600 font-extrabold' : 'text-gray-700'
+                  className={`hover:text-amber-600 dark:hover:text-amber-400 transition-colors flex items-center gap-1 cursor-pointer ${
+                    activeMenu === 'elements' ? 'text-amber-600 dark:text-amber-400 font-extrabold' : 'text-gray-700 dark:text-slate-300'
                   }`}
                 >
                   <span>Elements</span>
-                  <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${activeMenu === 'elements' ? 'rotate-180 text-amber-600' : ''}`} />
+                  <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${activeMenu === 'elements' ? 'rotate-180 text-amber-600 dark:text-amber-400' : ''}`} />
                 </button>
 
                 {activeMenu === 'elements' && (
                   <div 
-                    className="absolute top-full left-0 mt-2 w-[480px] bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150 font-normal"
+                    className="absolute top-full left-0 mt-2 w-[480px] bg-white dark:bg-[#182230] rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150 font-normal"
                     onMouseEnter={() => handleMouseEnter('elements')}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <div className="flex items-center justify-between pb-2.5 mb-2 border-b border-gray-100">
+                    <div className="flex items-center justify-between pb-2.5 mb-2 border-b border-gray-100 dark:border-slate-700">
                       <div>
-                        <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">Page Sections & UI Elements</h4>
-                        <p className="text-[10px] text-gray-400">Quick jump to any feature showcase on the landing page</p>
+                        <h4 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">Page Sections & UI Elements</h4>
+                        <p className="text-[10px] text-gray-400 dark:text-slate-400">Quick jump to any feature showcase on the landing page</p>
                       </div>
                       <Layers className="w-4 h-4 text-amber-500" />
                     </div>
@@ -912,14 +921,14 @@ const NavbarContent = () => {
                           <button
                             key={item.id}
                             onClick={() => handleScrollToElement(item.id)}
-                            className="text-left flex items-center gap-2.5 p-2 rounded-xl hover:bg-amber-50/70 border border-transparent hover:border-amber-200/60 transition-all cursor-pointer group"
+                            className="text-left flex items-center gap-2.5 p-2 rounded-xl hover:bg-amber-50/70 dark:hover:bg-slate-800/80 border border-transparent hover:border-amber-200/60 dark:hover:border-amber-500/30 transition-all cursor-pointer group"
                           >
-                            <div className="w-7 h-7 rounded-lg bg-gray-50 group-hover:bg-amber-500 text-gray-600 group-hover:text-slate-950 flex items-center justify-center shrink-0 transition-colors">
+                            <div className="w-7 h-7 rounded-lg bg-gray-50 dark:bg-slate-800 group-hover:bg-amber-500 text-gray-600 dark:text-slate-400 group-hover:text-slate-950 flex items-center justify-center shrink-0 transition-colors">
                               <Icon className="w-3.5 h-3.5" />
                             </div>
                             <div className="min-w-0">
-                              <p className="text-xs font-bold text-gray-800 group-hover:text-amber-700 truncate">{item.name}</p>
-                              <p className="text-[10px] text-gray-400 truncate">{item.desc}</p>
+                              <p className="text-xs font-bold text-gray-800 dark:text-slate-200 group-hover:text-amber-700 dark:group-hover:text-amber-400 truncate">{item.name}</p>
+                              <p className="text-[10px] text-gray-400 dark:text-slate-400 truncate">{item.desc}</p>
                             </div>
                           </button>
                         );
@@ -937,7 +946,7 @@ const NavbarContent = () => {
               href="/browse?deal=flash"
               onClick={closeAllMenus}
               className={`flex items-center gap-1.5 text-xs font-black uppercase tracking-wider transition-colors py-1 px-2.5 rounded-lg group ${
-                isFlashActive ? 'bg-amber-500 text-slate-950' : 'text-amber-600 hover:text-amber-700 hover:bg-amber-50'
+                isFlashActive ? 'bg-amber-500 text-slate-950' : 'text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-500/10'
               }`}
             >
               <Zap className={`w-4 h-4 animate-pulse transition-transform group-hover:scale-110 ${
@@ -947,11 +956,20 @@ const NavbarContent = () => {
             </Link>
 
             <Link
+              href={userShop ? `/shop/${userShop.slug}` : "/shop/create"}
+              onClick={closeAllMenus}
+              className="hidden md:flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-amber-500/40 hover:border-amber-500 bg-amber-500/10 text-amber-500 dark:text-amber-300 font-bold text-xs uppercase tracking-wider transition-all"
+            >
+              <Store className="w-3.5 h-3.5 text-amber-500" />
+              <span>{userShop ? "My Shop" : "Open Shop"}</span>
+            </Link>
+
+            <Link
               href="/sell"
               onClick={closeAllMenus}
-              className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-sm active:scale-95 cursor-pointer"
+              className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-sm active:scale-95 cursor-pointer"
             >
-              <PlusCircle className="w-3.5 h-3.5 text-amber-400" />
+              <PlusCircle className="w-3.5 h-3.5 text-amber-400 dark:text-slate-950" />
               <span>Sell Product</span>
             </Link>
           </div>
@@ -996,6 +1014,15 @@ const NavbarContent = () => {
               + Sell Product
             </Link>
           </div>
+
+          <Link
+            href={userShop ? `/shop/${userShop.slug}` : "/shop/create"}
+            onClick={closeAllMenus}
+            className="flex items-center justify-center gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 font-bold text-xs uppercase transition-colors"
+          >
+            <Store className="w-4 h-4 text-amber-400" />
+            <span>{userShop ? `My Shop (${userShop.name})` : "Open Your Free Shop"}</span>
+          </Link>
 
           {/* Theme Toggle in Mobile Drawer */}
           <div className="flex items-center justify-between p-3 rounded-xl bg-slate-800/80 border border-slate-700/60 text-xs text-slate-200 font-bold">
