@@ -348,6 +348,7 @@ export default function ProductDetailPage({ params }) {
                         onClick={() => {
                           navigator.clipboard.writeText(sellerPhoneNumber);
                           setCopiedPhone(true);
+                          addToast('Seller phone number copied to clipboard', 'info');
                           setTimeout(() => setCopiedPhone(false), 2000);
                         }}
                         className="px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer"
