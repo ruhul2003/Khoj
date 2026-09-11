@@ -293,10 +293,23 @@ const NavbarContent = () => {
 
                 {isUserMenuOpen && (
                   <div className="absolute right-0 mt-3 w-56 bg-[#1b2432] rounded-2xl shadow-2xl py-3 border border-slate-700 z-50 text-xs font-medium animate-in fade-in duration-150">
-                    <div className="px-4 py-2 border-b border-slate-700">
-                      <p className="font-bold text-white">{user.name}</p>
+                    <div className="px-4 py-2.5 border-b border-slate-700">
+                      <div className="flex items-center justify-between">
+                        <p className="font-bold text-white truncate max-w-[120px]">{user.name}</p>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                          Verified
+                        </span>
+                      </div>
                       <p className="text-[11px] text-slate-400 truncate">{user.email}</p>
                     </div>
+                    <Link
+                      href="/dashboard"
+                      onClick={closeAllMenus}
+                      className="flex items-center gap-2.5 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+                    >
+                      <User className="w-4 h-4 text-cyan-400" />
+                      Account Dashboard
+                    </Link>
                     <Link
                       href="/dashboard?tab=listings"
                       onClick={closeAllMenus}
