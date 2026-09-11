@@ -82,14 +82,23 @@ export const ProductCard = ({ product, countdown }) => {
       {/* Product Details */}
       <div className="p-4 pt-2 flex flex-col justify-between flex-1 border-t border-gray-100 space-y-2">
         
-        {/* Optional Countdown Timer */}
+        {/* Optional Countdown Timer or Category + Condition Tag */}
         {countdown ? (
           <div className="text-center py-1 px-2 rounded-md bg-rose-50 text-rose-600 font-bold text-[11px] tracking-wider">
             {countdown}
           </div>
         ) : (
-          <div className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider">
-            {product.category || 'General'}
+          <div className="flex items-center justify-between text-[11px] font-semibold">
+            <span className="text-gray-400 uppercase tracking-wider truncate">{product.category || 'General'}</span>
+            {product.condition && (
+              <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold ${
+                product.condition.includes('Brand New') 
+                  ? 'bg-emerald-50 text-emerald-700' 
+                  : 'bg-blue-50 text-blue-700'
+              }`}>
+                {product.condition.replace('Used - ', '')}
+              </span>
+            )}
           </div>
         )}
 
