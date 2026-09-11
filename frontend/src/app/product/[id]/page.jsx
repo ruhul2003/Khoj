@@ -123,7 +123,20 @@ export default function ProductDetailPage({ params }) {
   const cleanPhone = sellerPhoneNumber.replace(/[^0-9+]/g, '');
 
   return (
-    <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12 space-y-10 font-['Bai_Jamjuree']">
+    <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12 space-y-8 font-['Bai_Jamjuree']">
+      {/* Dynamic Breadcrumbs */}
+      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-semibold text-zinc-400">
+        <Link href="/" className="hover:text-amber-400 transition-colors">Home</Link>
+        <span className="text-zinc-600">/</span>
+        <Link href="/browse" className="hover:text-amber-400 transition-colors">Catalog</Link>
+        <span className="text-zinc-600">/</span>
+        <Link href={`/browse?category=${encodeURIComponent(product.category)}`} className="hover:text-amber-400 transition-colors">
+          {product.category}
+        </Link>
+        <span className="text-zinc-600">/</span>
+        <span className="text-zinc-300 font-bold truncate max-w-[280px] sm:max-w-md">{product.title}</span>
+      </nav>
+
       <div className="flex items-center justify-between">
         <Link
           href="/browse"
