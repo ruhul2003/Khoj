@@ -42,12 +42,14 @@ export const Footer = () => {
         <div>
           <h5 className="font-bold text-white mb-4 text-xs uppercase tracking-widest text-amber-400">Categories</h5>
           <ul className="space-y-2.5 text-xs font-medium">
-            <li><Link href="/browse?category=Electronics" className="hover:text-amber-400 transition-colors">Electronics</Link></li>
-            <li><Link href="/browse?category=Mobile+Phones" className="hover:text-amber-400 transition-colors">Mobile Phones</Link></li>
-            <li><Link href="/browse?category=Fashion" className="hover:text-amber-400 transition-colors">Clothing & Shoes</Link></li>
-            <li><Link href="/browse?category=Furniture" className="hover:text-amber-400 transition-colors">Home & Living</Link></li>
-            <li><Link href="/browse?category=Vehicles" className="hover:text-amber-400 transition-colors">Auto & Tires</Link></li>
-            <li><Link href="/browse?category=Home+Appliances" className="hover:text-amber-400 transition-colors">Home Appliances</Link></li>
+            <li><Link href="/browse?category=Electronics" className="hover:text-amber-400 transition-colors">Electronics & PCs</Link></li>
+            <li><Link href="/browse?category=Mobile%20Phones" className="hover:text-amber-400 transition-colors">Mobile Phones</Link></li>
+            <li><Link href="/browse?category=Gaming" className="hover:text-amber-400 transition-colors">Gaming Consoles & GPUs</Link></li>
+            <li><Link href="/browse?category=Vehicles" className="hover:text-amber-400 transition-colors">Vehicles & Bikes</Link></li>
+            <li><Link href="/browse?category=Furniture" className="hover:text-amber-400 transition-colors">Furniture & Decor</Link></li>
+            <li><Link href="/browse?category=Fashion" className="hover:text-amber-400 transition-colors">Fashion & Apparel</Link></li>
+            <li><Link href="/browse?category=Books%20%26%20Hobbies" className="hover:text-amber-400 transition-colors">Books & Hobbies</Link></li>
+            <li><Link href="/browse?category=Home%20Appliances" className="hover:text-amber-400 transition-colors">Home Appliances</Link></li>
           </ul>
         </div>
 
