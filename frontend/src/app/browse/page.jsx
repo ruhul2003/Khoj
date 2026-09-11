@@ -12,20 +12,39 @@ function BrowseContent() {
   const initialSearch = searchParams.get('search') || '';
   const initialCategory = searchParams.get('category') || 'All';
   const initialCondition = searchParams.get('condition') || 'All';
+  const initialSort = searchParams.get('sort') || 'newest';
+  const initialMinPrice = searchParams.get('minPrice') || '';
+  const initialMaxPrice = searchParams.get('maxPrice') || '';
+  const initialFeatured = searchParams.get('featured') || '';
+  const initialDeal = searchParams.get('deal') || '';
 
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState(initialSearch);
   const [category, setCategory] = useState(initialCategory);
   const [condition, setCondition] = useState(initialCondition);
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
-  const [sort, setSort] = useState('newest');
+  const [minPrice, setMinPrice] = useState(initialMinPrice);
+  const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
+  const [sort, setSort] = useState(initialSort);
+  const [featured, setFeatured] = useState(initialFeatured);
+  const [deal, setDeal] = useState(initialDeal);
   const [loading, setLoading] = useState(true);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
+  // Sync state whenever the URL search params change (e.g. user clicked navbar link or back/forward)
+  useEffect(() => {
+    setSearch(searchParams.get('search') || '');
+    setCategory(searchParams.get('category') || 'All');
+    setCondition(searchParams.get('condition') || 'All');
+    setSort(searchParams.get('sort') || 'newest');
+    setMinPrice(searchParams.get('minPrice') || '');
+    setMaxPrice(searchParams.get('maxPrice') || '');
+    setFeatured(searchParams.get('featured') || '');
+    setDeal(searchParams.get('deal') || '');
+  }, [searchParams]);
+
   useEffect(() => {
     fetchFilteredProducts();
-  }, [category, condition, sort, minPrice, maxPrice]);
+  }, [category, condition, sort, minPrice, maxPrice, featured, deal]);
 
   const fetchFilteredProducts = async () => {
     setLoading(true);
@@ -37,7 +56,9 @@ function BrowseContent() {
           condition: condition !== 'All' ? condition : undefined,
           minPrice: minPrice || undefined,
           maxPrice: maxPrice || undefined,
-          sort
+          sort,
+          featured: featured === 'true' ? 'true' : undefined,
+          deal: deal || undefined
         }
       });
       setProducts(res.data || []);
@@ -60,6 +81,8 @@ function BrowseContent() {
     setMinPrice('');
     setMaxPrice('');
     setSort('newest');
+    setFeatured('');
+    setDeal('');
   };
 
   return (
@@ -112,12 +135,41 @@ function BrowseContent() {
 
         <div className="lg:col-span-9 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-zinc-400 pb-3 border-b border-zinc-800">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span>Found <strong className="text-white font-bold">{products.length}</strong> matching products</span>
-              {(category !== 'All' || condition !== 'All' || search || minPrice || maxPrice) && (
-                <span className="px-2 py-0.5 rounded-full bg-[#0c9096]/15 border border-[#0c9096]/30 text-[#38d4dc] font-semibold text-[10px] uppercase tracking-wider">
-                  Filtered
-                </span>
+              {(category !== 'All' || condition !== 'All' || search || minPrice || maxPrice || featured || deal) && (
+                <div className="flex flex-wrap items-center gap-1.5 ml-2">
+                  {deal === 'flash' && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-400 text-[10px] font-bold">
+                      ⚡ Flash Deals
+                      <button onClick={() => setDeal('')} className="hover:text-white cursor-pointer ml-0.5">✕</button>
+                    </span>
+                  )}
+                  {featured === 'true' && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold">
+                      ⭐ Featured
+                      <button onClick={() => setFeatured('')} className="hover:text-white cursor-pointer ml-0.5">✕</button>
+                    </span>
+                  )}
+                  {category !== 'All' && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#0c9096]/20 border border-[#0c9096]/40 text-[#38d4dc] text-[10px] font-bold">
+                      {category}
+                      <button onClick={() => setCategory('All')} className="hover:text-white cursor-pointer ml-0.5">✕</button>
+                    </span>
+                  )}
+                  {condition !== 'All' && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/40 text-blue-300 text-[10px] font-bold">
+                      {condition}
+                      <button onClick={() => setCondition('All')} className="hover:text-white cursor-pointer ml-0.5">✕</button>
+                    </span>
+                  )}
+                  {(minPrice || maxPrice) && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-300 text-[10px] font-bold">
+                      ৳{minPrice || 0} - ৳{maxPrice || '∞'}
+                      <button onClick={() => { setMinPrice(''); setMaxPrice(''); }} className="hover:text-white cursor-pointer ml-0.5">✕</button>
+                    </span>
+                  )}
+                </div>
               )}
             </div>
 

@@ -36,31 +36,49 @@ export default function Home() {
   return (
     <div className="bg-white min-h-screen font-['Bai_Jamjuree'] selection:bg-amber-500/30 selection:text-amber-900 pb-16">
       {/* 1. Hero Showcase Slider */}
-      <HeroBanner />
+      <section id="hero" className="scroll-mt-24">
+        <HeroBanner />
+      </section>
 
       {/* 2. Four Trust / Service Badges */}
-      <TrustBadges />
+      <section id="trust" className="scroll-mt-24">
+        <TrustBadges />
+      </section>
 
       {/* 3. Three Colored Promo Cards */}
-      <PromoGrid />
+      <section id="promo" className="scroll-mt-24">
+        <PromoGrid />
+      </section>
 
       {/* 4. Shop By Categories (7 Pastel Tiles) */}
-      <CategoryShowcase />
+      <section id="categories" className="scroll-mt-24">
+        <CategoryShowcase />
+      </section>
 
       {/* 5. Popular Products (with Flash Countdown Timers) */}
-      <PopularProducts products={products} />
+      <section id="popular" className="scroll-mt-24">
+        <PopularProducts products={products} />
+      </section>
 
       {/* 6. Two Split Banners */}
-      <SplitBanners />
+      <section id="split-banners" className="scroll-mt-24">
+        <SplitBanners />
+      </section>
 
       {/* 7. Trending Products (with Category Filter Pills) */}
-      <TrendingProducts allProducts={products} />
+      <section id="trending" className="scroll-mt-24">
+        <TrendingProducts allProducts={products} />
+      </section>
 
       {/* 8. Full-Width Tech Promo Banner */}
-      <TechBanner />
+      <section id="tech" className="scroll-mt-24">
+        <TechBanner />
+      </section>
 
       {/* 9. From The Gallery (Articles / Blog) */}
-      <GallerySection />
+      <section id="gallery" className="scroll-mt-24">
+        <GallerySection />
+      </section>
 
       {/* 10. Floating Back-to-Top Button */}
       <BackToTop />

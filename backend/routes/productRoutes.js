@@ -7,7 +7,7 @@ const { products } = require('../store');
 // GET /api/products - Filter, search, and sort products
 router.get('/', async (req, res) => {
   try {
-    const { search, category, condition, minPrice, maxPrice, sort, featured, sellerId } = req.query;
+    const { search, category, condition, minPrice, maxPrice, sort, featured, sellerId, deal } = req.query;
 
     if (getIsConnected()) {
       let query = {};
@@ -34,6 +34,23 @@ router.get('/', async (req, res) => {
 
       if (featured === 'true') {
         query.isFeatured = true;
+      }
+
+      if (deal === 'flash') {
+        // Flash deals: items that are featured or offer a discount compared to originalPrice
+        const dealCondition = [
+          { isFeatured: true },
+          { $expr: { $gt: ["$originalPrice", "$price"] } }
+        ];
+        if (query.$or) {
+          query.$and = [
+            { $or: query.$or },
+            { $or: dealCondition }
+          ];
+          delete query.$or;
+        } else {
+          query.$or = dealCondition;
+        }
       }
 
       if (minPrice || maxPrice) {
@@ -76,6 +93,10 @@ router.get('/', async (req, res) => {
 
       if (featured === 'true') {
         result = result.filter(p => p.isFeatured === true);
+      }
+
+      if (deal === 'flash') {
+        result = result.filter(p => p.isFeatured === true || (p.originalPrice && p.originalPrice > p.price));
       }
 
       if (minPrice) {
