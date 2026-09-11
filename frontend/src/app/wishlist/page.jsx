@@ -111,13 +111,30 @@ export default function WishlistPage() {
               Tap the heart icon on any product listing to bookmark it and track price updates.
             </p>
           </div>
-          <Link
-            href="/browse"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-zinc-950 font-bold text-xs uppercase tracking-wider rounded-2xl hover:bg-zinc-200 transition-colors shadow-lg"
-          >
-            <ShoppingBag className="w-4 h-4" />
-            <span>Discover Products</span>
-          </Link>
+          <div className="pt-2">
+            <Link
+              href="/browse"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-2xl transition-all shadow-lg active:scale-95"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>Discover Products</span>
+            </Link>
+          </div>
+
+          <div className="pt-4 border-t border-zinc-800/80 space-y-2">
+            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Popular Categories</p>
+            <div className="flex flex-wrap justify-center gap-1.5">
+              {['Electronics', 'Mobile Phones', 'Fashion', 'Vehicles'].map(cat => (
+                <Link
+                  key={cat}
+                  href={`/browse?category=${encodeURIComponent(cat)}`}
+                  className="px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white text-[11px] font-medium transition-colors"
+                >
+                  {cat}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
