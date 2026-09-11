@@ -129,13 +129,14 @@ export const ProductFilter = ({
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
-                className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs transition-all cursor-pointer ${
+                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-[#0a6c71]/25 text-[#689db8] font-bold border border-[#0a6c71]/40'
-                    : 'text-zinc-400 hover:bg-zinc-900 hover:text-white'
+                    ? 'bg-[#0a6c71]/25 text-[#38d4dc] font-bold border border-[#0a6c71]/40 shadow-xs'
+                    : 'text-zinc-400 hover:bg-zinc-900 hover:text-white border border-transparent'
                 }`}
               >
-                {cat}
+                <span>{cat}</span>
+                {isSelected && <Check className="w-3.5 h-3.5 text-[#38d4dc] shrink-0" />}
               </button>
             );
           })}
