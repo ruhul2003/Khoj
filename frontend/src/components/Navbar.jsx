@@ -71,6 +71,7 @@ const NavbarContent = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
@@ -178,38 +179,88 @@ const NavbarContent = () => {
             </div>
           </Link>
 
-          {/* Search Bar with Category Select */}
-          <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 max-w-2xl items-center bg-white rounded-full p-1 shadow-inner">
-            <div className="relative pl-3 pr-2 border-r border-gray-200">
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="bg-transparent text-xs text-gray-700 font-semibold focus:outline-none pr-4 cursor-pointer py-2 appearance-none"
+          {/* Search Bar with Category Select and Live Suggestions */}
+          <div className="hidden md:flex flex-1 max-w-2xl relative">
+            <form onSubmit={handleSearchSubmit} className="w-full flex items-center bg-white rounded-full p-1 shadow-inner">
+              <div className="relative pl-3 pr-2 border-r border-gray-200">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="bg-transparent text-xs text-gray-700 font-semibold focus:outline-none pr-4 cursor-pointer py-2 appearance-none"
+                >
+                  <option value="All Categories">All Categories</option>
+                  {CATEGORIES.map(cat => (
+                    <option key={cat.name} value={cat.name}>{cat.name}</option>
+                  ))}
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 text-gray-500 absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+
+              <input
+                type="text"
+                placeholder="Search product here..."
+                value={searchTerm}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="flex-1 px-4 py-2 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none bg-transparent"
+              />
+
+              <button
+                type="submit"
+                className="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center shrink-0 transition-colors shadow cursor-pointer"
+                title="Search"
               >
-                <option value="All Categories">All Categories</option>
-                {CATEGORIES.map(cat => (
-                  <option key={cat.name} value={cat.name}>{cat.name}</option>
-                ))}
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 text-gray-500 absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none" />
-            </div>
+                <Search className="w-4 h-4 stroke-[2.5]" />
+              </button>
+            </form>
 
-            <input
-              type="text"
-              placeholder="Search product here..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1 px-4 py-2 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none bg-transparent"
-            />
+            {/* Live Search Auto-Suggest Dropdown */}
+            {isSearchFocused && searchTerm.trim().length > 1 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 z-50 text-slate-800 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="px-2 py-1 flex items-center justify-between text-[11px] font-bold text-gray-400 border-b border-gray-100 mb-2">
+                  <span>Quick Search Results</span>
+                  <span className="text-amber-600 font-extrabold">Press Enter ↵</span>
+                </div>
 
-            <button
-              type="submit"
-              className="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center shrink-0 transition-colors shadow cursor-pointer"
-              title="Search"
-            >
-              <Search className="w-4 h-4 stroke-[2.5]" />
-            </button>
-          </form>
+                <div className="space-y-1">
+                  <button
+                    onMouseDown={() => {
+                      router.push(`/browse?search=${encodeURIComponent(searchTerm.trim())}`);
+                      setIsSearchFocused(false);
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-gray-800 hover:bg-amber-50 hover:text-amber-700 flex items-center justify-between transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Search className="w-3.5 h-3.5 text-amber-500" />
+                      <span>Search for &quot;<strong className="text-slate-900">{searchTerm.trim()}</strong>&quot; in {selectedCategory}</span>
+                    </div>
+                    <ArrowRight className="w-3 h-3 text-gray-400" />
+                  </button>
+
+                  {CATEGORIES.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase())).map(cat => {
+                    const CatIcon = cat.icon;
+                    return (
+                      <button
+                        key={cat.name}
+                        onMouseDown={() => {
+                          router.push(`/browse?category=${encodeURIComponent(cat.name)}&search=${encodeURIComponent(searchTerm.trim())}`);
+                          setIsSearchFocused(false);
+                        }}
+                        className="w-full text-left px-3 py-2 rounded-xl text-xs text-gray-700 hover:bg-amber-50 hover:text-amber-700 flex items-center justify-between transition-colors cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2">
+                          <CatIcon className="w-3.5 h-3.5 text-gray-400" />
+                          <span>Find in <strong className="font-bold">{cat.name}</strong></span>
+                        </div>
+                        <span className="text-[10px] text-gray-400 font-bold">{cat.badge}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Right Header Controls */}
           <div className="flex items-center gap-5 lg:gap-7 shrink-0 text-xs">
