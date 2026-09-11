@@ -38,6 +38,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const CATEGORIES = [
   { name: 'Electronics', desc: 'Laptops, Audio & Monitors', icon: Laptop, badge: '30% OFF' },
@@ -377,6 +378,9 @@ const NavbarContent = () => {
               <ShoppingCart className="w-4 h-4 stroke-[2.5]" />
               <span className="tracking-wide">Cart {savedItemIds.length}</span>
             </Link>
+
+            {/* Theme Toggle Button */}
+            <ThemeToggle />
 
             {/* Mobile Menu Button */}
             <button
@@ -991,6 +995,12 @@ const NavbarContent = () => {
             >
               + Sell Product
             </Link>
+          </div>
+
+          {/* Theme Toggle in Mobile Drawer */}
+          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-800/80 border border-slate-700/60 text-xs text-slate-200 font-bold">
+            <span>Color Theme</span>
+            <ThemeToggle />
           </div>
 
           {/* Mobile Categories */}

@@ -34,7 +34,7 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-white min-h-screen font-['Bai_Jamjuree'] selection:bg-amber-500/30 selection:text-amber-900 pb-16">
+    <div className="bg-white dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 min-h-screen font-['Bai_Jamjuree'] selection:bg-amber-500/30 selection:text-amber-900 transition-colors duration-200 pb-16">
       {/* 1. Hero Showcase Slider */}
       <section id="hero" className="scroll-mt-24">
         <HeroBanner />
