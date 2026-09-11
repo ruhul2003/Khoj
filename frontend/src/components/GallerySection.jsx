@@ -41,8 +41,8 @@ export const GallerySection = () => {
   return (
     <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 font-['Bai_Jamjuree']">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 pb-2 border-b border-gray-100">
-        <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+      <div className="flex items-center justify-between mb-6 pb-2 border-b border-gray-100 dark:border-slate-800 transition-colors">
+        <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
           From The Gallery
         </h2>
 
@@ -50,14 +50,14 @@ export const GallerySection = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => scroll('left')}
-            className="w-8 h-8 rounded-full border border-gray-200 hover:border-gray-400 bg-white hover:bg-gray-50 flex items-center justify-center text-gray-600 transition-colors cursor-pointer shadow-xs"
+            className="w-8 h-8 rounded-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center justify-center text-gray-600 dark:text-slate-300 transition-colors cursor-pointer shadow-xs"
             aria-label="Previous Articles"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={() => scroll('right')}
-            className="w-8 h-8 rounded-full border border-gray-200 hover:border-gray-400 bg-white hover:bg-gray-50 flex items-center justify-center text-gray-600 transition-colors cursor-pointer shadow-xs"
+            className="w-8 h-8 rounded-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center justify-center text-gray-600 dark:text-slate-300 transition-colors cursor-pointer shadow-xs"
             aria-label="Next Articles"
           >
             <ChevronRight className="w-4 h-4" />
@@ -75,7 +75,7 @@ export const GallerySection = () => {
             key={art.id}
             className="group flex flex-col space-y-3 cursor-pointer"
           >
-            <div className="aspect-[16/10] w-full rounded-2xl overflow-hidden bg-gray-100 shadow-sm border border-gray-200">
+            <div className="aspect-[16/10] w-full rounded-2xl overflow-hidden bg-gray-100 dark:bg-slate-800 shadow-sm border border-gray-200 dark:border-slate-700 transition-colors">
               <img
                 src={art.image}
                 alt={art.title}
@@ -84,10 +84,10 @@ export const GallerySection = () => {
             </div>
 
             <div className="space-y-1.5 pt-1">
-              <span className="text-[11px] text-gray-400 font-semibold tracking-wide">
+              <span className="text-[11px] text-gray-400 dark:text-slate-400 font-semibold tracking-wide">
                 {art.date} • {art.author}
               </span>
-              <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-amber-600 transition-colors leading-snug line-clamp-2">
+              <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-slate-100 group-hover:text-amber-500 transition-colors leading-snug line-clamp-2">
                 {art.title}
               </h3>
             </div>

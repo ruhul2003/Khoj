@@ -14,15 +14,11 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     try {
-      const savedTheme = localStorage.getItem('khoj_theme');
-      if (savedTheme === 'light' || savedTheme === 'dark') {
-        setTheme(savedTheme);
-        document.documentElement.classList.toggle('light', savedTheme === 'light');
-        document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-      } else {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-      }
+      const savedTheme = localStorage.getItem('khoj_theme') || 'dark';
+      setTheme(savedTheme);
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(savedTheme);
+      document.documentElement.setAttribute('data-theme', savedTheme);
     } catch (e) {
       console.error(e);
     }
@@ -37,8 +33,9 @@ export const ThemeProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
-    document.documentElement.classList.toggle('light', nextTheme === 'light');
-    document.documentElement.classList.toggle('dark', nextTheme === 'dark');
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(nextTheme);
+    document.documentElement.setAttribute('data-theme', nextTheme);
   };
 
   return (

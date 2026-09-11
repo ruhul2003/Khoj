@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root, html.light {
     --font-family-bai: var(--font-bai-jamjuree), 'Bai Jamjuree', sans-serif;
@@ -227,15 +229,6 @@ html.light .glass-card:hover {
   box-shadow: 0 16px 32px -8px rgba(12, 144, 150, 0.16);
 }
 
-html.light header {
-  background: rgba(240, 247, 248, 0.92) !important;
-  border-bottom-color: #d4e4e9 !important;
-}
-
-html.light footer {
-  background: #e6f2f4 !important;
-  border-top-color: #d4e4e9 !important;
-}
 
 html.light .bg-zinc-950 {
   background-color: #f0f7f8 !important;
@@ -302,12 +295,7 @@ html.light h6 {
 }
 
 html.light .glass-card .text-white,
-html.light .glass-panel .text-white,
-html.light p.text-white,
-html.light h1.text-white,
-html.light h2.text-white,
-html.light h3.text-white,
-html.light h4.text-white {
+html.light .glass-panel .text-white {
   color: #031615 !important;
 }
 

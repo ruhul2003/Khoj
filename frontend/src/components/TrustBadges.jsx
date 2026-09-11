@@ -32,17 +32,17 @@ const TRUST_ITEMS = [
 
 export const TrustBadges = () => {
   return (
-    <div className="bg-white border-b border-gray-100 py-6 font-['Bai_Jamjuree'] shadow-xs">
+    <div className="bg-white dark:bg-[#101722] border-b border-gray-100 dark:border-slate-800/80 py-6 font-['Bai_Jamjuree'] shadow-xs transition-colors duration-200">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 items-center justify-between">
           {TRUST_ITEMS.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div key={idx} className="flex items-center gap-3.5 justify-center sm:justify-start">
-                <div className={`w-11 h-11 rounded-full ${item.bg} flex items-center justify-center shrink-0`}>
+                <div className={`w-11 h-11 rounded-full ${item.bg} dark:bg-slate-800/90 flex items-center justify-center shrink-0 shadow-xs`}>
                   <Icon className={`w-5 h-5 ${item.iconColor} stroke-[2.2]`} />
                 </div>
-                <span className="text-xs sm:text-sm font-bold text-gray-800 tracking-tight">
+                <span className="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 tracking-tight">
                   {item.title}
                 </span>
               </div>

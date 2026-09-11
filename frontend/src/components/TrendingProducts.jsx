@@ -36,9 +36,9 @@ export const TrendingProducts = ({ allProducts = [] }) => {
   return (
     <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 font-['Bai_Jamjuree']">
       {/* Header & Filter Tabs */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-2 border-b border-gray-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-2 border-b border-gray-100 dark:border-slate-800 transition-colors">
         <div className="flex flex-wrap items-center gap-3 sm:gap-6">
-          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
             Trending Products
           </h2>
 
@@ -52,7 +52,7 @@ export const TrendingProducts = ({ allProducts = [] }) => {
                   className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
                     isActive
                       ? 'bg-amber-500 text-slate-950 shadow-sm'
-                      : 'bg-transparent text-gray-500 hover:text-gray-900'
+                      : 'bg-transparent text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
                   {tab.label}
@@ -66,14 +66,14 @@ export const TrendingProducts = ({ allProducts = [] }) => {
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <button
             onClick={() => scroll('left')}
-            className="w-8 h-8 rounded-full border border-gray-200 hover:border-gray-400 bg-white hover:bg-gray-50 flex items-center justify-center text-gray-600 transition-colors cursor-pointer shadow-xs"
+            className="w-8 h-8 rounded-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center justify-center text-gray-600 dark:text-slate-300 transition-colors cursor-pointer shadow-xs"
             aria-label="Previous Products"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={() => scroll('right')}
-            className="w-8 h-8 rounded-full border border-gray-200 hover:border-gray-400 bg-white hover:bg-gray-50 flex items-center justify-center text-gray-600 transition-colors cursor-pointer shadow-xs"
+            className="w-8 h-8 rounded-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center justify-center text-gray-600 dark:text-slate-300 transition-colors cursor-pointer shadow-xs"
             aria-label="Next Products"
           >
             <ChevronRight className="w-4 h-4" />

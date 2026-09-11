@@ -62,8 +62,8 @@ export const CategoryShowcase = () => {
   return (
     <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 font-['Bai_Jamjuree']">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 pb-2 border-b border-gray-100">
-        <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+      <div className="flex items-center justify-between mb-6 pb-2 border-b border-gray-100 dark:border-slate-800 transition-colors">
+        <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
           Shop By Categories
         </h2>
 
@@ -71,14 +71,14 @@ export const CategoryShowcase = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => scroll('left')}
-            className="w-8 h-8 rounded-full border border-gray-200 hover:border-gray-400 bg-white hover:bg-gray-50 flex items-center justify-center text-gray-600 transition-colors cursor-pointer shadow-xs"
+            className="w-8 h-8 rounded-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center justify-center text-gray-600 dark:text-slate-300 transition-colors cursor-pointer shadow-xs"
             aria-label="Scroll Left"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={() => scroll('right')}
-            className="w-8 h-8 rounded-full border border-gray-200 hover:border-gray-400 bg-white hover:bg-gray-50 flex items-center justify-center text-gray-600 transition-colors cursor-pointer shadow-xs"
+            className="w-8 h-8 rounded-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center justify-center text-gray-600 dark:text-slate-300 transition-colors cursor-pointer shadow-xs"
             aria-label="Scroll Right"
           >
             <ChevronRight className="w-4 h-4" />
@@ -97,14 +97,14 @@ export const CategoryShowcase = () => {
             href={`/browse?category=${encodeURIComponent(cat.categoryQuery)}`}
             className="group flex flex-col items-center shrink-0 w-36 sm:w-44 text-center space-y-3 cursor-pointer"
           >
-            <div className={`w-32 sm:w-40 h-32 sm:h-40 rounded-2xl ${cat.bg} p-4 flex items-center justify-center shadow-xs group-hover:shadow-md transition-all transform group-hover:-translate-y-1`}>
+            <div className={`w-32 sm:w-40 h-32 sm:h-40 rounded-2xl ${cat.bg} dark:opacity-90 p-4 flex items-center justify-center shadow-xs group-hover:shadow-md transition-all transform group-hover:-translate-y-1`}>
               <img
                 src={cat.image}
                 alt={cat.name}
                 className="w-24 sm:w-28 h-24 sm:h-28 object-contain rounded-xl drop-shadow-md group-hover:scale-110 transition-transform"
               />
             </div>
-            <span className="text-xs sm:text-sm font-bold text-gray-800 group-hover:text-amber-600 transition-colors">
+            <span className="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 group-hover:text-amber-500 transition-colors">
               {cat.name}
             </span>
           </Link>
