@@ -227,12 +227,14 @@ export default function ProfilePage() {
                 <Package className="w-3.5 h-3.5 text-[#0c9096]" />
                 <span>Dashboard</span>
               </Link>
-              <Link
-                href="/sell"
-                className="px-4 py-2 bg-[#0c9096] hover:bg-[#0da2a9] text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-md"
-              >
-                <span>+ Post New Product</span>
-              </Link>
+              {userShop && (
+                <Link
+                  href="/sell"
+                  className="px-4 py-2 bg-[#0c9096] hover:bg-[#0da2a9] text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-md"
+                >
+                  <span>+ Post New Product</span>
+                </Link>
+              )}
               {userShop ? (
                 <Link
                   href={`/shop/${userShop.slug}`}

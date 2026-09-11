@@ -3,8 +3,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { ShoppingBag, ArrowUpRight, Mail, Phone, MapPin } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 export const Footer = () => {
+  const { userShop } = useAuth();
   return (
     <footer className="mt-16 bg-[#17212d] border-t border-slate-800 text-slate-400 font-['Bai_Jamjuree']">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-16 grid grid-cols-1 md:grid-cols-5 gap-10 text-sm">
@@ -60,7 +62,11 @@ export const Footer = () => {
             <li><Link href="/browse" className="hover:text-amber-400 transition-colors">All Products</Link></li>
             <li><Link href="/browse?deal=flash" className="hover:text-amber-400 transition-colors">⚡ Flash Deals</Link></li>
             <li><Link href="/wishlist" className="hover:text-amber-400 transition-colors">Saved Wishlist</Link></li>
-            <li><Link href="/sell" className="hover:text-amber-400 transition-colors">+ Post Product Ad</Link></li>
+            {userShop ? (
+              <li><Link href="/sell" className="hover:text-amber-400 transition-colors">+ Post Product Ad</Link></li>
+            ) : (
+              <li><Link href="/shop/create" className="hover:text-amber-400 transition-colors">Register Your Shop</Link></li>
+            )}
             <li><Link href="/dashboard" className="hover:text-amber-400 transition-colors">My Account</Link></li>
           </ul>
         </div>

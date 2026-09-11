@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product');
+const Shop = require('../models/Shop');
 const { getIsConnected } = require('../config/db');
-const { products } = require('../store');
+const { products, shops } = require('../store');
 
 // GET /api/products - Filter, search, and sort products
 router.get('/', async (req, res) => {
@@ -152,6 +153,21 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Please provide all required product details.' });
     }
 
+    // Verify that the seller has registered a shop
+    const ownerLookupId = sellerId || '';
+    let sellerShop = null;
+    if (getIsConnected()) {
+      sellerShop = await Shop.findOne({ ownerId: ownerLookupId });
+    } else {
+      sellerShop = shops.find(s => s.ownerId === ownerLookupId);
+    }
+
+    if (!sellerShop) {
+      return res.status(403).json({ 
+        error: 'Only registered shop owners can post products for sale. Please register a shop first.' 
+      });
+    }
+
     const defaultImages = images && images.length > 0 ? images : [
       'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1000&q=80'
     ];
@@ -164,12 +180,15 @@ router.post('/', async (req, res) => {
       originalPrice: Number(originalPrice || 0),
       description,
       images: defaultImages,
-      location: location || 'Dhaka, Bangladesh',
-      sellerId: sellerId || 'user_demo_1',
-      sellerName: sellerName || 'Tanvir Rahman',
-      sellerRating: 4.9,
-      sellerAvatar: sellerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-      sellerPhone: sellerPhone || '+880 1712-345678',
+      location: location || sellerShop.location || 'Dhaka, Bangladesh',
+      sellerId: ownerLookupId,
+      sellerName: sellerName || sellerShop.name || 'Shop Seller',
+      sellerRating: sellerShop.rating || 5.0,
+      sellerAvatar: sellerAvatar || sellerShop.logo || '',
+      sellerPhone: sellerPhone || sellerShop.phone || '+880 1712-345678',
+      shopId: sellerShop._id || sellerShop.id,
+      shopName: sellerShop.name,
+      shopSlug: sellerShop.slug,
       status: 'Available',
       isFeatured: false,
       views: 1,

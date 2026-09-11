@@ -344,14 +344,16 @@ const NavbarContent = () => {
                       <Heart className="w-4 h-4 text-rose-400" />
                       Wishlist ({savedItemIds.length})
                     </Link>
-                    <Link
-                      href="/sell"
-                      onClick={closeAllMenus}
-                      className="flex items-center gap-2.5 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
-                    >
-                      <PlusCircle className="w-4 h-4 text-emerald-400" />
-                      Post Free Ad
-                    </Link>
+                    {userShop && (
+                      <Link
+                        href="/sell"
+                        onClick={closeAllMenus}
+                        className="flex items-center gap-2.5 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+                      >
+                        <PlusCircle className="w-4 h-4 text-emerald-400" />
+                        Post Free Ad
+                      </Link>
+                    )}
                     <button
                       onClick={handleLogout}
                       className="w-full flex items-center gap-2.5 px-4 py-2 text-rose-400 hover:bg-rose-500/10 border-t border-slate-700 mt-1 cursor-pointer"
@@ -775,16 +777,18 @@ const NavbarContent = () => {
                       </Link>
                     </div>
 
-                    <div className="mt-3 pt-3 border-t border-gray-100 dark:border-slate-700">
-                      <Link
-                        href="/sell"
-                        onClick={closeAllMenus}
-                        className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-slate-950 text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
-                      >
-                        <PlusCircle className="w-3.5 h-3.5 text-amber-400 dark:text-slate-950" />
-                        <span>Post Your Product</span>
-                      </Link>
-                    </div>
+                    {userShop && (
+                      <div className="mt-3 pt-3 border-t border-gray-100 dark:border-slate-700">
+                        <Link
+                          href="/sell"
+                          onClick={closeAllMenus}
+                          className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-slate-950 text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
+                        >
+                          <PlusCircle className="w-3.5 h-3.5 text-amber-400 dark:text-slate-950" />
+                          <span>Post Your Product</span>
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -972,14 +976,16 @@ const NavbarContent = () => {
               <span>{userShop ? "My Shop" : "Open Shop"}</span>
             </Link>
 
-            <Link
-              href="/sell"
-              onClick={closeAllMenus}
-              className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-sm active:scale-95 cursor-pointer"
-            >
-              <PlusCircle className="w-3.5 h-3.5 text-amber-400 dark:text-slate-950" />
-              <span>Sell Product</span>
-            </Link>
+            {userShop && (
+              <Link
+                href="/sell"
+                onClick={closeAllMenus}
+                className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-sm active:scale-95 cursor-pointer"
+              >
+                <PlusCircle className="w-3.5 h-3.5 text-amber-400 dark:text-slate-950" />
+                <span>Sell Product</span>
+              </Link>
+            )}
           </div>
 
         </div>
@@ -1006,7 +1012,7 @@ const NavbarContent = () => {
           </form>
 
           {/* Quick Action Buttons */}
-          <div className="grid grid-cols-2 gap-3 text-xs font-bold uppercase">
+          <div className={`grid ${userShop ? 'grid-cols-2' : 'grid-cols-1'} gap-3 text-xs font-bold uppercase`}>
             <Link 
               href="/browse" 
               onClick={closeAllMenus} 
@@ -1014,13 +1020,15 @@ const NavbarContent = () => {
             >
               Browse Shop
             </Link>
-            <Link 
-              href="/sell" 
-              onClick={closeAllMenus} 
-              className="p-3 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-center font-black transition-colors"
-            >
-              + Sell Product
-            </Link>
+            {userShop && (
+              <Link 
+                href="/sell" 
+                onClick={closeAllMenus} 
+                className="p-3 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-center font-black transition-colors"
+              >
+                + Sell Product
+              </Link>
+            )}
           </div>
 
           <Link

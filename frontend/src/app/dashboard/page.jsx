@@ -195,13 +195,15 @@ function DashboardContent() {
             </Link>
           )}
 
-          <Link
-            href="/sell"
-            className="px-6 py-3 bg-white text-[#031615] font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center gap-2 hover:bg-zinc-100 transition-colors"
-          >
-            <PlusCircle className="w-4 h-4 text-[#0c9096]" />
-            <span>+ Post Product</span>
-          </Link>
+          {userShop && (
+            <Link
+              href="/sell"
+              className="px-6 py-3 bg-white text-[#031615] font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center gap-2 hover:bg-zinc-100 transition-colors"
+            >
+              <PlusCircle className="w-4 h-4 text-[#0c9096]" />
+              <span>+ Post Product</span>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -592,9 +594,15 @@ function DashboardContent() {
               <Package className="w-12 h-12 text-zinc-600 mx-auto" />
               <h3 className="text-lg font-bold text-white">No Listings Found</h3>
               <p className="text-xs text-zinc-400">You haven't listed any items for sale yet.</p>
-              <Link href="/sell" className="inline-block mt-2 px-6 py-3 bg-[#0c9096] text-white font-bold text-xs uppercase rounded-xl">
-                Post First Product
-              </Link>
+              {userShop ? (
+                <Link href="/sell" className="inline-block mt-2 px-6 py-3 bg-[#0c9096] text-white font-bold text-xs uppercase rounded-xl">
+                  Post First Product
+                </Link>
+              ) : (
+                <Link href="/shop/create" className="inline-block mt-2 px-6 py-3 bg-gradient-to-r from-[#0c9096] to-[#0a6c71] text-white font-bold text-xs uppercase rounded-xl">
+                  Register A Shop To Start Selling
+                </Link>
+              )}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

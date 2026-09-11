@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
-import { PlusCircle, Sparkles, CheckCircle2, AlertCircle, Image as ImageIcon } from 'lucide-react';
+import { PlusCircle, Sparkles, CheckCircle2, AlertCircle, Image as ImageIcon, Store, ArrowRight, ShieldCheck } from 'lucide-react';
 import ImageUploader from '@/components/ImageUploader';
 
 const CATEGORIES = [
@@ -27,7 +28,7 @@ const CONDITIONS = [
 
 export default function SellPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, userShop, isLoading } = useAuth();
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Electronics');
@@ -35,11 +36,108 @@ export default function SellPage() {
   const [price, setPrice] = useState('');
   const [originalPrice, setOriginalPrice] = useState('');
   const [description, setDescription] = useState('');
-  const [location, setLocation] = useState(user?.location || 'Gulshan, Dhaka');
-  const [sellerPhone, setSellerPhone] = useState(user?.phone || '+880 1712-345678');
+  const [location, setLocation] = useState(user?.location || userShop?.location || 'Gulshan, Dhaka');
+  const [sellerPhone, setSellerPhone] = useState(user?.phone || userShop?.phone || '+880 1712-345678');
   const [images, setImages] = useState([]);
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // 1. Loading State
+  if (isLoading) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center font-['Bai_Jamjuree']">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0c9096]"></div>
+      </div>
+    );
+  }
+
+  // 2. Unauthenticated State
+  if (!user) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center px-4 font-['Bai_Jamjuree']">
+        <div className="glass-panel max-w-lg p-8 sm:p-10 rounded-3xl border border-zinc-800 text-center space-y-5 shadow-2xl">
+          <div className="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto">
+            <Store className="w-8 h-8" />
+          </div>
+          <h2 className="text-2xl font-extrabold text-white">Sign In & Register a Shop to Sell</h2>
+          <p className="text-xs text-zinc-400 leading-relaxed max-w-sm mx-auto">
+            On Khoj Marketplace, only registered shop owners can post products for sale. Please sign in to access your shop.
+          </p>
+          <div className="pt-2 flex gap-3 justify-center">
+            <Link
+              href="/auth/login"
+              className="px-6 py-3 bg-gradient-to-r from-[#0c9096] to-[#0a6c71] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/auth/register"
+              className="px-6 py-3 bg-zinc-900 hover:bg-zinc-850 text-white font-bold text-xs uppercase tracking-wider rounded-xl border border-zinc-700"
+            >
+              Create Account
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 3. User Logged in BUT Has No Registered Shop
+  if (!userShop) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center px-4 font-['Bai_Jamjuree']">
+        <div className="glass-panel max-w-lg p-8 sm:p-10 rounded-3xl border border-amber-500/30 bg-[#141b24] text-center space-y-6 shadow-2xl relative overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-600 text-slate-950 flex items-center justify-center mx-auto shadow-xl shadow-amber-500/20 font-black">
+            <Store className="w-8 h-8 text-slate-950" />
+          </div>
+          <div className="space-y-2">
+            <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-extrabold uppercase tracking-wider inline-block">
+              Shop Registration Required
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+              Register a Shop to Sell Products
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-md mx-auto">
+              On Khoj Marketplace, only registered shop owners can post products for sale. Open your official storefront in less than a minute to start listing items!
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-zinc-950/60 border border-zinc-800/80 text-left space-y-2.5 text-xs">
+            <div className="flex items-center gap-2 text-emerald-400 font-semibold">
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
+              <span>Official marketplace storefront with brand logo & banner</span>
+            </div>
+            <div className="flex items-center gap-2 text-emerald-400 font-semibold">
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
+              <span>Post unlimited products directly linked to your shop</span>
+            </div>
+            <div className="flex items-center gap-2 text-emerald-400 font-semibold">
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
+              <span>Verified seller trust badge for buyer confidence</span>
+            </div>
+          </div>
+
+          <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/shop/create"
+              className="px-8 py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl shadow-amber-500/20 transition-all flex items-center justify-center gap-2"
+            >
+              <Store className="w-4 h-4" />
+              <span>Open Your Shop Now</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/dashboard"
+              className="px-6 py-3.5 bg-zinc-900 hover:bg-zinc-850 text-zinc-300 hover:text-white font-bold text-xs uppercase tracking-wider rounded-2xl border border-zinc-800 transition-colors"
+            >
+              Back to Dashboard
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,18 +163,21 @@ export default function SellPage() {
         originalPrice: originalPrice ? Number(originalPrice) : 0,
         description,
         images,
-        location,
-        sellerId: user?.id || 'user_demo_2',
-        sellerName: user?.name || 'Sabbir Hossain',
-        sellerAvatar: user?.avatar || '',
-        sellerPhone: sellerPhone || '+880 1712-345678'
+        location: location || userShop?.location || 'Dhaka, Bangladesh',
+        sellerId: user?.id || userShop?.ownerId,
+        sellerName: user?.name || userShop?.name || 'Shop Seller',
+        sellerAvatar: user?.avatar || userShop?.logo || '',
+        sellerPhone: sellerPhone || userShop?.phone || '+880 1712-345678',
+        shopId: userShop?._id || userShop?.id,
+        shopName: userShop?.name,
+        shopSlug: userShop?.slug
       });
 
       const newProd = res.data;
       router.push(`/product/${newProd._id || newProd.id || ''}`);
     } catch (err) {
       console.error("Failed to post ad", err);
-      setFormError(err.response?.data?.message || 'Failed to post product ad. Please try again.');
+      setFormError(err.response?.data?.error || err.response?.data?.message || 'Failed to post product ad. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -85,12 +186,12 @@ export default function SellPage() {
   return (
     <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12 space-y-10 font-['Bai_Jamjuree']">
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0c9096]/15 text-[#0c9096] text-xs font-bold uppercase tracking-widest">
-          <PlusCircle className="w-4 h-4" />
-          Create Ad Listing
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 text-xs font-bold uppercase tracking-widest">
+          <Store className="w-4 h-4" />
+          <span>Listing for Shop: {userShop.name}</span>
         </div>
         <h1 className="text-4xl font-extrabold text-white">Post a Product for Sale</h1>
-        <p className="text-xs text-zinc-400">List your used or new product for thousands of local buyers on Khoj.</p>
+        <p className="text-xs text-zinc-400">Products are automatically published and showcased under your official store.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
