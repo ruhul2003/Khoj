@@ -17,11 +17,15 @@ function BrowseContent() {
   const initialMaxPrice = searchParams.get('maxPrice') || '';
   const initialFeatured = searchParams.get('featured') || '';
   const initialDeal = searchParams.get('deal') || '';
+  const initialLocation = searchParams.get('location') || 'All Bangladesh';
+  const initialVerified = searchParams.get('verified') === 'true';
 
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState(initialSearch);
   const [category, setCategory] = useState(initialCategory);
   const [condition, setCondition] = useState(initialCondition);
+  const [location, setLocation] = useState(initialLocation);
+  const [verifiedOnly, setVerifiedOnly] = useState(initialVerified);
   const [minPrice, setMinPrice] = useState(initialMinPrice);
   const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
   const [sort, setSort] = useState(initialSort);
@@ -35,6 +39,8 @@ function BrowseContent() {
     setSearch(searchParams.get('search') || '');
     setCategory(searchParams.get('category') || 'All');
     setCondition(searchParams.get('condition') || 'All');
+    setLocation(searchParams.get('location') || 'All Bangladesh');
+    setVerifiedOnly(searchParams.get('verified') === 'true');
     setSort(searchParams.get('sort') || 'newest');
     setMinPrice(searchParams.get('minPrice') || '');
     setMaxPrice(searchParams.get('maxPrice') || '');
@@ -44,7 +50,7 @@ function BrowseContent() {
 
   useEffect(() => {
     fetchFilteredProducts();
-  }, [category, condition, sort, minPrice, maxPrice, featured, deal]);
+  }, [category, condition, location, verifiedOnly, sort, minPrice, maxPrice, featured, deal]);
 
   const fetchFilteredProducts = async () => {
     setLoading(true);
@@ -54,6 +60,8 @@ function BrowseContent() {
           search,
           category: category !== 'All' ? category : undefined,
           condition: condition !== 'All' ? condition : undefined,
+          location: location !== 'All Bangladesh' && location !== 'All' ? location : undefined,
+          verifiedOnly: verifiedOnly ? 'true' : undefined,
           minPrice: minPrice || undefined,
           maxPrice: maxPrice || undefined,
           sort,
@@ -78,6 +86,8 @@ function BrowseContent() {
     setSearch('');
     setCategory('All');
     setCondition('All');
+    setLocation('All Bangladesh');
+    setVerifiedOnly(false);
     setMinPrice('');
     setMaxPrice('');
     setSort('newest');
@@ -123,6 +133,10 @@ function BrowseContent() {
             setCategory={setCategory}
             condition={condition}
             setCondition={setCondition}
+            location={location}
+            setLocation={setLocation}
+            verifiedOnly={verifiedOnly}
+            setVerifiedOnly={setVerifiedOnly}
             minPrice={minPrice}
             setMinPrice={setMinPrice}
             maxPrice={maxPrice}
@@ -167,6 +181,18 @@ function BrowseContent() {
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-300 text-[10px] font-bold">
                       ৳{minPrice || 0} - ৳{maxPrice || '∞'}
                       <button onClick={() => { setMinPrice(''); setMaxPrice(''); }} className="hover:text-white cursor-pointer ml-0.5">✕</button>
+                    </span>
+                  )}
+                  {location && location !== 'All Bangladesh' && location !== 'All' && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-teal-500/20 border border-teal-500/40 text-teal-300 text-[10px] font-bold">
+                      📍 {location}
+                      <button onClick={() => setLocation('All Bangladesh')} className="hover:text-white cursor-pointer ml-0.5">✕</button>
+                    </span>
+                  )}
+                  {verifiedOnly && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold">
+                      🛡️ Verified Only
+                      <button onClick={() => setVerifiedOnly(false)} className="hover:text-white cursor-pointer ml-0.5">✕</button>
                     </span>
                   )}
                 </div>

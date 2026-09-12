@@ -8,7 +8,7 @@ const { products, shops } = require('../store');
 // GET /api/products - Filter, search, and sort products
 router.get('/', async (req, res) => {
   try {
-    const { search, category, condition, minPrice, maxPrice, sort, featured, sellerId, deal } = req.query;
+    const { search, category, condition, minPrice, maxPrice, sort, featured, sellerId, deal, location, verifiedOnly } = req.query;
 
     if (getIsConnected()) {
       let query = {};
@@ -27,6 +27,14 @@ router.get('/', async (req, res) => {
 
       if (condition && condition !== 'All') {
         query.condition = condition;
+      }
+
+      if (location && location !== 'All') {
+        query.location = { $regex: location, $options: 'i' };
+      }
+
+      if (verifiedOnly === 'true') {
+        query.sellerRating = { $gte: 4.8 };
       }
 
       if (sellerId) {
@@ -86,6 +94,15 @@ router.get('/', async (req, res) => {
 
       if (condition && condition !== 'All') {
         result = result.filter(p => p.condition === condition);
+      }
+
+      if (location && location !== 'All') {
+        const loc = location.toLowerCase();
+        result = result.filter(p => p.location && p.location.toLowerCase().includes(loc));
+      }
+
+      if (verifiedOnly === 'true') {
+        result = result.filter(p => (p.sellerRating || 0) >= 4.8);
       }
 
       if (sellerId) {

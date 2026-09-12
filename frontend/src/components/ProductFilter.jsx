@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Filter, RefreshCcw, Check } from 'lucide-react';
+import { Filter, RefreshCcw, Check, MapPin, ShieldCheck } from 'lucide-react';
 
 const CATEGORIES = [
   'All',
@@ -13,6 +13,18 @@ const CATEGORIES = [
   'Fashion',
   'Books & Hobbies',
   'Home Appliances'
+];
+
+const DIVISIONS = [
+  'All Bangladesh',
+  'Dhaka',
+  'Chittagong',
+  'Sylhet',
+  'Rajshahi',
+  'Khulna',
+  'Barisal',
+  'Rangpur',
+  'Mymensingh'
 ];
 
 const CONDITIONS = [
@@ -28,6 +40,10 @@ export const ProductFilter = ({
   setCategory,
   condition,
   setCondition,
+  location = 'All Bangladesh',
+  setLocation,
+  verifiedOnly = false,
+  setVerifiedOnly,
   minPrice,
   setMinPrice,
   maxPrice,
@@ -39,6 +55,8 @@ export const ProductFilter = ({
   const activeCount = [
     category !== 'All',
     condition !== 'All',
+    location && location !== 'All Bangladesh' && location !== 'All',
+    Boolean(verifiedOnly),
     Boolean(minPrice),
     Boolean(maxPrice),
     sort !== 'newest'
@@ -92,6 +110,52 @@ export const ProductFilter = ({
           <option value="views">Most Popular</option>
         </select>
       </div>
+
+      {/* Location / Division Filter */}
+      {setLocation && (
+        <div>
+          <label className="flex items-center gap-1.5 text-[11px] font-bold text-zinc-400 mb-2 uppercase tracking-widest">
+            <MapPin className="w-3.5 h-3.5 text-[#0c9096]" />
+            Location / Division
+          </label>
+          <select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="w-full px-4 py-3 bg-zinc-950 text-zinc-200 border border-zinc-800 rounded-xl text-xs font-medium focus:outline-none focus:border-[#0c9096] cursor-pointer"
+          >
+            {DIVISIONS.map((div) => (
+              <option key={div} value={div}>
+                {div}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {/* Verified Sellers Toggle */}
+      {setVerifiedOnly && (
+        <div className="pt-2">
+          <button
+            type="button"
+            onClick={() => setVerifiedOnly(!verifiedOnly)}
+            className={`w-full flex items-center justify-between p-3.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+              verifiedOnly
+                ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300 shadow-md'
+                : 'bg-zinc-950/60 border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-900'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <ShieldCheck className={`w-4 h-4 ${verifiedOnly ? 'text-emerald-400' : 'text-zinc-500'}`} />
+              <span>Verified Sellers Only</span>
+            </div>
+            <div className={`w-5 h-5 rounded-md flex items-center justify-center border transition-all ${
+              verifiedOnly ? 'bg-emerald-500 border-emerald-400 text-zinc-950' : 'border-zinc-700 bg-zinc-900'
+            }`}>
+              {verifiedOnly && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+            </div>
+          </button>
+        </div>
+      )}
 
       <div>
         <label className="block text-[11px] font-bold text-zinc-400 mb-2 uppercase tracking-widest">
