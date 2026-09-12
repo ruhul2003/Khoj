@@ -100,7 +100,7 @@ export const MakeOfferModal = ({ product, isOpen, onClose }) => {
                 <label className="font-semibold">Your Price (BDT / Tk)</label>
                 {discountPercent > 0 && (
                   <span className="text-emerald-400 font-bold">
-                    {discountPercent}% discount
+                    {discountPercent}% discount (Save ৳{discountAmount.toLocaleString()})
                   </span>
                 )}
               </div>
@@ -110,8 +110,21 @@ export const MakeOfferModal = ({ product, isOpen, onClose }) => {
                 max={product.price}
                 value={offeredPrice}
                 onChange={(e) => setOfferedPrice(Number(e.target.value))}
-                className="w-full px-4 py-3.5 bg-zinc-950 text-white font-extrabold text-xl rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096]"
+                className="w-full px-4 py-3 bg-zinc-950 text-white font-extrabold text-xl rounded-2xl border border-zinc-800 focus:outline-none focus:border-[#0c9096]"
               />
+
+              <div className="grid grid-cols-4 gap-2 mt-2.5">
+                {[5, 10, 15, 20].map((pct) => (
+                  <button
+                    key={pct}
+                    type="button"
+                    onClick={() => setOfferedPrice(Math.round(product.price * (1 - pct / 100)))}
+                    className="py-1.5 px-2 bg-zinc-900 hover:bg-[#0c9096]/20 hover:border-[#0c9096]/50 border border-zinc-800 rounded-xl text-[11px] font-bold text-zinc-300 hover:text-white transition-all cursor-pointer text-center"
+                  >
+                    -{pct}%
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div>

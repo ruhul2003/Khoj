@@ -10,6 +10,8 @@ const offerSchema = new mongoose.Schema({
   sellerId: { type: String, required: true },
   offeredPrice: { type: Number, required: true },
   message: { type: String, default: '' },
+  counterPrice: { type: Number, default: 0 },
+  counterNote: { type: String, default: '' },
   status: { type: String, enum: ['Pending', 'Accepted', 'Rejected', 'Countered'], default: 'Pending' },
   createdAt: { type: Date, default: Date.now }
 });

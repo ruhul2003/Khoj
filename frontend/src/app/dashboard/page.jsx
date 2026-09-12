@@ -47,6 +47,11 @@ function DashboardContent() {
   const [savingShop, setSavingShop] = useState(false);
   const [shopMessage, setShopMessage] = useState('');
 
+  // Counter Offer State
+  const [counteringOfferId, setCounteringOfferId] = useState(null);
+  const [counterPriceInput, setCounterPriceInput] = useState('');
+  const [counterNoteInput, setCounterNoteInput] = useState('');
+
   useEffect(() => {
     fetchDashboardData();
   }, [user]);
@@ -105,10 +110,13 @@ function DashboardContent() {
     }
   };
 
-  const handleOfferStatus = async (offerId, status) => {
+  const handleOfferStatus = async (offerId, status, extraData = {}) => {
     try {
-      await api.put(`/offers/${offerId}/status`, { status });
-      setMyOffers(prev => prev.map(o => o._id === offerId ? { ...o, status } : o));
+      const res = await api.put(`/offers/${offerId}/status`, { status, ...extraData });
+      setMyOffers(prev => prev.map(o => o._id === offerId ? { ...o, ...(res.data || {}), status } : o));
+      setCounteringOfferId(null);
+      setCounterPriceInput('');
+      setCounterNoteInput('');
     } catch (err) {
       console.error(err);
     }
@@ -673,41 +681,107 @@ function DashboardContent() {
           ) : (
             <div className="space-y-3">
               {myOffers.map((off) => (
-                <div key={off._id} className="glass-card p-5 rounded-2xl border border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-                  <div className="flex items-center gap-4">
-                    <img src={off.productImage} alt="" className="w-16 h-16 rounded-xl object-cover" />
-                    <div>
-                      <h4 className="font-bold text-white text-sm">{off.productTitle}</h4>
-                      <p className="text-zinc-300">
-                        Buyer <span className="font-bold text-[#0c9096]">{off.buyerName}</span> proposed: <span className="text-emerald-400 font-extrabold">৳{off.offeredPrice?.toLocaleString()}</span>
-                      </p>
+                <div key={off._id} className="glass-card p-5 rounded-2xl border border-zinc-800 space-y-3 text-xs">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <img src={off.productImage} alt="" className="w-16 h-16 rounded-xl object-cover shrink-0" />
+                      <div>
+                        <h4 className="font-bold text-white text-sm">{off.productTitle}</h4>
+                        <p className="text-zinc-300">
+                          Buyer <span className="font-bold text-[#0c9096]">{off.buyerName}</span> proposed: <span className="text-emerald-400 font-extrabold">৳{off.offeredPrice?.toLocaleString()}</span>
+                        </p>
+                        {off.message && (
+                          <p className="text-[11px] text-zinc-400 italic mt-0.5">"{off.message}"</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {off.status === 'Pending' ? (
+                        <>
+                          <button
+                            onClick={() => handleOfferStatus(off._id, 'Accepted')}
+                            className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl flex items-center gap-1 uppercase tracking-wider cursor-pointer"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5" /> Accept
+                          </button>
+                          <button
+                            onClick={() => {
+                              setCounteringOfferId(counteringOfferId === off._id ? null : off._id);
+                              setCounterPriceInput(off.offeredPrice ? Math.round((off.offeredPrice + off.productPrice) / 2) : '');
+                            }}
+                            className="px-3 py-1.5 bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/40 font-bold rounded-xl flex items-center gap-1 uppercase tracking-wider cursor-pointer"
+                          >
+                            Counter
+                          </button>
+                          <button
+                            onClick={() => handleOfferStatus(off._id, 'Rejected')}
+                            className="px-3 py-1.5 bg-rose-600/20 text-rose-400 hover:bg-rose-600/30 font-bold rounded-xl flex items-center gap-1 uppercase tracking-wider cursor-pointer"
+                          >
+                            <XCircle className="w-3.5 h-3.5" /> Reject
+                          </button>
+                        </>
+                      ) : (
+                        <div className="text-right">
+                          <span className={`px-4 py-1.5 rounded-full font-bold uppercase tracking-wider text-[10px] ${
+                            off.status === 'Accepted'
+                              ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                              : off.status === 'Countered'
+                              ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                              : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                          }`}>
+                            {off.status}
+                          </span>
+                          {off.status === 'Countered' && off.counterPrice && (
+                            <p className="text-[10px] text-amber-300 mt-1 font-bold">
+                              Countered: ৳{off.counterPrice.toLocaleString()}
+                            </p>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    {off.status === 'Pending' ? (
-                      <>
+                  {/* Inline Counter Offer Input */}
+                  {counteringOfferId === off._id && (
+                    <div className="pt-3 border-t border-zinc-800 flex flex-col sm:flex-row items-center gap-2 bg-zinc-950/70 p-3 rounded-xl">
+                      <div className="flex-1 w-full sm:w-auto flex items-center gap-2">
+                        <span className="text-zinc-400 font-bold">Counter ৳:</span>
+                        <input
+                          type="number"
+                          value={counterPriceInput}
+                          onChange={(e) => setCounterPriceInput(e.target.value)}
+                          placeholder="Your counter price"
+                          className="px-3 py-1.5 bg-zinc-900 border border-zinc-700 rounded-lg text-white font-bold text-xs w-32 focus:outline-none focus:border-[#0c9096]"
+                        />
+                        <input
+                          type="text"
+                          value={counterNoteInput}
+                          onChange={(e) => setCounterNoteInput(e.target.value)}
+                          placeholder="Optional note to buyer..."
+                          className="flex-1 px-3 py-1.5 bg-zinc-900 border border-zinc-700 rounded-lg text-white text-xs focus:outline-none focus:border-[#0c9096]"
+                        />
+                      </div>
+                      <div className="flex items-center gap-2 self-end sm:self-auto">
                         <button
-                          onClick={() => handleOfferStatus(off._id, 'Accepted')}
-                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
+                          onClick={() => setCounteringOfferId(null)}
+                          className="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white text-[11px] font-bold cursor-pointer"
                         >
-                          <CheckCircle2 className="w-4 h-4" /> Accept
+                          Cancel
                         </button>
                         <button
-                          onClick={() => handleOfferStatus(off._id, 'Rejected')}
-                          className="px-4 py-2 bg-rose-600/20 text-rose-400 hover:bg-rose-600/30 font-bold rounded-xl flex items-center gap-1.5 uppercase tracking-wider cursor-pointer"
+                          onClick={() => handleOfferStatus(off._id, 'Countered', {
+                            counterPrice: counterPriceInput,
+                            counterNote: counterNoteInput
+                          })}
+                          disabled={!counterPriceInput}
+                          className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[11px] font-extrabold cursor-pointer disabled:opacity-50"
                         >
-                          <XCircle className="w-4 h-4" /> Reject
+                          Submit Counter
                         </button>
-                      </>
-                    ) : (
-                      <span className={`px-4 py-1.5 rounded-full font-bold uppercase tracking-wider ${
-                        off.status === 'Accepted' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
-                      }`}>
-                        {off.status}
-                      </span>
-                    )}
-                  </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

@@ -76,19 +76,33 @@ router.get('/', async (req, res) => {
   }
 });
 
-// PUT /api/offers/:id/status - Accept or Reject offer
+// PUT /api/offers/:id/status - Accept, Reject, or Counter offer
 router.put('/:id/status', async (req, res) => {
   try {
     const { id } = req.params;
-    const { status } = req.body; // 'Accepted', 'Rejected'
+    const { status, counterPrice, counterNote } = req.body; // 'Accepted', 'Rejected', 'Countered'
+
+    const updateFields = { status };
+    if (counterPrice !== undefined && counterPrice !== null) {
+      updateFields.counterPrice = Number(counterPrice);
+    }
+    if (counterNote !== undefined && counterNote !== null) {
+      updateFields.counterNote = counterNote;
+    }
 
     if (getIsConnected()) {
-      const updated = await Offer.findByIdAndUpdate(id, { status }, { new: true });
+      const updated = await Offer.findByIdAndUpdate(id, updateFields, { new: true });
       return res.json(updated);
     } else {
       const targetOffer = offers.find(o => o._id === id);
       if (!targetOffer) return res.status(404).json({ error: 'Offer not found' });
       targetOffer.status = status;
+      if (counterPrice !== undefined && counterPrice !== null) {
+        targetOffer.counterPrice = Number(counterPrice);
+      }
+      if (counterNote !== undefined && counterNote !== null) {
+        targetOffer.counterNote = counterNote;
+      }
       return res.json(targetOffer);
     }
   } catch (err) {
