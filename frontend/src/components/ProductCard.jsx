@@ -2,14 +2,34 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Heart, Star, Eye } from 'lucide-react';
+import { Heart, Star, Eye, Scale } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
+import { useCompare } from '@/context/CompareContext';
 
 export const ProductCard = ({ product, countdown }) => {
   const { toggleWishlist, isSaved } = useAuth();
   const { addToast } = useToast();
+  const { addToCompare, removeFromCompare, isCompared } = useCompare();
   const saved = isSaved(product._id);
+  const compared = isCompared(product._id || product.id);
+
+  const handleCompareToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const id = product._id || product.id;
+    if (compared) {
+      removeFromCompare(id);
+      addToast(`Removed from comparison`, 'info');
+    } else {
+      const result = addToCompare(product);
+      if (result.success) {
+        addToast(`Added "${product.title.slice(0, 20)}..." to compare`, 'success');
+      } else {
+        addToast(result.message, 'info');
+      }
+    }
+  };
 
   const handleWishlistToggle = (e) => {
     e.preventDefault();
@@ -47,18 +67,32 @@ export const ProductCard = ({ product, countdown }) => {
           </span>
         )}
 
-        {/* Wishlist Heart Button */}
-        <button
-          onClick={handleWishlistToggle}
-          className={`absolute top-3 right-3 p-2 rounded-full border transition-all z-10 cursor-pointer ${
-            saved
-              ? 'bg-rose-500 text-white border-rose-500 shadow-md scale-105'
-              : 'bg-white/90 dark:bg-slate-800/90 text-gray-400 dark:text-slate-400 border-gray-200 dark:border-slate-700 hover:text-rose-500 hover:border-rose-300 hover:bg-white dark:hover:bg-slate-700'
-          }`}
-          title={saved ? 'Remove from wishlist' : 'Save to wishlist'}
-        >
-          <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-current' : ''}`} />
-        </button>
+        {/* Action Buttons: Compare & Wishlist */}
+        <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
+          <button
+            onClick={handleCompareToggle}
+            className={`p-2 rounded-full border transition-all cursor-pointer ${
+              compared
+                ? 'bg-[#0c9096] text-white border-[#0c9096] shadow-md scale-105'
+                : 'bg-white/90 dark:bg-slate-800/90 text-gray-400 dark:text-slate-400 border-gray-200 dark:border-slate-700 hover:text-[#0c9096] hover:border-[#0c9096]/50 hover:bg-white dark:hover:bg-slate-700'
+            }`}
+            title={compared ? 'Remove from compare' : 'Compare this product'}
+          >
+            <Scale className="w-3.5 h-3.5" />
+          </button>
+
+          <button
+            onClick={handleWishlistToggle}
+            className={`p-2 rounded-full border transition-all cursor-pointer ${
+              saved
+                ? 'bg-rose-500 text-white border-rose-500 shadow-md scale-105'
+                : 'bg-white/90 dark:bg-slate-800/90 text-gray-400 dark:text-slate-400 border-gray-200 dark:border-slate-700 hover:text-rose-500 hover:border-rose-300 hover:bg-white dark:hover:bg-slate-700'
+            }`}
+            title={saved ? 'Remove from wishlist' : 'Save to wishlist'}
+          >
+            <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-current' : ''}`} />
+          </button>
+        </div>
 
         <img
           src={product.images?.[0] || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80'}

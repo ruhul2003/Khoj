@@ -6,6 +6,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 import { ToastProvider } from "@/context/ToastContext";
+import { CompareProvider } from "@/context/CompareContext";
+import { CompareDrawer } from "@/components/CompareDrawer";
 
 const baiJamjuree = Bai_Jamjuree({
   weight: ['300', '400', '500', '600', '700'],
@@ -26,11 +28,14 @@ export default function RootLayout({ children }) {
         <ThemeProvider>
           <AuthProvider>
             <ToastProvider>
-              <Navbar />
-              <main className="flex-1">
-                {children}
-              </main>
-              <Footer />
+              <CompareProvider>
+                <Navbar />
+                <main className="flex-1">
+                  {children}
+                </main>
+                <Footer />
+                <CompareDrawer />
+              </CompareProvider>
             </ToastProvider>
           </AuthProvider>
         </ThemeProvider>
