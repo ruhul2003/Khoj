@@ -27,6 +27,17 @@ const shopSchema = new mongoose.Schema({
   rating: { type: Number, default: 5.0 },
   reviewsCount: { type: Number, default: 0 },
   isVerified: { type: Boolean, default: true },
+  verificationStatus: { 
+    type: String, 
+    enum: ['Unverified', 'Pending', 'Verified'], 
+    default: 'Verified' 
+  },
+  badgeTier: { 
+    type: String, 
+    enum: ['Standard', 'Pro Merchant', 'Official Brand'], 
+    default: 'Pro Merchant' 
+  },
+  tradeLicenseOrNid: { type: String, default: '' },
   createdAt: { type: Date, default: Date.now }
 });
 

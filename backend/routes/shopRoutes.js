@@ -257,4 +257,32 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// POST /api/shops/:id/verify-request - Submit verification details & upgrade badge
+router.post('/:id/verify-request', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { tradeLicenseOrNid, badgeTier } = req.body;
+
+    const updates = {
+      isVerified: true,
+      verificationStatus: 'Verified',
+      badgeTier: badgeTier || 'Pro Merchant',
+      tradeLicenseOrNid: tradeLicenseOrNid || 'NID-VERIFIED'
+    };
+
+    if (getIsConnected()) {
+      const shop = await Shop.findByIdAndUpdate(id, updates, { new: true });
+      if (!shop) return res.status(404).json({ error: 'Shop not found' });
+      return res.json({ message: 'Shop verification badge successfully granted!', shop });
+    } else {
+      const targetShop = shops.find(s => s._id === id);
+      if (!targetShop) return res.status(404).json({ error: 'Shop not found' });
+      Object.assign(targetShop, updates);
+      return res.json({ message: 'Shop verification badge successfully granted!', shop: targetShop });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

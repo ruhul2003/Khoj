@@ -52,6 +52,12 @@ function DashboardContent() {
   const [counterPriceInput, setCounterPriceInput] = useState('');
   const [counterNoteInput, setCounterNoteInput] = useState('');
 
+  // Store Verification State
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [verifyingNid, setVerifyingNid] = useState('');
+  const [verifyingTier, setVerifyingTier] = useState('Pro Merchant');
+  const [isSubmittingVerify, setIsSubmittingVerify] = useState(false);
+
   useEffect(() => {
     fetchDashboardData();
   }, [user]);
@@ -143,6 +149,27 @@ function DashboardContent() {
       setShopMessage(err.response?.data?.error || 'Failed to update shop.');
     } finally {
       setSavingShop(false);
+    }
+  };
+
+  const handleRequestVerification = async (e) => {
+    e.preventDefault();
+    if (!userShop) return;
+    setIsSubmittingVerify(true);
+    try {
+      const res = await api.post(`/shops/${userShop._id || userShop.id}/verify-request`, {
+        tradeLicenseOrNid: verifyingNid,
+        badgeTier: verifyingTier
+      });
+      setUserShop(res.data.shop || { ...userShop, isVerified: true, badgeTier: verifyingTier, verificationStatus: 'Verified' });
+      setShowVerifyModal(false);
+      setShopMessage('Store verification badge successfully granted!');
+      setTimeout(() => setShopMessage(''), 4000);
+    } catch (err) {
+      console.error(err);
+      setShopMessage(err.response?.data?.error || 'Verification request failed.');
+    } finally {
+      setIsSubmittingVerify(false);
     }
   };
 
@@ -414,7 +441,14 @@ function DashboardContent() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-end">
+                    <button
+                      onClick={() => setShowVerifyModal(true)}
+                      className="px-4 py-3 bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-300 font-bold text-xs uppercase tracking-wider rounded-2xl border border-emerald-700/50 transition-colors flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                      <span>{userShop.badgeTier || 'Pro Merchant'}</span>
+                    </button>
                     <Link
                       href={`/shop/${userShop.slug}`}
                       className="px-5 py-3 bg-[#0c9096] hover:bg-[#0a6c71] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center gap-2 transition-all"
@@ -804,6 +838,100 @@ function DashboardContent() {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* Store Verification Modal */}
+      {showVerifyModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-md">
+          <div className="glass-panel w-full max-w-lg p-6 sm:p-8 rounded-3xl border border-zinc-800 shadow-2xl relative space-y-6 animate-in fade-in">
+            <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white uppercase tracking-wider">
+                    Store Verification Badges
+                  </h3>
+                  <p className="text-xs text-zinc-400">Boost buyer trust with verified badge tiers</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowVerifyModal(false)}
+                className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleRequestVerification} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-zinc-300 mb-1.5">
+                  Select Badge Tier
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {['Standard', 'Pro Merchant', 'Official Brand'].map((tier) => (
+                    <button
+                      key={tier}
+                      type="button"
+                      onClick={() => setVerifyingTier(tier)}
+                      className={`p-3 rounded-xl border text-xs font-bold text-center transition-all cursor-pointer ${
+                        verifyingTier === tier
+                          ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-lg'
+                          : 'bg-zinc-950 border-zinc-800 text-zinc-400 hover:bg-zinc-900 hover:text-white'
+                      }`}
+                    >
+                      {tier}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-zinc-300 mb-1.5">
+                  National ID (NID) or Trade License Number
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={verifyingNid}
+                  onChange={(e) => setVerifyingNid(e.target.value)}
+                  placeholder="e.g. 199426925... or TRAD/DSCC/012..."
+                  className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-xl text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#0c9096]"
+                />
+                <p className="text-[11px] text-zinc-500 mt-1">
+                  Your credentials are securely handled for merchant trust verification.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-zinc-950/60 border border-zinc-800/80 space-y-1.5 text-[11px] text-zinc-400">
+                <div className="text-emerald-400 font-bold flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Instant Verification Active
+                </div>
+                <p>
+                  As an enrolled Khoj merchant, your badge will be updated immediately upon submission.
+                </p>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowVerifyModal(false)}
+                  className="px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-bold cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmittingVerify}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-extrabold uppercase tracking-wider cursor-pointer shadow-lg disabled:opacity-50"
+                >
+                  {isSubmittingVerify ? 'Verifying...' : 'Activate Badge'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
