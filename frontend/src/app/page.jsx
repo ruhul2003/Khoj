@@ -11,6 +11,7 @@ import { TrendingProducts } from '@/components/TrendingProducts';
 import { TechBanner } from '@/components/TechBanner';
 import { GallerySection } from '@/components/GallerySection';
 import { BackToTop } from '@/components/BackToTop';
+import { RecentlyViewed } from '@/components/RecentlyViewed';
 import { api } from '@/lib/api';
 
 export default function Home() {
@@ -80,7 +81,12 @@ export default function Home() {
         <GallerySection />
       </section>
 
-      {/* 10. Floating Back-to-Top Button */}
+      {/* 10. Recently Viewed Listings */}
+      <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+        <RecentlyViewed />
+      </section>
+
+      {/* 11. Floating Back-to-Top Button */}
       <BackToTop />
     </div>
   );

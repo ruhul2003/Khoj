@@ -8,6 +8,7 @@ import { ChatDrawer } from '@/components/ChatDrawer';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductReviews } from '@/components/ProductReviews';
 import { InspectionChecklistModal } from '@/components/InspectionChecklistModal';
+import { RecentlyViewed } from '@/components/RecentlyViewed';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -91,6 +92,17 @@ export default function ProductDetailPage({ params }) {
     try {
       const res = await api.get(`/products/${productId}`);
       setProduct(res.data);
+
+      try {
+        const stored = localStorage.getItem('khoj_recently_viewed');
+        let parsed = stored ? JSON.parse(stored) : [];
+        const currentId = res.data._id || res.data.id;
+        parsed = [res.data, ...parsed.filter(p => (p._id || p.id) !== currentId)].slice(0, 8);
+        localStorage.setItem('khoj_recently_viewed', JSON.stringify(parsed));
+      } catch (e) {
+        console.error('Failed to sync recently viewed:', e);
+      }
+
       if (res.data?.category) {
         try {
           const relRes = await api.get('/products', { params: { category: res.data.category } });
@@ -490,6 +502,9 @@ export default function ProductDetailPage({ params }) {
           </div>
         </div>
       )}
+
+      {/* Recently Viewed History */}
+      <RecentlyViewed currentProductId={productId} />
 
       <InspectionChecklistModal
         category={product.category}
