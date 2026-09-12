@@ -26,6 +26,7 @@ app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/offers', require('./routes/offerRoutes'));
 app.use('/api/shops', require('./routes/shopRoutes'));
 app.use('/api/messages', require('./routes/messageRoutes'));
+app.use('/api/reviews', require('./routes/reviewRoutes'));
 app.use('/api/seed', require('./routes/seedRoutes'));
 
 // Health check endpoint

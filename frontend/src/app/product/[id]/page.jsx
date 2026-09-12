@@ -6,6 +6,7 @@ import { api } from '@/lib/api';
 import { MakeOfferModal } from '@/components/MakeOfferModal';
 import { ChatDrawer } from '@/components/ChatDrawer';
 import { ProductCard } from '@/components/ProductCard';
+import { ProductReviews } from '@/components/ProductReviews';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -252,6 +253,8 @@ export default function ProductDetailPage({ params }) {
               </div>
             </div>
           </div>
+
+          <ProductReviews productId={product._id || product.id} sellerId={product.sellerId} />
         </div>
 
         <div className="lg:col-span-5 space-y-6">

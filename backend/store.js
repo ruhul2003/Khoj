@@ -921,6 +921,45 @@ let shops = [
   }
 ];
 
+let reviews = [
+  {
+    _id: "rev_1",
+    productId: "prod_elec_1",
+    sellerId: "user_demo_1",
+    reviewerId: "user_rev_1",
+    reviewerName: "Nafis Imtiaz",
+    reviewerAvatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
+    rating: 5,
+    comment: "Excellent condition! Battery health is exactly 91% as stated, handed over near Gulshan with full box and invoice. Highly recommended seller.",
+    verifiedPurchase: true,
+    createdAt: new Date(Date.now() - 3600000 * 48).toISOString()
+  },
+  {
+    _id: "rev_2",
+    productId: "prod_elec_1",
+    sellerId: "user_demo_1",
+    reviewerId: "user_rev_2",
+    reviewerName: "Sadia Sultana",
+    reviewerAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
+    rating: 5,
+    comment: "Very polite seller, tested the machine thoroughly before payment. Flawless experience on Khoj.",
+    verifiedPurchase: true,
+    createdAt: new Date(Date.now() - 3600000 * 96).toISOString()
+  },
+  {
+    _id: "rev_3",
+    productId: "prod_phone_1",
+    sellerId: "user_demo_2",
+    reviewerId: "user_rev_3",
+    reviewerName: "Kazi Rayhan",
+    reviewerAvatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&q=80",
+    rating: 5,
+    comment: "Official BTRC registered unit with pristine titanium frame. Fast handover in Dhanmondi.",
+    verifiedPurchase: true,
+    createdAt: new Date(Date.now() - 3600000 * 72).toISOString()
+  }
+];
+
 module.exports = {
   products,
   users,
@@ -928,6 +967,7 @@ module.exports = {
   offers,
   messages,
   shops,
+  reviews,
   seedProducts
 };
 
