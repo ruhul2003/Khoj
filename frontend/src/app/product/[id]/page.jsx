@@ -7,6 +7,7 @@ import { MakeOfferModal } from '@/components/MakeOfferModal';
 import { ChatDrawer } from '@/components/ChatDrawer';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductReviews } from '@/components/ProductReviews';
+import { InspectionChecklistModal } from '@/components/InspectionChecklistModal';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -38,6 +39,7 @@ export default function ProductDetailPage({ params }) {
 
   const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isChecklistOpen, setIsChecklistOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [isCopiedLink, setIsCopiedLink] = useState(false);
@@ -451,6 +453,15 @@ export default function ProductDetailPage({ params }) {
                   <span>Never transfer advance money or share OTPs before receiving the item.</span>
                 </li>
               </ul>
+
+              <button
+                type="button"
+                onClick={() => setIsChecklistOpen(true)}
+                className="w-full mt-3 py-2.5 px-3 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-800/60 text-emerald-300 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Open Physical Inspection Checklist</span>
+              </button>
             </div>
           </div>
         </div>
@@ -479,6 +490,13 @@ export default function ProductDetailPage({ params }) {
           </div>
         </div>
       )}
+
+      <InspectionChecklistModal
+        category={product.category}
+        productTitle={product.title}
+        isOpen={isChecklistOpen}
+        onClose={() => setIsChecklistOpen(false)}
+      />
 
       <MakeOfferModal
         product={product}
