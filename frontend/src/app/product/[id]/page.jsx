@@ -9,6 +9,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { ProductReviews } from '@/components/ProductReviews';
 import { InspectionChecklistModal } from '@/components/InspectionChecklistModal';
 import { RecentlyViewed } from '@/components/RecentlyViewed';
+import { PriceAlertModal } from '@/components/PriceAlertModal';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -24,7 +25,8 @@ import {
   MessageCircle,
   Copy,
   Check,
-  Share2
+  Share2,
+  Bell
 } from 'lucide-react';
 
 export default function ProductDetailPage({ params }) {
@@ -41,6 +43,7 @@ export default function ProductDetailPage({ params }) {
   const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChecklistOpen, setIsChecklistOpen] = useState(false);
+  const [isPriceAlertOpen, setIsPriceAlertOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [isCopiedLink, setIsCopiedLink] = useState(false);
@@ -175,6 +178,15 @@ export default function ProductDetailPage({ params }) {
         </Link>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsPriceAlertOpen(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-amber-400 hover:text-amber-300 transition-all cursor-pointer shadow-sm"
+            title="Set Price Drop Alert"
+          >
+            <Bell className="w-3.5 h-3.5 text-amber-400" />
+            <span>Price Alert</span>
+          </button>
+
           <button
             onClick={handleShare}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-zinc-300 hover:text-white transition-all cursor-pointer shadow-sm"
@@ -523,6 +535,12 @@ export default function ProductDetailPage({ params }) {
         product={product}
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
+      />
+
+      <PriceAlertModal
+        product={product}
+        isOpen={isPriceAlertOpen}
+        onClose={() => setIsPriceAlertOpen(false)}
       />
     </div>
   );
