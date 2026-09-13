@@ -15,6 +15,7 @@ import { SafeHandoverHubs } from '@/components/SafeHandoverHubs';
 import { QuickInquiryPills } from '@/components/QuickInquiryPills';
 import { WarrantyBadge } from '@/components/WarrantyBadge';
 import { ShareModal } from '@/components/ShareModal';
+import { EmiCalculatorModal } from '@/components/EmiCalculatorModal';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -32,7 +33,8 @@ import {
   Check,
   Share2,
   Bell,
-  Flag
+  Flag,
+  Calculator
 } from 'lucide-react';
 
 export default function ProductDetailPage({ params }) {
@@ -53,6 +55,7 @@ export default function ProductDetailPage({ params }) {
   const [isPriceAlertOpen, setIsPriceAlertOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isEmiModalOpen, setIsEmiModalOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [isCopiedLink, setIsCopiedLink] = useState(false);
@@ -298,6 +301,17 @@ export default function ProductDetailPage({ params }) {
                     <span className="text-sm text-zinc-500 line-through">৳{product.originalPrice.toLocaleString()}</span>
                   )}
                 </div>
+
+                {product.price >= 3000 && (
+                  <button
+                    type="button"
+                    onClick={() => setIsEmiModalOpen(true)}
+                    className="mt-1.5 inline-flex items-center gap-1.5 text-[11px] font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+                  >
+                    <Calculator className="w-3.5 h-3.5 text-amber-400" />
+                    <span>From ৳{Math.round(product.price / 6).toLocaleString()}/mo on 0% EMI ➔</span>
+                  </button>
+                )}
               </div>
               {discountPercent > 0 && (
                 <span className="px-3 py-1 rounded-lg bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-bold uppercase tracking-wider">
@@ -567,6 +581,13 @@ export default function ProductDetailPage({ params }) {
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
         product={product}
+      />
+
+      <EmiCalculatorModal
+        isOpen={isEmiModalOpen}
+        onClose={() => setIsEmiModalOpen(false)}
+        price={product.price}
+        productTitle={product.title}
       />
     </div>
   );
