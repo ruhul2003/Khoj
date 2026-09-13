@@ -268,4 +268,39 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// POST /api/products/:id/report - Report suspicious listing
+router.post('/:id/report', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reason, details, reporterContact } = req.body;
+
+    if (!reason) {
+      return res.status(400).json({ error: 'Reason for reporting is required' });
+    }
+
+    const reportRecord = {
+      _id: 'rep_' + Date.now(),
+      productId: id,
+      reason,
+      details: details || '',
+      reporterContact: reporterContact || 'Anonymous',
+      createdAt: new Date().toISOString(),
+      status: 'Under Review'
+    };
+
+    if (!global.listingReports) {
+      global.listingReports = [];
+    }
+    global.listingReports.push(reportRecord);
+
+    return res.status(201).json({
+      success: true,
+      message: 'Report submitted successfully. Our Trust & Safety team will review this listing.',
+      reportId: reportRecord._id
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

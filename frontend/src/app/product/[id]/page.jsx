@@ -10,6 +10,7 @@ import { ProductReviews } from '@/components/ProductReviews';
 import { InspectionChecklistModal } from '@/components/InspectionChecklistModal';
 import { RecentlyViewed } from '@/components/RecentlyViewed';
 import { PriceAlertModal } from '@/components/PriceAlertModal';
+import { ReportListingModal } from '@/components/ReportListingModal';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -26,7 +27,8 @@ import {
   Copy,
   Check,
   Share2,
-  Bell
+  Bell,
+  Flag
 } from 'lucide-react';
 
 export default function ProductDetailPage({ params }) {
@@ -44,6 +46,7 @@ export default function ProductDetailPage({ params }) {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChecklistOpen, setIsChecklistOpen] = useState(false);
   const [isPriceAlertOpen, setIsPriceAlertOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [isCopiedLink, setIsCopiedLink] = useState(false);
@@ -486,6 +489,15 @@ export default function ProductDetailPage({ params }) {
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Open Physical Inspection Checklist</span>
               </button>
+
+              <button
+                type="button"
+                onClick={() => setIsReportModalOpen(true)}
+                className="w-full py-2 px-3 rounded-xl hover:bg-rose-950/30 text-zinc-500 hover:text-rose-400 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <Flag className="w-3 h-3 text-rose-500/70" />
+                <span>Report suspicious listing or scam</span>
+              </button>
             </div>
           </div>
         </div>
@@ -541,6 +553,13 @@ export default function ProductDetailPage({ params }) {
         product={product}
         isOpen={isPriceAlertOpen}
         onClose={() => setIsPriceAlertOpen(false)}
+      />
+
+      <ReportListingModal
+        productId={product._id || product.id}
+        productTitle={product.title}
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
       />
     </div>
   );
