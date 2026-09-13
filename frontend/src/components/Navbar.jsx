@@ -35,11 +35,13 @@ import {
   Compass,
   CheckCircle2,
   DollarSign,
-  Store
+  Store,
+  MapPin
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { LocationPickerModal } from '@/components/LocationPickerModal';
 
 const CATEGORIES = [
   { name: 'Electronics', desc: 'Laptops, Audio & Monitors', icon: Laptop, badge: '30% OFF' },
@@ -76,6 +78,15 @@ const NavbarContent = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState('Dhaka');
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('khoj_user_location');
+      if (stored) setCurrentLocation(stored);
+    } catch (e) {}
+  }, []);
   
   // Active navigation dropdown: 'categories-btn' | 'shop' | 'categories' | 'products' | 'deals' | 'elements' | null
   const [activeMenu, setActiveMenu] = useState(null);
@@ -266,6 +277,18 @@ const NavbarContent = () => {
 
           {/* Right Header Controls */}
           <div className="flex items-center gap-5 lg:gap-7 shrink-0 text-xs">
+            {/* Location Selector */}
+            <button
+              type="button"
+              onClick={() => setIsLocationModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800/80 hover:bg-slate-700 border border-slate-700 hover:border-amber-400 text-slate-200 text-xs font-semibold transition-all cursor-pointer shadow-xs group"
+              title="Change your marketplace city/division"
+            >
+              <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0 group-hover:scale-110 transition-transform" />
+              <span className="max-w-[85px] sm:max-w-[120px] truncate">{currentLocation}</span>
+              <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
+            </button>
+
             {/* Call For Order */}
             <a href="tel:+8801712345678" className="hidden xl:flex items-center gap-2.5 text-slate-300 hover:text-amber-400 transition-colors">
               <PhoneCall className="w-4 h-4 text-amber-400" />
@@ -1126,6 +1149,13 @@ const NavbarContent = () => {
           </div>
         </div>
       )}
+
+      <LocationPickerModal
+        isOpen={isLocationModalOpen}
+        onClose={() => setIsLocationModalOpen(false)}
+        selectedLocation={currentLocation}
+        onSelectLocation={(loc) => setCurrentLocation(loc)}
+      />
     </header>
   );
 };
