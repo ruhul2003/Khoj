@@ -11,6 +11,7 @@ import { InspectionChecklistModal } from '@/components/InspectionChecklistModal'
 import { RecentlyViewed } from '@/components/RecentlyViewed';
 import { PriceAlertModal } from '@/components/PriceAlertModal';
 import { ReportListingModal } from '@/components/ReportListingModal';
+import { SafeHandoverHubs } from '@/components/SafeHandoverHubs';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -425,6 +426,9 @@ export default function ProductDetailPage({ params }) {
                     </div>
                   </div>
                 </div>
+
+                {/* Verified Safe Handover Hubs */}
+                <SafeHandoverHubs location={product.location} />
               </div>
             )}
 
