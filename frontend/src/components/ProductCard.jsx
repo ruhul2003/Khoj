@@ -6,6 +6,7 @@ import { Heart, Star, Eye, Scale } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { useCompare } from '@/context/CompareContext';
+import { WarrantyBadge } from '@/components/WarrantyBadge';
 
 export const ProductCard = ({ product, countdown }) => {
   const { toggleWishlist, isSaved } = useAuth();
@@ -143,11 +144,14 @@ export const ProductCard = ({ product, countdown }) => {
           </h3>
         </Link>
 
-        {/* Star Ratings */}
-        <div className="flex items-center gap-1">
-          {[1, 2, 3, 4, 5].map((s) => (
-            <Star key={s} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-          ))}
+        {/* Star Ratings & Warranty */}
+        <div className="flex items-center justify-between gap-1">
+          <div className="flex items-center gap-1">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <Star key={s} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            ))}
+          </div>
+          <WarrantyBadge condition={product.condition} category={product.category} variant="compact" />
         </div>
 
         {/* Price Row */}

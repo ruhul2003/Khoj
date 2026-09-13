@@ -13,6 +13,7 @@ import { PriceAlertModal } from '@/components/PriceAlertModal';
 import { ReportListingModal } from '@/components/ReportListingModal';
 import { SafeHandoverHubs } from '@/components/SafeHandoverHubs';
 import { QuickInquiryPills } from '@/components/QuickInquiryPills';
+import { WarrantyBadge } from '@/components/WarrantyBadge';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -285,6 +286,9 @@ export default function ProductDetailPage({ params }) {
               </div>
             </div>
           </div>
+
+          {/* Warranty & Guarantee Overview */}
+          <WarrantyBadge condition={product.condition} category={product.category} variant="detailed" />
 
           <ProductReviews productId={product._id || product.id} sellerId={product.sellerId} />
         </div>
