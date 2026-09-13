@@ -4,8 +4,9 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductFilter } from '@/components/ProductFilter';
+import { SavedSearchesDrawer } from '@/components/SavedSearchesDrawer';
 import { api } from '@/lib/api';
-import { Search, SlidersHorizontal, PackageX } from 'lucide-react';
+import { Search, SlidersHorizontal, PackageX, Bookmark } from 'lucide-react';
 
 function BrowseContent() {
   const searchParams = useSearchParams();
@@ -33,6 +34,19 @@ function BrowseContent() {
   const [deal, setDeal] = useState(initialDeal);
   const [loading, setLoading] = useState(true);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [isSavedSearchesOpen, setIsSavedSearchesOpen] = useState(false);
+
+  const applySavedFilters = (saved) => {
+    if (!saved) return;
+    setCategory(saved.category || 'All');
+    setCondition(saved.condition || 'All');
+    setLocation(saved.location || 'All Bangladesh');
+    setVerifiedOnly(!!saved.verifiedOnly);
+    setSearch(saved.search || '');
+    setMinPrice(saved.minPrice || '');
+    setMaxPrice(saved.maxPrice || '');
+    setSort(saved.sort || 'newest');
+  };
 
   // Sync state whenever the URL search params change (e.g. user clicked navbar link or back/forward)
   useEffect(() => {
@@ -199,18 +213,29 @@ function BrowseContent() {
               )}
             </div>
 
-            <div className="flex items-center gap-2">
-              <span className="text-zinc-500 font-medium">Sort:</span>
-              <select
-                value={sort}
-                onChange={(e) => setSort(e.target.value)}
-                className="bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs rounded-xl px-3 py-1.5 focus:outline-none focus:border-[#0c9096] cursor-pointer"
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setIsSavedSearchesOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-amber-500/50 text-xs font-bold text-amber-400 cursor-pointer transition-all shadow-sm"
               >
-                <option value="newest">Newest First</option>
-                <option value="price_asc">Price: Low to High</option>
-                <option value="price_desc">Price: High to Low</option>
-                <option value="views">Most Popular</option>
-              </select>
+                <Bookmark className="w-3.5 h-3.5" />
+                <span>Saved Searches</span>
+              </button>
+
+              <div className="flex items-center gap-2">
+                <span className="text-zinc-500 font-medium">Sort:</span>
+                <select
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                  className="bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs rounded-xl px-3 py-1.5 focus:outline-none focus:border-[#0c9096] cursor-pointer"
+                >
+                  <option value="newest">Newest First</option>
+                  <option value="price_asc">Price: Low to High</option>
+                  <option value="price_desc">Price: High to Low</option>
+                  <option value="popular">Most Popular</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -243,6 +268,13 @@ function BrowseContent() {
           )}
         </div>
       </div>
+
+      <SavedSearchesDrawer
+        isOpen={isSavedSearchesOpen}
+        onClose={() => setIsSavedSearchesOpen(false)}
+        onApplySearch={applySavedFilters}
+        currentFilters={{ category, condition, location, verifiedOnly, search, minPrice, maxPrice, sort }}
+      />
     </div>
   );
 }
