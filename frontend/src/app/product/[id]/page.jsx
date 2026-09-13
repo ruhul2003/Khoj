@@ -14,6 +14,7 @@ import { ReportListingModal } from '@/components/ReportListingModal';
 import { SafeHandoverHubs } from '@/components/SafeHandoverHubs';
 import { QuickInquiryPills } from '@/components/QuickInquiryPills';
 import { WarrantyBadge } from '@/components/WarrantyBadge';
+import { ShareModal } from '@/components/ShareModal';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -51,36 +52,14 @@ export default function ProductDetailPage({ params }) {
   const [isChecklistOpen, setIsChecklistOpen] = useState(false);
   const [isPriceAlertOpen, setIsPriceAlertOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [isCopiedLink, setIsCopiedLink] = useState(false);
 
-  const handleShare = async () => {
+  const handleShare = () => {
     if (!product) return;
-    const shareData = {
-      title: `${product.title} | Khoj`,
-      text: `Check out ${product.title} for ৳${product.price?.toLocaleString()} on Khoj!`,
-      url: typeof window !== 'undefined' ? window.location.href : ''
-    };
-
-    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-      try {
-        await navigator.share(shareData);
-        addToast('Shared successfully!', 'success');
-        return;
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          console.error("Web share failed", err);
-        }
-      }
-    }
-
-    if (typeof window !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href);
-      setIsCopiedLink(true);
-      addToast('Listing link copied to clipboard!', 'success');
-      setTimeout(() => setIsCopiedLink(false), 2500);
-    }
+    setIsShareModalOpen(true);
   };
 
   const handleWishlistToggle = () => {
@@ -582,6 +561,12 @@ export default function ProductDetailPage({ params }) {
         productTitle={product.title}
         isOpen={isReportModalOpen}
         onClose={() => setIsReportModalOpen(false)}
+      />
+
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        product={product}
       />
     </div>
   );
