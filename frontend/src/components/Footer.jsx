@@ -75,9 +75,13 @@ export const Footer = () => {
         <div>
           <h5 className="font-bold text-white mb-4 text-xs uppercase tracking-widest text-amber-400">Customer Care</h5>
           <ul className="space-y-2.5 text-xs font-medium">
+            <li>
+              <Link href="/help" className="flex items-center gap-1.5 text-white font-bold hover:text-amber-400 transition-colors">
+                Help & Safety Center <ArrowUpRight className="w-3 h-3 text-amber-400" />
+              </Link>
+            </li>
             <li className="flex items-center gap-1.5 hover:text-white cursor-pointer">7-Day Free Returns <ArrowUpRight className="w-3 h-3 text-slate-500" /></li>
             <li className="flex items-center gap-1.5 hover:text-white cursor-pointer">100% Genuine Guarantee <ArrowUpRight className="w-3 h-3 text-slate-500" /></li>
-            <li className="flex items-center gap-1.5 hover:text-white cursor-pointer">Secure Payments <ArrowUpRight className="w-3 h-3 text-slate-500" /></li>
             <li className="flex items-center gap-1.5 hover:text-white cursor-pointer">Terms & Conditions <ArrowUpRight className="w-3 h-3 text-slate-500" /></li>
           </ul>
         </div>
