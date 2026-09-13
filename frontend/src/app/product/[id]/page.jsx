@@ -12,6 +12,7 @@ import { RecentlyViewed } from '@/components/RecentlyViewed';
 import { PriceAlertModal } from '@/components/PriceAlertModal';
 import { ReportListingModal } from '@/components/ReportListingModal';
 import { SafeHandoverHubs } from '@/components/SafeHandoverHubs';
+import { QuickInquiryPills } from '@/components/QuickInquiryPills';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -45,6 +46,7 @@ export default function ProductDetailPage({ params }) {
 
   const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatInitialMessage, setChatInitialMessage] = useState('');
   const [isChecklistOpen, setIsChecklistOpen] = useState(false);
   const [isPriceAlertOpen, setIsPriceAlertOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
@@ -393,6 +395,14 @@ export default function ProductDetailPage({ params }) {
                   </div>
                 )}
 
+                {/* Instant Quick Inquiries */}
+                <QuickInquiryPills
+                  onSelectInquiry={(inquiryText) => {
+                    setChatInitialMessage(inquiryText);
+                    setIsChatOpen(true);
+                  }}
+                />
+
                 {/* Direct Handover Information Panel */}
                 <div className="p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 space-y-3 text-xs">
                   <div className="flex items-center gap-2 text-[#689db8] font-bold uppercase tracking-wider text-[11px]">
@@ -550,7 +560,11 @@ export default function ProductDetailPage({ params }) {
       <ChatDrawer
         product={product}
         isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
+        initialMessage={chatInitialMessage}
+        onClose={() => {
+          setIsChatOpen(false);
+          setChatInitialMessage('');
+        }}
       />
 
       <PriceAlertModal

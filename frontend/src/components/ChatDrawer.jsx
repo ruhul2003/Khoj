@@ -12,16 +12,19 @@ const HANDOVER_QUICK_TOPICS = [
   "💵 What is your final price for pickup?"
 ];
 
-export const ChatDrawer = ({ product, isOpen, onClose }) => {
+export const ChatDrawer = ({ product, isOpen, onClose, initialMessage = '' }) => {
   const { user } = useAuth();
   const [messages, setMessages] = useState([]);
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState(initialMessage || '');
 
   useEffect(() => {
     if (isOpen) {
       fetchMessages();
+      if (initialMessage) {
+        setInputText(initialMessage);
+      }
     }
-  }, [isOpen, product._id]);
+  }, [isOpen, product?._id, initialMessage]);
 
   const fetchMessages = async () => {
     try {
