@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
 import { ProductCard } from '@/components/ProductCard';
+import { StoreAnalyticsCard } from '@/components/StoreAnalyticsCard';
 import { 
   Package, 
   ShoppingBag, 
@@ -647,7 +648,21 @@ function DashboardContent() {
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="space-y-6">
+              <StoreAnalyticsCard listings={myListings} offers={myOffers} shop={userShop} />
+
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Active Inventory ({myListings.length})</span>
+                <Link
+                  href="/sell"
+                  className="px-4 py-2 bg-[#0c9096] hover:bg-[#0a6c71] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors inline-flex items-center gap-1.5 shadow-sm"
+                >
+                  <PlusCircle className="w-3.5 h-3.5" />
+                  <span>Post New Listing</span>
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {myListings.map((p) => (
                 <div key={p._id} className="relative group">
                   <ProductCard product={p} />
@@ -670,6 +685,7 @@ function DashboardContent() {
                   </div>
                 </div>
               ))}
+            </div>
             </div>
           )}
         </div>
