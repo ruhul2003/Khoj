@@ -8,6 +8,7 @@ import { Footer } from "@/components/Footer";
 import { ToastProvider } from "@/context/ToastContext";
 import { CompareProvider } from "@/context/CompareContext";
 import { CompareDrawer } from "@/components/CompareDrawer";
+import { AiChatbox } from "@/components/AiChatbox";
 
 const baiJamjuree = Bai_Jamjuree({
   weight: ['300', '400', '500', '600', '700'],
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
                 </main>
                 <Footer />
                 <CompareDrawer />
+                <AiChatbox />
               </CompareProvider>
             </ToastProvider>
           </AuthProvider>
