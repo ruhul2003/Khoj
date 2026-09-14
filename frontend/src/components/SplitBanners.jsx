@@ -23,7 +23,7 @@ export const SplitBanners = () => {
               Contemporary 2 Seater Sofa In White Colour
             </h3>
             <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+              Handcrafted with Scandinavian solid oak frame and breathable linen cushions for everyday comfort.
             </p>
             <div className="pt-2">
               <Link
@@ -51,7 +51,7 @@ export const SplitBanners = () => {
               Want To Capture Your Photograph In Colour
             </h3>
             <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+              Explore high-grade mirrorless cameras and sharp prime lenses engineered to elevate your visual storytelling.
             </p>
             <div className="pt-2">
               <Link
