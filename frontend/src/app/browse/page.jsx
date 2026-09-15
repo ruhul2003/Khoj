@@ -246,18 +246,43 @@ function BrowseContent() {
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="glass-panel p-20 text-center rounded-3xl border border-zinc-800 space-y-4">
-              <PackageX className="w-14 h-14 text-zinc-600 mx-auto" />
-              <h3 className="text-xl font-bold text-white">No Products Found</h3>
-              <p className="text-xs text-zinc-400 max-w-sm mx-auto">
-                No items match your selected parameters. Try resetting your price or condition filters.
-              </p>
-              <button
-                onClick={handleResetFilters}
-                className="px-6 py-3 bg-[#0c9096] hover:bg-[#0a6c71] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors"
-              >
-                Clear All Filters
-              </button>
+            <div className="glass-panel p-12 sm:p-16 text-center rounded-3xl border border-zinc-800 space-y-5 bg-zinc-950/60">
+              <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto text-zinc-500">
+                <PackageX className="w-8 h-8" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-xl font-bold text-white">No Products Found</h3>
+                <p className="text-xs text-zinc-400 max-w-md mx-auto leading-relaxed">
+                  We couldn't find any listings matching your active filters or keyword. Try relaxing your search criteria or browse popular categories below.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+                <button
+                  onClick={handleResetFilters}
+                  className="px-6 py-3 bg-[#0c9096] hover:bg-[#0a6c71] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
+                >
+                  Clear All Filters
+                </button>
+              </div>
+              <div className="pt-4 border-t border-zinc-800/80 max-w-sm mx-auto">
+                <span className="text-[11px] text-zinc-500 uppercase tracking-wider font-semibold block mb-2.5">
+                  Try Browsing Popular Categories
+                </span>
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  {['Electronics', 'Fashion', 'Vehicles', 'Gaming'].map((catName) => (
+                    <button
+                      key={catName}
+                      onClick={() => {
+                        handleResetFilters();
+                        setCategory(catName);
+                      }}
+                      className="text-xs px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-850 text-zinc-300 hover:text-white border border-zinc-800 transition-colors cursor-pointer"
+                    >
+                      {catName}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
