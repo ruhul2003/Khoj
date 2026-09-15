@@ -32,6 +32,25 @@ export const ShareModal = ({ isOpen, onClose, product }) => {
     }
   };
 
+  const handleNativeShare = async () => {
+    if (typeof window !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: product.title,
+          text: shareText,
+          url: currentUrl
+        });
+        addToast('Shared successfully!', 'success');
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          handleCopyLink();
+        }
+      }
+    } else {
+      handleCopyLink();
+    }
+  };
+
   const shareChannels = [
     {
       name: 'WhatsApp',
@@ -128,6 +147,15 @@ export const ShareModal = ({ isOpen, onClose, product }) => {
               )}
             </button>
           </div>
+          {typeof window !== 'undefined' && typeof navigator !== 'undefined' && navigator.share && (
+            <button
+              onClick={handleNativeShare}
+              className="w-full mt-2 py-2 px-3 rounded-xl bg-zinc-900 hover:bg-zinc-850 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:text-white flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            >
+              <Share2 className="w-3.5 h-3.5 text-teal-400" />
+              <span>Share via Device (Apps, AirDrop, Nearby)</span>
+            </button>
+          )}
         </div>
 
         {/* Social Buttons */}
