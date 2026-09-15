@@ -45,7 +45,7 @@ const CATEGORY_ITEMS = [
     name: 'Sport & Outdoor',
     categoryQuery: 'Mobile Phones',
     bg: 'bg-[#fce7f3]',
-    image: 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=400&q=80'
+    image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=400&q=80'
   }
 ];
 
@@ -97,11 +97,11 @@ export const CategoryShowcase = () => {
             href={`/browse?category=${encodeURIComponent(cat.categoryQuery)}`}
             className="group flex flex-col items-center shrink-0 w-36 sm:w-44 text-center space-y-3 cursor-pointer"
           >
-            <div className={`w-32 sm:w-40 h-32 sm:h-40 rounded-2xl ${cat.bg} dark:opacity-90 p-4 flex items-center justify-center shadow-xs group-hover:shadow-md transition-all transform group-hover:-translate-y-1`}>
+            <div className={`w-32 sm:w-40 h-32 sm:h-40 rounded-2xl ${cat.bg} overflow-hidden relative shadow-xs group-hover:shadow-md transition-all transform group-hover:-translate-y-1`}>
               <img
                 src={cat.image}
                 alt={cat.name}
-                className="w-24 sm:w-28 h-24 sm:h-28 object-contain rounded-xl drop-shadow-md group-hover:scale-110 transition-transform"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               />
             </div>
             <span className="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 group-hover:text-amber-500 transition-colors">
