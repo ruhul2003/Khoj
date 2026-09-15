@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { useCompare } from '@/context/CompareContext';
 import { WarrantyBadge } from '@/components/WarrantyBadge';
+import { formatBDT } from '@/utils/formatters';
 
 export const ProductCard = ({ product, countdown }) => {
   const { toggleWishlist, isSaved } = useAuth();
@@ -51,9 +52,9 @@ export const ProductCard = ({ product, countdown }) => {
     ? product.originalPrice
     : (discountPercent > 0 ? Math.round(product.price * 1.2) : null);
 
-  // Formatting price to $ or ৳
-  const formattedPrice = `$${product.price.toLocaleString()}`;
-  const formattedOriginal = originalPriceVal ? `$${originalPriceVal.toLocaleString()}` : null;
+  // Formatting price to Bangladeshi Taka (৳)
+  const formattedPrice = formatBDT(product.price);
+  const formattedOriginal = originalPriceVal ? formatBDT(originalPriceVal) : null;
 
   return (
     <div className="group bg-white dark:bg-[#131b26] rounded-2xl overflow-hidden border border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700 hover:shadow-xl transition-all duration-300 flex flex-col justify-between font-['Bai_Jamjuree'] relative">
