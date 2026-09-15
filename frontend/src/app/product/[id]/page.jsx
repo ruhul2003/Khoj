@@ -19,6 +19,7 @@ import { EmiCalculatorModal } from '@/components/EmiCalculatorModal';
 import { DeliveryEstimator } from '@/components/DeliveryEstimator';
 import { ConditionGuideModal } from '@/components/ConditionGuideModal';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { HandoverReceiptModal } from '@/components/HandoverReceiptModal';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -41,7 +42,8 @@ import {
   Share2,
   Bell,
   Flag,
-  Calculator
+  Calculator,
+  FileText
 } from 'lucide-react';
 
 export default function ProductDetailPage({ params }) {
@@ -64,6 +66,7 @@ export default function ProductDetailPage({ params }) {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isEmiModalOpen, setIsEmiModalOpen] = useState(false);
   const [isConditionGuideOpen, setIsConditionGuideOpen] = useState(false);
+  const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [isCopiedLink, setIsCopiedLink] = useState(false);
@@ -171,6 +174,15 @@ export default function ProductDetailPage({ params }) {
         </Link>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsReceiptModalOpen(true)}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-teal-400 hover:text-teal-300 transition-all cursor-pointer shadow-sm"
+            title="Generate Printable Handover Receipt"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Receipt</span>
+          </button>
+
           <button
             onClick={() => setIsPriceAlertOpen(true)}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-amber-400 hover:text-amber-300 transition-all cursor-pointer shadow-sm"
@@ -633,6 +645,12 @@ export default function ProductDetailPage({ params }) {
       <ConditionGuideModal
         isOpen={isConditionGuideOpen}
         onClose={() => setIsConditionGuideOpen(false)}
+      />
+
+      <HandoverReceiptModal
+        isOpen={isReceiptModalOpen}
+        onClose={() => setIsReceiptModalOpen(false)}
+        product={product}
       />
     </div>
   );
