@@ -17,6 +17,7 @@ import { WarrantyBadge } from '@/components/WarrantyBadge';
 import { ShareModal } from '@/components/ShareModal';
 import { EmiCalculatorModal } from '@/components/EmiCalculatorModal';
 import { DeliveryEstimator } from '@/components/DeliveryEstimator';
+import { ConditionGuideModal } from '@/components/ConditionGuideModal';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -29,6 +30,7 @@ import {
   ArrowLeft,
   Handshake,
   Phone,
+  Award,
   MessageCircle,
   Copy,
   Check,
@@ -57,6 +59,7 @@ export default function ProductDetailPage({ params }) {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isEmiModalOpen, setIsEmiModalOpen] = useState(false);
+  const [isConditionGuideOpen, setIsConditionGuideOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [isCopiedLink, setIsCopiedLink] = useState(false);
@@ -210,10 +213,18 @@ export default function ProductDetailPage({ params }) {
               className="w-full h-full object-cover"
             />
             
-            <div className="absolute top-5 left-5 z-10">
+            <div className="absolute top-5 left-5 z-10 flex items-center gap-2">
               <span className="px-4 py-1.5 rounded-full text-xs font-extrabold bg-[#0c9096] text-white border border-[#689db8]/40 shadow-xl">
                 {product.condition}
               </span>
+              <button
+                type="button"
+                onClick={() => setIsConditionGuideOpen(true)}
+                className="px-2.5 py-1.5 rounded-full text-[11px] font-bold bg-zinc-950/80 hover:bg-zinc-900 text-teal-300 border border-teal-500/30 backdrop-blur-md transition-colors cursor-pointer flex items-center gap-1 shadow-lg"
+                title="View Condition Rating Guide"
+              >
+                <Award className="w-3.5 h-3.5" /> Guide
+              </button>
             </div>
 
             <button
@@ -257,7 +268,14 @@ export default function ProductDetailPage({ params }) {
               </div>
               <div>
                 <span className="block text-zinc-500 uppercase tracking-widest text-[10px]">Condition</span>
-                <span className="font-bold text-[#0c9096]">{product.condition}</span>
+                <button
+                  type="button"
+                  onClick={() => setIsConditionGuideOpen(true)}
+                  className="font-bold text-[#0c9096] hover:underline flex items-center gap-1 cursor-pointer"
+                  title="View Condition Rating Guide"
+                >
+                  {product.condition} <Award className="w-3 h-3" />
+                </button>
               </div>
               <div>
                 <span className="block text-zinc-500 uppercase tracking-widest text-[10px]">Location</span>
@@ -592,6 +610,11 @@ export default function ProductDetailPage({ params }) {
         onClose={() => setIsEmiModalOpen(false)}
         price={product.price}
         productTitle={product.title}
+      />
+
+      <ConditionGuideModal
+        isOpen={isConditionGuideOpen}
+        onClose={() => setIsConditionGuideOpen(false)}
       />
     </div>
   );
