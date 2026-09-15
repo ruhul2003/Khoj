@@ -18,6 +18,7 @@ import { ShareModal } from '@/components/ShareModal';
 import { EmiCalculatorModal } from '@/components/EmiCalculatorModal';
 import { DeliveryEstimator } from '@/components/DeliveryEstimator';
 import { ConditionGuideModal } from '@/components/ConditionGuideModal';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -152,17 +153,13 @@ export default function ProductDetailPage({ params }) {
   return (
     <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12 space-y-8 font-['Bai_Jamjuree']">
       {/* Dynamic Breadcrumbs */}
-      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-semibold text-zinc-400">
-        <Link href="/" className="hover:text-amber-400 transition-colors">Home</Link>
-        <span className="text-zinc-600">/</span>
-        <Link href="/browse" className="hover:text-amber-400 transition-colors">Catalog</Link>
-        <span className="text-zinc-600">/</span>
-        <Link href={`/browse?category=${encodeURIComponent(product.category)}`} className="hover:text-amber-400 transition-colors">
-          {product.category}
-        </Link>
-        <span className="text-zinc-600">/</span>
-        <span className="text-zinc-300 font-bold truncate max-w-[280px] sm:max-w-md">{product.title}</span>
-      </nav>
+      <Breadcrumbs
+        items={[
+          { label: 'Catalog', href: '/browse' },
+          { label: product.category, href: `/browse?category=${encodeURIComponent(product.category)}` },
+          { label: product.title }
+        ]}
+      />
 
       <div className="flex items-center justify-between">
         <Link
