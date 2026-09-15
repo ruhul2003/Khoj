@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { useCompare } from '@/context/CompareContext';
 import { WarrantyBadge } from '@/components/WarrantyBadge';
+import { StockBadge } from '@/components/StockBadge';
 import { formatBDT } from '@/utils/formatters';
 
 export const ProductCard = ({ product, countdown }) => {
@@ -126,15 +127,18 @@ export const ProductCard = ({ product, countdown }) => {
         ) : (
           <div className="flex items-center justify-between text-[11px] font-semibold">
             <span className="text-gray-400 dark:text-slate-400 uppercase tracking-wider truncate">{product.category || 'General'}</span>
-            {product.condition && (
-              <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold ${
-                product.condition.includes('Brand New') 
-                  ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300' 
-                  : 'bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300'
-              }`}>
-                {product.condition.replace('Used - ', '')}
-              </span>
-            )}
+            <div className="flex items-center gap-1.5">
+              <StockBadge stock={product.stock ?? 4} />
+              {product.condition && (
+                <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold ${
+                  product.condition.includes('Brand New') 
+                    ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300' 
+                    : 'bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300'
+                }`}>
+                  {product.condition.replace('Used - ', '')}
+                </span>
+              )}
+            </div>
           </div>
         )}
 
