@@ -16,6 +16,7 @@ import { QuickInquiryPills } from '@/components/QuickInquiryPills';
 import { WarrantyBadge } from '@/components/WarrantyBadge';
 import { ShareModal } from '@/components/ShareModal';
 import { EmiCalculatorModal } from '@/components/EmiCalculatorModal';
+import { DeliveryEstimator } from '@/components/DeliveryEstimator';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -436,6 +437,9 @@ export default function ProductDetailPage({ params }) {
 
                 {/* Verified Safe Handover Hubs */}
                 <SafeHandoverHubs location={product.location} />
+
+                {/* Delivery & Shipping Fee Estimator */}
+                <DeliveryEstimator sellerCity={product.location || 'Dhaka'} />
               </div>
             )}
 
