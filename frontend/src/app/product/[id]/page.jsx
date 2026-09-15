@@ -31,6 +31,9 @@ import {
   Handshake,
   Phone,
   Award,
+  Zap,
+  Clock,
+  ExternalLink,
   MessageCircle,
   Copy,
   Check,
@@ -463,33 +466,51 @@ export default function ProductDetailPage({ params }) {
 
             <div className="pt-6 border-t border-zinc-800 space-y-4">
               <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Seller Details</h4>
-              <div className="flex items-center justify-between p-4 rounded-2xl bg-zinc-950 border border-zinc-800">
-                <div className="flex items-center gap-4">
-                  {product.sellerAvatar ? (
-                    <img src={product.sellerAvatar} alt={product.sellerName} className="w-12 h-12 rounded-full object-cover border-2 border-[#0c9096]" />
-                  ) : (
-                    <div className="w-12 h-12 rounded-full bg-[#0c9096] text-white flex items-center justify-center font-bold text-lg">
-                      {product.sellerName.charAt(0)}
-                    </div>
-                  )}
-                  <div>
-                    <h5 className="text-sm font-bold text-white flex items-center gap-1.5">
-                      {product.sellerName}
-                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                    </h5>
-                    <div className="flex items-center gap-1 text-xs text-amber-400 mt-0.5 font-bold">
-                      <Star className="w-3.5 h-3.5 fill-current" />
-                      <span>{product.sellerRating || 4.9}</span>
+              <div className="p-4 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3.5">
+                    {product.sellerAvatar ? (
+                      <img src={product.sellerAvatar} alt={product.sellerName} className="w-12 h-12 rounded-full object-cover border-2 border-[#0c9096]" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-[#0c9096] text-white flex items-center justify-center font-bold text-lg">
+                        {product.sellerName.charAt(0)}
+                      </div>
+                    )}
+                    <div>
+                      <h5 className="text-sm font-bold text-white flex items-center gap-1.5">
+                        {product.sellerName}
+                        <ShieldCheck className="w-4 h-4 text-emerald-400" title="Verified Khoj Merchant" />
+                      </h5>
+                      <div className="flex items-center gap-2 mt-0.5 text-xs text-zinc-400">
+                        <div className="flex items-center gap-1 text-amber-400 font-bold">
+                          <Star className="w-3.5 h-3.5 fill-current" />
+                          <span>{product.sellerRating || 4.9}</span>
+                        </div>
+                        <span>•</span>
+                        <span className="text-emerald-400 font-medium">99% Positive</span>
+                      </div>
                     </div>
                   </div>
+
+                  <button
+                    onClick={() => setIsChatOpen(true)}
+                    className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-xs font-bold uppercase tracking-wider text-zinc-200 rounded-xl border border-zinc-800 cursor-pointer transition-colors"
+                  >
+                    Message
+                  </button>
                 </div>
 
-                <button
-                  onClick={() => setIsChatOpen(true)}
-                  className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-xs font-bold uppercase tracking-wider text-zinc-200 rounded-xl border border-zinc-800 cursor-pointer transition-colors"
-                >
-                  Message
-                </button>
+                {/* Seller Trust Badges */}
+                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-zinc-800/80">
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-zinc-900/60 border border-zinc-800/50 text-[11px] text-zinc-300">
+                    <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <span>Replies in ~15 mins</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-zinc-900/60 border border-zinc-800/50 text-[11px] text-zinc-300">
+                    <Clock className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+                    <span>Member since 2024</span>
+                  </div>
+                </div>
               </div>
             </div>
 
