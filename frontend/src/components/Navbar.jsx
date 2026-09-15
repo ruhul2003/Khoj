@@ -92,6 +92,7 @@ const NavbarContent = () => {
   const [activeMenu, setActiveMenu] = useState(null);
   const closeTimeoutRef = useRef(null);
   const navContainerRef = useRef(null);
+  const searchInputRef = useRef(null);
 
   // Smooth hover and click menu handling
   const handleMouseEnter = (menuName) => {
@@ -116,7 +117,7 @@ const NavbarContent = () => {
     setIsMobileMenuOpen(false);
   };
 
-  // Close menus on outside click or Escape key
+  // Close menus on outside click or Escape key, and focus search on Ctrl+K
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (navContainerRef.current && !navContainerRef.current.contains(e.target)) {
@@ -127,6 +128,10 @@ const NavbarContent = () => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         closeAllMenus();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -210,6 +215,7 @@ const NavbarContent = () => {
               </div>
 
               <input
+                ref={searchInputRef}
                 type="text"
                 placeholder="Search product here..."
                 value={searchTerm}
@@ -218,6 +224,12 @@ const NavbarContent = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="flex-1 px-4 py-2 text-xs sm:text-sm text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-400 focus:outline-none bg-transparent"
               />
+
+              <div className="hidden sm:flex items-center mr-2">
+                <kbd className="px-2 py-0.5 text-[10px] font-mono text-gray-400 dark:text-slate-500 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-md shadow-xs">
+                  Ctrl K
+                </kbd>
+              </div>
 
               <button
                 type="submit"
