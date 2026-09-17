@@ -20,6 +20,7 @@ import { DeliveryEstimator } from '@/components/DeliveryEstimator';
 import { ConditionGuideModal } from '@/components/ConditionGuideModal';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { HandoverReceiptModal } from '@/components/HandoverReceiptModal';
+import { ListingQrModal } from '@/components/ListingQrModal';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -43,7 +44,8 @@ import {
   Bell,
   Flag,
   Calculator,
-  FileText
+  FileText,
+  QrCode
 } from 'lucide-react';
 
 export default function ProductDetailPage({ params }) {
@@ -67,6 +69,7 @@ export default function ProductDetailPage({ params }) {
   const [isEmiModalOpen, setIsEmiModalOpen] = useState(false);
   const [isConditionGuideOpen, setIsConditionGuideOpen] = useState(false);
   const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
+  const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [isCopiedLink, setIsCopiedLink] = useState(false);
@@ -178,6 +181,15 @@ export default function ProductDetailPage({ params }) {
         </Link>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsQrModalOpen(true)}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-zinc-300 hover:text-white transition-all cursor-pointer shadow-sm"
+            title="Generate Printable Flyer & QR Code"
+          >
+            <QrCode className="w-3.5 h-3.5 text-[#0c9096]" />
+            <span className="hidden sm:inline">QR Flyer</span>
+          </button>
+
           <button
             onClick={() => setIsReceiptModalOpen(true)}
             className="inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-teal-400 hover:text-teal-300 transition-all cursor-pointer shadow-sm"
@@ -654,6 +666,12 @@ export default function ProductDetailPage({ params }) {
       <HandoverReceiptModal
         isOpen={isReceiptModalOpen}
         onClose={() => setIsReceiptModalOpen(false)}
+        product={product}
+      />
+
+      <ListingQrModal
+        isOpen={isQrModalOpen}
+        onClose={() => setIsQrModalOpen(false)}
         product={product}
       />
     </div>
