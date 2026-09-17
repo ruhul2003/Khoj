@@ -7,6 +7,7 @@ import { MakeOfferModal } from '@/components/MakeOfferModal';
 import { ChatDrawer } from '@/components/ChatDrawer';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductReviews } from '@/components/ProductReviews';
+import { ProductQaSection } from '@/components/ProductQaSection';
 import { InspectionChecklistModal } from '@/components/InspectionChecklistModal';
 import { RecentlyViewed } from '@/components/RecentlyViewed';
 import { PriceAlertModal } from '@/components/PriceAlertModal';
@@ -387,6 +388,8 @@ export default function ProductDetailPage({ params }) {
           <WarrantyBadge condition={product.condition} category={product.category} variant="detailed" />
 
           <ProductReviews productId={product._id || product.id} sellerId={product.sellerId} />
+
+          <ProductQaSection productId={product._id || product.id} sellerName={product.sellerName} />
         </div>
 
         <div className="lg:col-span-5 space-y-6">
