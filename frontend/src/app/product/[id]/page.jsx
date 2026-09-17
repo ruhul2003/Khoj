@@ -21,6 +21,7 @@ import { ConditionGuideModal } from '@/components/ConditionGuideModal';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { HandoverReceiptModal } from '@/components/HandoverReceiptModal';
 import { ListingQrModal } from '@/components/ListingQrModal';
+import { SafetyWarningBanner } from '@/components/SafetyWarningBanner';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -373,6 +374,13 @@ export default function ProductDetailPage({ params }) {
               </div>
             ) : (
               <div className="space-y-4">
+                {/* Anti-fraud scam prevention advisory */}
+                <SafetyWarningBanner
+                  category={product.category}
+                  price={product.price}
+                  onOpenChecklist={() => setIsChecklistOpen(true)}
+                />
+
                 {/* Primary Action: Contact & Discuss Handover */}
                 <button
                   onClick={() => setIsChatOpen(true)}
