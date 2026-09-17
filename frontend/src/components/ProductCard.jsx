@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Heart, Star, Eye, Scale } from 'lucide-react';
+import { Heart, Star, Eye, Scale, ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { useCompare } from '@/context/CompareContext';
@@ -149,12 +149,23 @@ export const ProductCard = ({ product, countdown }) => {
           </h3>
         </Link>
 
-        {/* Star Ratings & Warranty */}
+        {/* Star Ratings, Seller Trust & Warranty */}
         <div className="flex items-center justify-between gap-1">
-          <div className="flex items-center gap-1">
-            {[1, 2, 3, 4, 5].map((s) => (
-              <Star key={s} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-            ))}
+          <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-0.5">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <Star key={s} className="w-3 h-3 fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+            {(product.sellerRating >= 4.8 || product.isVerified) && (
+              <span
+                className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                title="Verified Trusted Seller"
+              >
+                <ShieldCheck className="w-2.5 h-2.5" />
+                <span>Verified</span>
+              </span>
+            )}
           </div>
           <WarrantyBadge condition={product.condition} category={product.category} variant="compact" />
         </div>
