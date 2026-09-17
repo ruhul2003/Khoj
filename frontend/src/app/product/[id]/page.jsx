@@ -152,6 +152,10 @@ export default function ProductDetailPage({ params }) {
 
   const sellerPhoneNumber = product.sellerPhone || '+880 1712-345678';
   const cleanPhone = sellerPhoneNumber.replace(/[^0-9+]/g, '');
+  const whatsappPrefill = encodeURIComponent(
+    `Assalamu Alaikum, I found your listing "${product.title}" (৳${product.price?.toLocaleString()}) on Khoj. Is it still available for inspection in ${product.location || 'Dhaka'}?`
+  );
+  const whatsappUrl = `https://wa.me/${cleanPhone.replace('+', '')}?text=${whatsappPrefill}`;
 
   return (
     <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12 space-y-8 font-['Bai_Jamjuree']">
@@ -400,10 +404,10 @@ export default function ProductDetailPage({ params }) {
                         <Phone className="w-3.5 h-3.5" /> Call Now
                       </a>
                       <a
-                        href={`https://wa.me/${cleanPhone.replace('+', '')}`}
+                        href={whatsappUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-1 py-2 px-3 bg-[#0a6c71] hover:bg-[#0c9096] text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                        className="flex-1 py-2 px-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm"
                       >
                         <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
                       </a>
