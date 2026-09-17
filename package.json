@@ -1,0 +1,16 @@
+{
+  "name": "khoj-marketplace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Khoj - Buy & Sell Marketplace Fullstack Application",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "start": "npm run start --prefix frontend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend"
+  }
+}
