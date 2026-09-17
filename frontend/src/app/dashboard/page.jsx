@@ -24,8 +24,10 @@ import {
   Phone,
   Edit3,
   Save,
-  Sparkles
+  Sparkles,
+  Truck
 } from 'lucide-react';
+import { OrderTrackingModal } from '@/components/OrderTrackingModal';
 
 function DashboardContent() {
   const { user, userShop, fetchUserShop, setUserShop, savedItemIds } = useAuth();
@@ -58,6 +60,9 @@ function DashboardContent() {
   const [verifyingNid, setVerifyingNid] = useState('');
   const [verifyingTier, setVerifyingTier] = useState('Pro Merchant');
   const [isSubmittingVerify, setIsSubmittingVerify] = useState(false);
+
+  // Order Tracking State
+  const [selectedTrackingOrder, setSelectedTrackingOrder] = useState(null);
 
   useEffect(() => {
     fetchDashboardData();
@@ -715,9 +720,19 @@ function DashboardContent() {
                       <p className="text-zinc-400">Seller: {ord.sellerName} • ৳{ord.price?.toLocaleString()}</p>
                     </div>
                   </div>
-                  <span className="px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold uppercase tracking-wider">
-                    {ord.status}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold uppercase tracking-wider">
+                      {ord.status}
+                    </span>
+                    <button
+                      onClick={() => setSelectedTrackingOrder(ord)}
+                      className="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-[#38d4dc] text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
+                      title="View Handover Progress Timeline"
+                    >
+                      <Truck className="w-3.5 h-3.5 text-[#0c9096]" />
+                      <span>Track</span>
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -955,6 +970,13 @@ function DashboardContent() {
           </div>
         </div>
       )}
+
+      {/* Order Tracking Timeline Modal */}
+      <OrderTrackingModal
+        isOpen={!!selectedTrackingOrder}
+        onClose={() => setSelectedTrackingOrder(null)}
+        order={selectedTrackingOrder}
+      />
     </div>
   );
 }
