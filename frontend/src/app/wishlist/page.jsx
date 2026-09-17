@@ -5,12 +5,14 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { api } from '@/lib/api';
-import { ProductCard } from '@/components/ProductCard';
-import { Heart, ArrowLeft, ShoppingBag, Trash2, Sparkles } from 'lucide-react';
+import { Heart, ArrowLeft, ShoppingBag, Trash2, Sparkles, Scale, Share2 } from 'lucide-react';
+import { useCompare } from '@/context/CompareContext';
+import { formatBDT } from '@/utils/formatters';
 
 export default function WishlistPage() {
   const { savedItemIds, toggleWishlist } = useAuth();
   const { addToast } = useToast();
+  const { addToCompare, setIsCompareOpen } = useCompare();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +40,22 @@ export default function WishlistPage() {
     addToast('Wishlist cleared successfully', 'info');
   };
 
+  const totalValuation = products.reduce((sum, p) => sum + (p.price || 0), 0);
+
+  const handleCompareAll = () => {
+    if (products.length === 0) return;
+    products.slice(0, 4).forEach(prod => addToCompare(prod));
+    setIsCompareOpen(true);
+    addToast(`Added ${Math.min(products.length, 4)} items to comparison matrix`, 'success');
+  };
+
+  const handleShareWishlist = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(window.location.href);
+      addToast('Wishlist link copied to clipboard!', 'info');
+    }
+  };
+
   return (
     <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12 space-y-10 font-['Bai_Jamjuree']">
       {/* Back button & Breadcrumb */}
@@ -49,15 +67,28 @@ export default function WishlistPage() {
           <ArrowLeft className="w-4 h-4" />
           <span>Continue Browsing</span>
         </Link>
-        {products.length > 0 && (
-          <button
-            onClick={handleClearAll}
-            className="inline-flex items-center gap-2 text-xs font-semibold text-rose-400 hover:text-rose-300 px-3 py-1.5 rounded-xl hover:bg-rose-500/10 transition-colors cursor-pointer"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            <span>Clear Wishlist</span>
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {products.length > 0 && (
+            <>
+              <button
+                onClick={handleShareWishlist}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-300 hover:text-white px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 transition-colors cursor-pointer"
+                title="Share your wishlist"
+              >
+                <Share2 className="w-3.5 h-3.5 text-[#0c9096]" />
+                <span>Share List</span>
+              </button>
+
+              <button
+                onClick={handleClearAll}
+                className="inline-flex items-center gap-2 text-xs font-semibold text-rose-400 hover:text-rose-300 px-3 py-1.5 rounded-xl hover:bg-rose-500/10 transition-colors cursor-pointer"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Clear Wishlist</span>
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Header Banner */}
@@ -72,19 +103,39 @@ export default function WishlistPage() {
               Saved Items
             </div>
             <h1 className="text-3xl font-extrabold text-white">Your Saved Wishlist</h1>
-            <p className="text-xs text-zinc-400 mt-1">
-              {products.length} {products.length === 1 ? 'item' : 'items'} bookmarked for later consideration.
-            </p>
+            <div className="flex flex-wrap items-center gap-2 mt-1.5 text-xs text-zinc-400">
+              <span>{products.length} {products.length === 1 ? 'item' : 'items'} bookmarked.</span>
+              {products.length > 0 && (
+                <>
+                  <span>•</span>
+                  <span className="text-white font-bold">
+                    Total Estimated Value: <strong className="text-teal-400">{formatBDT(totalValuation)}</strong>
+                  </span>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
-        <Link
-          href="/browse"
-          className="px-6 py-3 bg-[#0c9096] hover:bg-[#0a6c71] text-white font-bold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition-colors flex items-center gap-2"
-        >
-          <ShoppingBag className="w-4 h-4" />
-          <span>Explore More Deals</span>
-        </Link>
+        <div className="flex items-center gap-3">
+          {products.length > 1 && (
+            <button
+              onClick={handleCompareAll}
+              className="px-5 py-3 bg-zinc-900 hover:bg-zinc-800 text-teal-300 hover:text-white font-bold text-xs uppercase tracking-wider rounded-2xl border border-zinc-700 shadow-md transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <Scale className="w-4 h-4 text-[#0c9096]" />
+              <span>Compare Wishlist</span>
+            </button>
+          )}
+
+          <Link
+            href="/browse"
+            className="px-6 py-3 bg-[#0c9096] hover:bg-[#0a6c71] text-white font-bold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition-colors flex items-center gap-2"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            <span>Explore More Deals</span>
+          </Link>
+        </div>
       </div>
 
       {/* Content Grid */}
