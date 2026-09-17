@@ -6,7 +6,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { ProductFilter } from '@/components/ProductFilter';
 import { SavedSearchesDrawer } from '@/components/SavedSearchesDrawer';
 import { api } from '@/lib/api';
-import { Search, SlidersHorizontal, PackageX, Bookmark } from 'lucide-react';
+import { Search, SlidersHorizontal, PackageX, Bookmark, Sparkles } from 'lucide-react';
 
 function BrowseContent() {
   const searchParams = useSearchParams();
@@ -138,6 +138,83 @@ function BrowseContent() {
             <span>Toggle Filters</span>
           </button>
         </form>
+
+        {/* Quick Filter Smart Presets */}
+        <div className="pt-4 mt-4 border-t border-zinc-800/80 flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1 mr-1">
+            <Sparkles className="w-3 h-3 text-amber-400" /> Presets:
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              setMinPrice('');
+              setMaxPrice(maxPrice === '5000' ? '' : '5000');
+            }}
+            className={`px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+              maxPrice === '5000' && !minPrice
+                ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
+                : 'bg-zinc-900/90 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'
+            }`}
+          >
+            ⚡ Under ৳5,000
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setMinPrice(minPrice === '30000' ? '' : '30000');
+              setMaxPrice('');
+            }}
+            className={`px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+              minPrice === '30000' && !maxPrice
+                ? 'bg-purple-500/20 border-purple-500/50 text-purple-300'
+                : 'bg-zinc-900/90 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'
+            }`}
+          >
+            💎 Flagship (৳30k+)
+          </button>
+          <button
+            type="button"
+            onClick={() => setVerifiedOnly(!verifiedOnly)}
+            className={`px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+              verifiedOnly
+                ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
+                : 'bg-zinc-900/90 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'
+            }`}
+          >
+            🛡️ Verified Sellers
+          </button>
+          <button
+            type="button"
+            onClick={() => setCondition(condition === 'Brand New' ? 'All' : 'Brand New')}
+            className={`px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+              condition === 'Brand New'
+                ? 'bg-[#0c9096]/20 border-[#0c9096]/50 text-[#38d4dc]'
+                : 'bg-zinc-900/90 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'
+            }`}
+          >
+            📦 Brand New Only
+          </button>
+          <button
+            type="button"
+            onClick={() => setDeal(deal === 'flash' ? '' : 'flash')}
+            className={`px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+              deal === 'flash'
+                ? 'bg-rose-500/20 border-rose-500/50 text-rose-300'
+                : 'bg-zinc-900/90 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'
+            }`}
+          >
+            🔥 Flash Deals
+          </button>
+          {(minPrice || maxPrice || verifiedOnly || condition !== 'All' || deal || category !== 'All') && (
+            <button
+              type="button"
+              onClick={handleResetFilters}
+              className="text-[11px] text-zinc-500 hover:text-rose-400 underline underline-offset-2 ml-auto cursor-pointer"
+            >
+              Reset
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
