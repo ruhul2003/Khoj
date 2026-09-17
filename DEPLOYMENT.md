@@ -98,5 +98,28 @@ If you enabled Google OAuth login:
 - `backend/api/index.js`: Serverless export for Express.
 - `backend/server.js`: Serverless-ready with connection-checked request middleware and conditional listener.
 - `backend/config/db.js`: Connection pooling and promise-caching for Mongoose in serverless environments.
+
+---
+
+## 🌟 Marketplace Features & Capabilities
+
+Khoj includes an extensive set of peer-to-peer and shop marketplace features tailored for Bangladesh:
+
+1. **Seller Dashboard Store Management**: Edit shop profile, phone number, and location with responsive validation.
+2. **Verified Merchant Badges**: Trust badges displayed across `ProductCard` and detail views for sellers with $\ge$ 4.8 ratings.
+3. **WhatsApp Direct Inquiry**: Instant 1-click WhatsApp chat prefilled with listing title, asking price, and buyer inspection inquiry.
+4. **Scannable Listing QR Code & Flyer**: Offline printable flyer modal for shops, bulletin boards, and mobile scanning.
+5. **Anti-Fraud Scam Advisory**: Dynamic warning banners protecting buyers from advance token scams on high-ticket tech and vehicles.
+6. **Nationwide Courier Delivery Estimator**: Division-based cost and timeline calculator covering Steadfast, Pathao, RedX, and Sundarban with Cash on Delivery (COD) guarantees.
+7. **Listing Highlights & Specifications**: Key trust pills highlighting physical on-spot inspection, zero platform fee, and fast response times.
+8. **Public Community Q&A**: Interactive question & answer system on product pages with verified seller replies.
+9. **Smart Catalog Filter Presets**: Instant filter pills for Under ৳5,000, Flagship deals, Brand New, and Verified Sellers.
+10. **Order Tracking Progress Timeline**: Step-by-step handover timeline tracking purchases from order placement to inspection and settlement.
+11. **Printable Purchase Invoice Slips**: Formal transaction vouchers complete with itemized specs, order reference, and verification stamp.
+12. **Wishlist Valuation & Batch Comparison**: Total wishlist valuation in BDT, 1-click comparison matrix loading, and wishlist sharing.
+13. **Live Community Statistics**: Social proof header highlighting 12,500+ verified listings, 64 districts covered, and ৳0 commission.
+14. **Power-User Keyboard Shortcuts**: Hotkeys dialog (`?`, `Ctrl+K`, `Alt+B`, `Alt+H`, `Alt+D`, `Esc`) for rapid keyboard navigation.
+15. **Listing Q&A REST Endpoints**: Express backend routes (`GET/POST /api/products/:id/qa`, `PUT /api/products/:id/qa/:questionId/answer`) for community inquiries.
+
 - `frontend/next.config.ts`: Added external image domains for remote media.
 - `package.json`: Root workspace configuration allowing root scripts and builds.

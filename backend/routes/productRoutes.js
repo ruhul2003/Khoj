@@ -301,6 +301,80 @@ router.post('/:id/report', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+// GET /api/products/:id/qa - Retrieve public community Q&A for product
+router.get('/:id/qa', (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!global.productQuestions) {
+      global.productQuestions = [];
+    }
+    const itemQuestions = global.productQuestions.filter(q => q.productId === id);
+    return res.json(itemQuestions);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/products/:id/qa - Submit a buyer question
+router.post('/:id/qa', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { author, question } = req.body;
+
+    if (!question || !question.trim()) {
+      return res.status(400).json({ error: 'Question text is required.' });
+    }
+
+    if (!global.productQuestions) {
+      global.productQuestions = [];
+    }
+
+    const newQ = {
+      _id: 'qa_' + Date.now(),
+      productId: id,
+      author: author || 'Interested Buyer',
+      question: question.trim(),
+      answer: null,
+      createdAt: new Date().toISOString()
+    };
+
+    global.productQuestions.unshift(newQ);
+    return res.status(201).json(newQ);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT /api/products/:id/qa/:questionId/answer - Answer a question (seller)
+router.put('/:id/qa/:questionId/answer', (req, res) => {
+  try {
+    const { questionId } = req.params;
+    const { answerText, sellerName } = req.body;
+
+    if (!answerText || !answerText.trim()) {
+      return res.status(400).json({ error: 'Answer text is required.' });
+    }
+
+    if (!global.productQuestions) {
+      global.productQuestions = [];
+    }
+
+    const target = global.productQuestions.find(q => q._id === questionId);
+    if (!target) {
+      return res.status(404).json({ error: 'Question not found.' });
+    }
+
+    target.answer = {
+      text: answerText.trim(),
+      author: sellerName || 'Seller',
+      isSeller: true,
+      answeredAt: new Date().toISOString()
+    };
+
+    return res.json(target);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;
