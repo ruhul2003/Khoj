@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { HeroBanner } from '@/components/HeroBanner';
+import { MarketplaceStatsBar } from '@/components/MarketplaceStatsBar';
 import { TrustBadges } from '@/components/TrustBadges';
 import { PromoGrid } from '@/components/PromoGrid';
 import { CategoryShowcase } from '@/components/CategoryShowcase';
@@ -39,6 +40,11 @@ export default function Home() {
       {/* 1. Hero Showcase Slider */}
       <section id="hero" className="scroll-mt-24">
         <HeroBanner />
+      </section>
+
+      {/* 1.1 Community & Platform Live Metrics */}
+      <section id="marketplace-stats">
+        <MarketplaceStatsBar />
       </section>
 
       {/* 2. Four Trust / Service Badges */}
