@@ -46,7 +46,10 @@ import {
   Flag,
   Calculator,
   FileText,
-  QrCode
+  QrCode,
+  Sparkles,
+  PackageCheck,
+  CheckCircle2
 } from 'lucide-react';
 
 export default function ProductDetailPage({ params }) {
@@ -313,6 +316,69 @@ export default function ProductDetailPage({ params }) {
               <div>
                 <span className="block text-zinc-500 uppercase tracking-widest text-[10px]">Views</span>
                 <span className="font-bold text-white">{product.views || 1} views</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Key Specifications & Highlights Badges */}
+          <div className="glass-panel p-6 rounded-3xl border border-zinc-800 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <span>Listing Highlights & Guarantees</span>
+              </h3>
+              <span className="text-[10px] text-teal-400 font-bold px-2 py-0.5 rounded-md bg-teal-500/10 border border-teal-500/20">
+                P2P Verified
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="p-3.5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 flex items-start gap-3">
+                <div className="w-7 h-7 rounded-xl bg-teal-500/15 flex items-center justify-center text-teal-400 shrink-0 mt-0.5">
+                  <CheckCircle2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="font-bold text-white text-xs block">Physical Inspection</span>
+                  <p className="text-[11px] text-zinc-400 leading-snug mt-0.5">
+                    100% on-spot physical inspection allowed before concluding payment.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 flex items-start gap-3">
+                <div className="w-7 h-7 rounded-xl bg-emerald-500/15 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="font-bold text-white text-xs block">Zero Middleman Markup</span>
+                  <p className="text-[11px] text-zinc-400 leading-snug mt-0.5">
+                    Direct buyer-seller negotiation with ৳0 platform fee or commission.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 flex items-start gap-3">
+                <div className="w-7 h-7 rounded-xl bg-amber-500/15 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
+                  <PackageCheck className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="font-bold text-white text-xs block">Immediate Availability</span>
+                  <p className="text-[11px] text-zinc-400 leading-snug mt-0.5">
+                    Item is in stock and ready for same-day local pickup in {product.location || 'Dhaka'}.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 flex items-start gap-3">
+                <div className="w-7 h-7 rounded-xl bg-purple-500/15 flex items-center justify-center text-purple-400 shrink-0 mt-0.5">
+                  <Clock className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="font-bold text-white text-xs block">Fast Response Guarantee</span>
+                  <p className="text-[11px] text-zinc-400 leading-snug mt-0.5">
+                    Seller usually answers chat and phone inquiries within 15 minutes.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
