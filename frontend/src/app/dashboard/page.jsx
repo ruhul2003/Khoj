@@ -132,14 +132,18 @@ function DashboardContent() {
   const handleSaveShopDetails = async (e) => {
     e.preventDefault();
     if (!userShop) return;
+    if (!shopName.trim()) {
+      setShopMessage('Shop name cannot be empty.');
+      return;
+    }
     setSavingShop(true);
     setShopMessage('');
     try {
       const updateData = {
-        name: shopName,
-        description: shopDesc,
-        phone: shopPhone,
-        location: shopLoc
+        name: shopName.trim(),
+        description: shopDesc.trim(),
+        phone: shopPhone.trim(),
+        location: shopLoc.trim()
       };
       const res = await api.put(`/shops/${userShop._id}`, updateData);
       setUserShop(res.data.shop);
@@ -492,7 +496,8 @@ function DashboardContent() {
                         <input
                           type="text"
                           value={shopPhone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          onChange={(e) => setShopPhone(e.target.value)}
+                          placeholder="+880 1712-345678"
                           className="w-full px-4 py-2.5 bg-zinc-900 text-white rounded-xl border border-zinc-700 text-xs font-medium"
                         />
                       </div>
