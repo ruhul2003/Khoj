@@ -25,9 +25,11 @@ import {
   Edit3,
   Save,
   Sparkles,
-  Truck
+  Truck,
+  FileText
 } from 'lucide-react';
 import { OrderTrackingModal } from '@/components/OrderTrackingModal';
+import { PurchaseInvoiceModal } from '@/components/PurchaseInvoiceModal';
 
 function DashboardContent() {
   const { user, userShop, fetchUserShop, setUserShop, savedItemIds } = useAuth();
@@ -61,8 +63,9 @@ function DashboardContent() {
   const [verifyingTier, setVerifyingTier] = useState('Pro Merchant');
   const [isSubmittingVerify, setIsSubmittingVerify] = useState(false);
 
-  // Order Tracking State
+  // Order Tracking & Invoice State
   const [selectedTrackingOrder, setSelectedTrackingOrder] = useState(null);
+  const [selectedInvoiceOrder, setSelectedInvoiceOrder] = useState(null);
 
   useEffect(() => {
     fetchDashboardData();
@@ -732,6 +735,14 @@ function DashboardContent() {
                       <Truck className="w-3.5 h-3.5 text-[#0c9096]" />
                       <span>Track</span>
                     </button>
+                    <button
+                      onClick={() => setSelectedInvoiceOrder(ord)}
+                      className="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-teal-300 text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
+                      title="View Printable Purchase Slip"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-teal-400" />
+                      <span>Slip</span>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -976,6 +987,13 @@ function DashboardContent() {
         isOpen={!!selectedTrackingOrder}
         onClose={() => setSelectedTrackingOrder(null)}
         order={selectedTrackingOrder}
+      />
+
+      {/* Printable Purchase Invoice Slip Modal */}
+      <PurchaseInvoiceModal
+        isOpen={!!selectedInvoiceOrder}
+        onClose={() => setSelectedInvoiceOrder(null)}
+        order={selectedInvoiceOrder}
       />
     </div>
   );
