@@ -286,6 +286,12 @@ function BrowseContent() {
                       <button onClick={() => setVerifiedOnly(false)} className="hover:text-white cursor-pointer ml-0.5">✕</button>
                     </span>
                   )}
+                  {deal === 'flash' && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-300 text-[10px] font-bold">
+                      🔥 Flash Deals
+                      <button onClick={() => setDeal('')} className="hover:text-white cursor-pointer ml-0.5">✕</button>
+                    </span>
+                  )}
                 </div>
               )}
             </div>
