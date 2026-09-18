@@ -301,6 +301,7 @@ router.post('/:id/report', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
 // GET /api/products/:id/qa - Retrieve public community Q&A for product
 router.get('/:id/qa', (req, res) => {
   try {

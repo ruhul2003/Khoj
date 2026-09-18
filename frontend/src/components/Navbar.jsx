@@ -36,14 +36,12 @@ import {
   CheckCircle2,
   DollarSign,
   Store,
-  MapPin,
-  Command
+  MapPin
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LocationPickerModal } from '@/components/LocationPickerModal';
-import { KeyboardShortcutsModal } from '@/components/KeyboardShortcutsModal';
 
 const CATEGORIES = [
   { name: 'Electronics', desc: 'Laptops, Audio & Monitors', icon: Laptop, badge: '30% OFF' },
@@ -82,24 +80,12 @@ const NavbarContent = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentLocation, setCurrentLocation] = useState('Dhaka');
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
-  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
 
   useEffect(() => {
     try {
       const stored = localStorage.getItem('khoj_user_location');
       if (stored) setCurrentLocation(stored);
     } catch (e) {}
-
-    const handleGlobalKey = (e) => {
-      const activeTag = document.activeElement?.tagName?.toLowerCase();
-      if (activeTag === 'input' || activeTag === 'textarea') return;
-      if (e.key === '?' || (e.ctrlKey && e.key === '/')) {
-        e.preventDefault();
-        setIsShortcutsOpen(prev => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleGlobalKey);
-    return () => window.removeEventListener('keydown', handleGlobalKey);
   }, []);
   
   // Active navigation dropdown: 'categories-btn' | 'shop' | 'categories' | 'products' | 'deals' | 'elements' | null
@@ -315,16 +301,6 @@ const NavbarContent = () => {
               <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
             </button>
 
-            {/* Keyboard Shortcuts Trigger */}
-            <button
-              type="button"
-              onClick={() => setIsShortcutsOpen(true)}
-              className="hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-amber-400 text-xs font-semibold transition-all cursor-pointer shadow-xs"
-              title="Keyboard Shortcuts (?)"
-            >
-              <Command className="w-3.5 h-3.5 text-amber-400" />
-              <span className="text-[10px] text-slate-400 font-mono">?</span>
-            </button>
 
             {/* Call For Order */}
             <a href="tel:+8801712345678" className="hidden xl:flex items-center gap-2.5 text-slate-300 hover:text-amber-400 transition-colors">
@@ -1192,11 +1168,6 @@ const NavbarContent = () => {
         onClose={() => setIsLocationModalOpen(false)}
         selectedLocation={currentLocation}
         onSelectLocation={(loc) => setCurrentLocation(loc)}
-      />
-
-      <KeyboardShortcutsModal
-        isOpen={isShortcutsOpen}
-        onClose={() => setIsShortcutsOpen(false)}
       />
     </header>
   );
