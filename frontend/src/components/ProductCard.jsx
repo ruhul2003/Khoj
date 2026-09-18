@@ -56,7 +56,7 @@ export const ProductCard = ({ product }) => {
   const formattedOriginal = originalPriceVal ? formatBDT(originalPriceVal) : null;
 
   return (
-    <div className="group bg-white dark:bg-[#131b26] rounded-2xl overflow-hidden border border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700 hover:shadow-xl transition-all duration-300 flex flex-col justify-between font-['Bai_Jamjuree'] relative">
+    <div className="group bg-white dark:bg-[#131b26] rounded-2xl overflow-hidden border border-gray-200 dark:border-slate-800 hover:border-amber-500/30 dark:hover:border-amber-400/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between font-['Bai_Jamjuree'] relative">
       
       {/* Product Image Area */}
       <div className="relative aspect-square w-full p-4 bg-gray-50/70 dark:bg-[#182230] flex items-center justify-center overflow-hidden transition-colors">
