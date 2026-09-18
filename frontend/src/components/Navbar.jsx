@@ -284,6 +284,32 @@ const NavbarContent = () => {
                 </div>
               </div>
             )}
+
+            {/* Popular Searches Dropdown when input is empty */}
+            {isSearchFocused && !searchTerm.trim() && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#182230] rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 p-3 z-50 text-slate-800 dark:text-slate-100 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="px-2 py-1 flex items-center justify-between text-[11px] font-bold text-gray-400 dark:text-slate-400 border-b border-gray-100 dark:border-slate-700 mb-2">
+                  <span className="flex items-center gap-1.5"><TrendingUp className="w-3 h-3 text-amber-500" /> Popular Searches</span>
+                  <span className="text-[10px] text-amber-500 font-semibold">Trending on Khoj</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 p-1">
+                  {['iPhone 15', 'MacBook Air M2', 'Gaming GPU', 'Yamaha R15', 'Ergonomic Chair', 'Sony Headphones'].map((term) => (
+                    <button
+                      key={term}
+                      type="button"
+                      onMouseDown={() => {
+                        setSearchTerm(term);
+                        router.push(`/browse?search=${encodeURIComponent(term)}`);
+                        setIsSearchFocused(false);
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-xs text-gray-700 dark:text-slate-300 font-medium transition-colors cursor-pointer"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Header Controls */}
