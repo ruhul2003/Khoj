@@ -9,7 +9,6 @@ import {
   ShoppingCart,
   Heart,
   User,
-  PhoneCall,
   Menu,
   X,
   ChevronDown,
@@ -302,14 +301,6 @@ const NavbarContent = () => {
             </button>
 
 
-            {/* Call For Order */}
-            <a href="tel:+8801712345678" className="hidden xl:flex items-center gap-2.5 text-slate-300 hover:text-amber-400 transition-colors">
-              <PhoneCall className="w-4 h-4 text-amber-400" />
-              <div>
-                <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Call For Order:</span>
-                <span className="font-bold text-white text-xs">(+880)-1712-345-678</span>
-              </div>
-            </a>
 
             {/* Sign In / Sign Up */}
             {user ? (
