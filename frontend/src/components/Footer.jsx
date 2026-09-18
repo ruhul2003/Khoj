@@ -90,11 +90,14 @@ export const Footer = () => {
 
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-6 border-t border-slate-800 text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-4">
         <p>© 2026 Khojshop Marketplace. All rights reserved.</p>
-        <p className="flex items-center gap-3">
-          <span>100% Secure Checkout</span>
-          <span>•</span>
-          <span>Fast Delivery Across Bangladesh</span>
-        </p>
+        <div className="flex flex-wrap items-center gap-2 text-[11px]">
+          <span className="text-slate-400">Accepted Payments:</span>
+          <span className="px-2 py-0.5 rounded bg-pink-950/60 border border-pink-700/40 text-pink-300 font-bold">bKash</span>
+          <span className="px-2 py-0.5 rounded bg-orange-950/60 border border-orange-700/40 text-orange-300 font-bold">Nagad</span>
+          <span className="px-2 py-0.5 rounded bg-purple-950/60 border border-purple-700/40 text-purple-300 font-bold">Rocket</span>
+          <span className="px-2 py-0.5 rounded bg-blue-950/60 border border-blue-700/40 text-blue-300 font-bold">Visa / Master</span>
+          <span className="px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-700/40 text-emerald-300 font-bold">Doorstep COD</span>
+        </div>
       </div>
     </footer>
   );
