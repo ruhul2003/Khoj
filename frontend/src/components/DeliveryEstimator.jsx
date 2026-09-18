@@ -127,6 +127,15 @@ export function DeliveryEstimator({ sellerCity = 'Dhaka' }) {
             </button>
           ))}
         </div>
+        <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1.5 flex items-center gap-1">
+          <Info className="w-3 h-3 text-teal-500 shrink-0" />
+          <span>
+            {selectedCourier === 'steadfast' && 'Steadfast Helpline: 09678-045045 • Verified nationwide doorstep & SMS tracking'}
+            {selectedCourier === 'pathao' && 'Pathao Helpline: 09610-003030 • Live in-app rider GPS & OTP delivery'}
+            {selectedCourier === 'redx' && 'RedX Helpline: 09612-223344 • Fast doorstep pickup & instant return support'}
+            {selectedCourier === 'sundarban' && 'Sundarban Courier: 09612-005005 • Comprehensive 64-district hub coverage'}
+          </span>
+        </p>
       </div>
 
       {/* Summary Box */}
