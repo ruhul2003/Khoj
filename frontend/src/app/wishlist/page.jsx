@@ -36,6 +36,9 @@ export default function WishlistPage() {
 
   const handleClearAll = () => {
     if (products.length === 0) return;
+    if (typeof window !== 'undefined' && !window.confirm('Are you sure you want to remove all saved items from your wishlist?')) {
+      return;
+    }
     savedItemIds.forEach(id => toggleWishlist(id));
     addToast('Wishlist cleared successfully', 'info');
   };
