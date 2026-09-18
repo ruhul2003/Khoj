@@ -102,7 +102,7 @@ router.get('/', async (req, res) => {
       }
 
       if (verifiedOnly === 'true') {
-        result = result.filter(p => (p.sellerRating || 0) >= 4.8);
+        result = result.filter(p => (p.sellerRating || 0) >= 4.8 || p.isVerified === true);
       }
 
       if (sellerId) {
@@ -130,6 +130,12 @@ router.get('/', async (req, res) => {
         result.sort((a, b) => b.price - a.price);
       } else if (sort === 'views' || sort === 'popular') {
         result.sort((a, b) => (b.views || 0) - (a.views || 0));
+      } else if (sort === 'discount') {
+        result.sort((a, b) => {
+          const discA = a.originalPrice && a.originalPrice > a.price ? (a.originalPrice - a.price) / a.originalPrice : 0;
+          const discB = b.originalPrice && b.originalPrice > b.price ? (b.originalPrice - b.price) / b.originalPrice : 0;
+          return discB - discA;
+        });
       } else {
         result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       }
