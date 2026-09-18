@@ -14,15 +14,6 @@ export const PopularProducts = ({ products = [] }) => {
     }
   };
 
-  const sampleCountdowns = [
-    null,
-    null,
-    '768d : 13h : 46m : 54s',
-    '805d : 14h : 56m : 57s',
-    null,
-    '420d : 08h : 12m : 30s'
-  ];
-
   return (
     <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 font-['Bai_Jamjuree']">
       {/* Header */}
@@ -59,7 +50,6 @@ export const PopularProducts = ({ products = [] }) => {
           <ProductCard
             key={product._id || idx}
             product={product}
-            countdown={sampleCountdowns[idx % sampleCountdowns.length]}
           />
         ))}
       </div>

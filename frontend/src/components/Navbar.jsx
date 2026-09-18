@@ -58,7 +58,7 @@ const ELEMENTS_LIST = [
   { id: 'trust', name: 'Trust & Protection', desc: 'Verified sellers & buyer guarantee', icon: ShieldCheck },
   { id: 'promo', name: 'Promo Grid Cards', desc: 'Category discount highlight cards', icon: Tag },
   { id: 'categories', name: 'Shop By Categories', desc: 'Interactive visual category grid', icon: Layers },
-  { id: 'popular', name: 'Popular Products', desc: 'Fast-selling items with live countdown timers', icon: Flame },
+  { id: 'popular', name: 'Popular Products', desc: 'Fast-selling items and featured deals', icon: Flame },
   { id: 'split-banners', name: 'Split Promo Banners', desc: 'Curated editorial & hardware banners', icon: Compass },
   { id: 'trending', name: 'Trending Products', desc: 'Interactive category-filtered collection', icon: TrendingUp },
   { id: 'tech', name: 'Tech Showcase', desc: 'Featured gaming and workstation setup', icon: Laptop },
