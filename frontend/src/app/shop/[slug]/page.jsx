@@ -132,6 +132,10 @@ export default function ShopStorefrontPage({ params }) {
           <img
             src={shop.banner || 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80'}
             alt={shop.name}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80';
+            }}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-transparent" />
@@ -145,6 +149,10 @@ export default function ShopStorefrontPage({ params }) {
                 <img
                   src={shop.logo || 'https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=300&q=80'}
                   alt={shop.name}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=300&q=80';
+                  }}
                   className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl object-cover border-4 border-zinc-950 shadow-2xl bg-zinc-900"
                 />
                 {shop.isVerified && (
@@ -174,6 +182,10 @@ export default function ShopStorefrontPage({ params }) {
                   <span className="flex items-center gap-1 text-emerald-400 font-bold">
                     <Package className="w-3.5 h-3.5" />
                     {products.length} Active Listings
+                  </span>
+                  <span className="flex items-center gap-1 text-teal-400 font-medium">
+                    <Clock className="w-3.5 h-3.5" />
+                    Replies &lt; 1hr
                   </span>
                 </div>
               </div>
