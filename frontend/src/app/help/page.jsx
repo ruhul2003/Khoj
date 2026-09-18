@@ -74,6 +74,14 @@ const FAQ_TOPICS = [
       {
         q: 'What should I do if I suspect a fraudulent listing?',
         a: 'Do not transfer any money. Contact our trust & safety team immediately via support@khojshop.com or WhatsApp hotline (+880 1712-345-678) with the listing URL. We investigate and suspend fraudulent accounts.'
+      },
+      {
+        q: 'How do I safely accept bKash or Nagad payments as a seller?',
+        a: 'Always open your official bKash or Nagad app and verify your balance directly. Never rely on an incoming SMS from a regular 11-digit mobile number claiming to be bKash. Scammers often forge sender headers.'
+      },
+      {
+        q: 'Can I use courier Cash on Delivery (COD) across districts?',
+        a: 'Yes, sellers frequently use verified Bangladesh courier partners like Steadfast, Pathao, and RedX with open-box verification and conditional cash collection on delivery.'
       }
     ]
   },
