@@ -12,6 +12,7 @@ import {
   ExternalLink 
 } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
+import { formatBDT } from '@/utils/formatters';
 
 export const ShareModal = ({ isOpen, onClose, product }) => {
   const { addToast } = useToast();
@@ -103,15 +104,19 @@ export const ShareModal = ({ isOpen, onClose, product }) => {
         {/* Product Preview Snippet */}
         <div className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-zinc-900/60 border border-zinc-800">
           <img
-            src={product.images?.[0] || '/placeholder.png'}
+            src={product.images?.[0] || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80'}
             alt=""
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80';
+            }}
             className="w-14 h-14 rounded-xl object-cover bg-zinc-800 shrink-0"
           />
           <div className="min-w-0 flex-1">
             <h4 className="text-xs font-bold text-white truncate">{product.title}</h4>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-sm font-black text-[#0c9096]">
-                ৳{product.price?.toLocaleString()}
+                {formatBDT(product.price)}
               </span>
               <span className="text-[10px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 font-semibold">
                 {product.location}
