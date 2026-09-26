@@ -17,6 +17,12 @@ const baiJamjuree = Bai_Jamjuree({
   display: 'swap',
 });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata = {
   title: "Khoj | Minimalist Peer-to-Peer Buy & Sell Marketplace",
   description: "Khoj is a modern, minimalist marketplace to buy and sell used and new products locally.",
@@ -25,7 +31,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={baiJamjuree.variable} suppressHydrationWarning>
-      <body className={`${baiJamjuree.className} antialiased flex flex-col min-h-screen selection:bg-amber-500/30 selection:text-amber-900 transition-colors duration-200 bg-slate-50 text-slate-900 dark:bg-[#0b0f17] dark:text-slate-100`}>
+      <body className={`${baiJamjuree.className} antialiased flex flex-col min-h-screen selection:bg-amber-500/30 selection:text-amber-900 transition-colors duration-200 bg-slate-50 text-slate-900 dark:bg-[#0b0f17] dark:text-slate-100 overflow-x-hidden w-full max-w-[100vw]`}>
         <ThemeProvider>
           <AuthProvider>
             <ToastProvider>

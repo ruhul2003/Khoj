@@ -5,11 +5,11 @@ import Link from 'next/link';
 
 export const SplitBanners = () => {
   return (
-    <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 font-['Bai_Jamjuree']">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-10 font-['Bai_Jamjuree']">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
         
         {/* Banner 1: Contemporary 2 Seater Sofa */}
-        <div className="bg-[#f5f5f4] rounded-3xl overflow-hidden p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-sm border border-stone-200">
+        <div className="bg-[#f5f5f4] rounded-2xl sm:rounded-3xl overflow-hidden p-5 sm:p-8 flex flex-col sm:flex-row items-center gap-5 sm:gap-6 shadow-sm border border-stone-200">
           <div className="w-full sm:w-1/2 aspect-[4/3] rounded-2xl overflow-hidden shrink-0 shadow-md">
             <img
               src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=800&q=80"
@@ -37,7 +37,7 @@ export const SplitBanners = () => {
         </div>
 
         {/* Banner 2: Want To Capture Your Photograph */}
-        <div className="bg-[#fce7f3]/50 rounded-3xl overflow-hidden p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-sm border border-pink-100">
+        <div className="bg-[#fce7f3]/50 rounded-2xl sm:rounded-3xl overflow-hidden p-5 sm:p-8 flex flex-col sm:flex-row items-center gap-5 sm:gap-6 shadow-sm border border-pink-100">
           <div className="w-full sm:w-1/2 aspect-[4/3] rounded-2xl overflow-hidden shrink-0 shadow-md">
             <img
               src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80"

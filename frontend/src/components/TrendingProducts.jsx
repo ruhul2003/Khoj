@@ -34,22 +34,22 @@ export const TrendingProducts = ({ allProducts = [] }) => {
   const displayProducts = filtered.length > 0 ? filtered : allProducts.slice(0, 6);
 
   return (
-    <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 font-['Bai_Jamjuree']">
+    <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-10 font-['Bai_Jamjuree']">
       {/* Header & Filter Tabs */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-2 border-b border-gray-100 dark:border-slate-800 transition-colors">
-        <div className="flex flex-wrap items-center gap-3 sm:gap-6">
-          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6 pb-2 border-b border-gray-100 dark:border-slate-800 transition-colors">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-6">
+          <h2 className="text-xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
             Trending Products
           </h2>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scrollbar-none max-w-full pb-1">
             {TABS.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all cursor-pointer shrink-0 ${
                     isActive
                       ? 'bg-amber-500 text-slate-950 shadow-sm'
                       : 'bg-transparent text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white'
@@ -84,7 +84,7 @@ export const TrendingProducts = ({ allProducts = [] }) => {
       {/* Trending Products Grid / Row */}
       <div
         ref={scrollRef}
-        className="grid grid-flow-col auto-cols-[minmax(240px,280px)] gap-6 overflow-x-auto pb-4 no-scrollbar scroll-smooth"
+        className="grid grid-flow-col auto-cols-[minmax(210px,260px)] sm:auto-cols-[minmax(240px,280px)] gap-4 sm:gap-6 overflow-x-auto pb-4 no-scrollbar scroll-smooth"
       >
         {displayProducts.map((prod, idx) => (
           <ProductCard key={prod._id || idx} product={prod} />

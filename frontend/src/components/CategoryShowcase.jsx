@@ -60,10 +60,10 @@ export const CategoryShowcase = () => {
   };
 
   return (
-    <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 font-['Bai_Jamjuree']">
+    <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-10 font-['Bai_Jamjuree']">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 pb-2 border-b border-gray-100 dark:border-slate-800 transition-colors">
-        <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+      <div className="flex items-center justify-between mb-4 sm:mb-6 pb-2 border-b border-gray-100 dark:border-slate-800 transition-colors">
+        <h2 className="text-xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
           Shop By Categories
         </h2>
 
@@ -89,15 +89,15 @@ export const CategoryShowcase = () => {
       {/* Categories Row */}
       <div
         ref={scrollRef}
-        className="flex items-center gap-5 overflow-x-auto pb-4 no-scrollbar scroll-smooth"
+        className="flex items-center gap-3 sm:gap-5 overflow-x-auto pb-4 no-scrollbar scroll-smooth"
       >
         {CATEGORY_ITEMS.map((cat, idx) => (
           <Link
             key={idx}
             href={`/browse?category=${encodeURIComponent(cat.categoryQuery)}`}
-            className="group flex flex-col items-center shrink-0 w-36 sm:w-44 text-center space-y-3 cursor-pointer"
+            className="group flex flex-col items-center shrink-0 w-28 sm:w-44 text-center space-y-2 sm:space-y-3 cursor-pointer"
           >
-            <div className={`w-32 sm:w-40 h-32 sm:h-40 rounded-2xl ${cat.bg} overflow-hidden relative shadow-xs group-hover:shadow-md transition-all transform group-hover:-translate-y-1`}>
+            <div className={`w-24 sm:w-40 h-24 sm:h-40 rounded-xl sm:rounded-2xl ${cat.bg} overflow-hidden relative shadow-xs group-hover:shadow-md transition-all transform group-hover:-translate-y-1`}>
               <img
                 src={cat.image}
                 alt={cat.name}

@@ -41,14 +41,14 @@ const PROMOS = [
 
 export const PromoGrid = () => {
   return (
-    <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-8 font-['Bai_Jamjuree']">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-8 font-['Bai_Jamjuree']">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
         {PROMOS.map((promo) => (
           <div
             key={promo.id}
-            className={`${promo.bg} rounded-3xl p-6 sm:p-8 flex items-center justify-between overflow-hidden relative shadow-md group`}
+            className={`${promo.bg} rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex items-center justify-between overflow-hidden relative shadow-md group`}
           >
-            <div className={`space-y-3 z-10 max-w-[60%] ${promo.textColor}`}>
+            <div className={`space-y-2 sm:space-y-3 z-10 max-w-[65%] ${promo.textColor}`}>
               <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded bg-black/15 inline-block">
                 {promo.badge}
               </span>

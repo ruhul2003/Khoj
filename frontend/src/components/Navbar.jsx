@@ -181,16 +181,16 @@ const NavbarContent = () => {
   return (
     <header ref={navContainerRef} className="sticky top-0 z-50 font-['Bai_Jamjuree'] shadow-md bg-white dark:bg-[#121824] transition-colors">
       {/* 1. Top Dark Navy Header Bar */}
-      <div className="bg-[#1e2837] text-white py-3.5 px-4 sm:px-8 border-b border-slate-800">
-        <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-4 lg:gap-8">
+      <div className="bg-[#1e2837] text-white py-2.5 sm:py-3.5 px-3 sm:px-6 lg:px-8 border-b border-slate-800">
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-2 sm:gap-4 lg:gap-8">
           
           {/* Logo */}
-          <Link href="/" onClick={closeAllMenus} className="flex items-center gap-2.5 shrink-0 group">
-            <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/30 group-hover:scale-105 transition-transform">
-              <ShoppingBag className="w-5 h-5 text-slate-950" />
+          <Link href="/" onClick={closeAllMenus} className="flex items-center gap-2 sm:gap-2.5 shrink-0 group">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/30 group-hover:scale-105 transition-transform">
+              <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 text-slate-950" />
             </div>
             <div>
-              <span className="text-2xl font-black tracking-tight text-white flex items-center">
+              <span className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center">
                 Khoj<span className="text-amber-400">shop</span>
               </span>
             </div>
@@ -312,38 +312,36 @@ const NavbarContent = () => {
             )}
           </div>
 
-          {/* Right Header Controls */}
-          <div className="flex items-center gap-5 lg:gap-7 shrink-0 text-xs">
+          {/* Right Header Controls - Fully responsive on small screens */}
+          <div className="flex items-center gap-1.5 sm:gap-3 md:gap-5 lg:gap-7 shrink-0 text-xs">
             {/* Location Selector */}
             <button
               type="button"
               onClick={() => setIsLocationModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800/80 hover:bg-slate-700 border border-slate-700 hover:border-amber-400 text-slate-200 text-xs font-semibold transition-all cursor-pointer shadow-xs group"
+              className="flex items-center gap-1 px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-full bg-slate-800/80 hover:bg-slate-700 border border-slate-700 hover:border-amber-400 text-slate-200 text-xs font-semibold transition-all cursor-pointer shadow-xs group"
               title="Change your marketplace city/division"
             >
               <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0 group-hover:scale-110 transition-transform" />
-              <span className="max-w-[85px] sm:max-w-[120px] truncate">{currentLocation}</span>
-              <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
+              <span className="max-w-[65px] sm:max-w-[120px] truncate text-[11px] sm:text-xs">{currentLocation}</span>
+              <ChevronDown className="w-3 h-3 text-slate-400 shrink-0 hidden sm:inline" />
             </button>
 
-
-
-            {/* Sign In / Sign Up */}
+            {/* Sign In / Sign Up OR User Profile */}
             {user ? (
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 text-slate-200 hover:text-white cursor-pointer py-1"
+                  className="flex items-center gap-1.5 text-slate-200 hover:text-white cursor-pointer py-1"
                 >
                   {user.avatar ? (
-                    <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover border border-amber-400" />
+                    <img src={user.avatar} alt={user.name} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover border border-amber-400" />
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs">
                       {user.name.charAt(0)}
                     </div>
                   )}
-                  <span className="hidden sm:inline font-bold text-xs max-w-[100px] truncate">{user.name}</span>
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                  <span className="hidden lg:inline font-bold text-xs max-w-[90px] truncate">{user.name}</span>
+                  <ChevronDown className="w-3 h-3 text-slate-400 hidden sm:inline" />
                 </button>
 
                 {isUserMenuOpen && (
@@ -418,13 +416,13 @@ const NavbarContent = () => {
                 )}
               </div>
             ) : (
-              <div className="flex items-center gap-1.5 text-slate-200">
-                <User className="w-4 h-4 text-amber-400" />
-                <Link href="/auth/login" className="hover:text-amber-400 font-semibold transition-colors">
-                  Sign In
+              <div className="flex items-center gap-1 text-slate-200">
+                <Link href="/auth/login" className="flex items-center gap-1 hover:text-amber-400 font-semibold transition-colors p-1" title="Sign In">
+                  <User className="w-4 h-4 text-amber-400" />
+                  <span className="hidden sm:inline">Sign In</span>
                 </Link>
-                <span className="text-slate-500">/</span>
-                <Link href="/auth/register" className="hover:text-amber-400 font-semibold transition-colors">
+                <span className="text-slate-500 hidden sm:inline">/</span>
+                <Link href="/auth/register" className="hover:text-amber-400 font-semibold transition-colors hidden sm:inline">
                   Sign Up
                 </Link>
               </div>
@@ -433,45 +431,76 @@ const NavbarContent = () => {
             {/* Wishlist Icon with count */}
             <Link
               href="/wishlist"
-              className="relative text-slate-300 hover:text-white transition-colors p-1"
+              className="relative text-slate-300 hover:text-white transition-colors p-1.5"
               title="Saved Wishlist"
             >
-              <Heart className="w-6 h-6 text-slate-300 hover:text-rose-400 transition-colors" />
-              <span className="absolute -top-1 -right-2 w-4 h-4 bg-amber-500 text-slate-950 font-black text-[10px] rounded-full flex items-center justify-center">
+              <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-slate-300 hover:text-rose-400 transition-colors" />
+              <span className="absolute -top-1 -right-1 sm:-right-2 w-4 h-4 bg-amber-500 text-slate-950 font-black text-[9px] sm:text-[10px] rounded-full flex items-center justify-center">
                 {savedItemIds.length}
               </span>
             </Link>
 
-            {/* Cart Pill Button */}
+            {/* Cart Button: compact on mobile, full pill on sm+ */}
             <Link
               href="/browse"
-              className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition-colors"
+              className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition-colors"
             >
               <ShoppingCart className="w-4 h-4 stroke-[2.5]" />
               <span className="tracking-wide">Cart {savedItemIds.length}</span>
+            </Link>
+            <Link
+              href="/browse"
+              className="sm:hidden relative p-1.5 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center"
+              title="Cart"
+            >
+              <ShoppingCart className="w-4 h-4 stroke-[2.5]" />
+              {savedItemIds.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-slate-950 text-amber-400 font-black text-[8px] rounded-full flex items-center justify-center border border-amber-400">
+                  {savedItemIds.length}
+                </span>
+              )}
             </Link>
 
             {/* Theme Toggle Button */}
             <ThemeToggle />
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - ALWAYS visible and accessible on mobile */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-slate-300 hover:text-white p-1 cursor-pointer"
+              className="md:hidden p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:text-white cursor-pointer active:scale-95 transition-all flex items-center justify-center"
               aria-label="Toggle mobile menu"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
 
         </div>
       </div>
 
-      {/* 2. Sub-Navbar (Clean Bar with Dropdown Navigation) */}
-      <div className="bg-white dark:bg-[#121824] border-b border-gray-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 px-4 sm:px-8 relative transition-colors">
-        <div className="max-w-[1600px] mx-auto flex items-center justify-between h-14">
+      {/* 1.5 Mobile Quick Search Input (Directly accessible on mobile devices) */}
+      <div className="md:hidden px-3 py-2 bg-[#17212e] border-b border-slate-800">
+        <form onSubmit={handleSearchSubmit} className="flex items-center bg-white dark:bg-[#141d2b] rounded-full px-3 py-1.5 shadow-inner border border-gray-200 dark:border-slate-700">
+          <Search className="w-4 h-4 text-gray-400 dark:text-slate-400 shrink-0 mr-2" />
+          <input
+            type="text"
+            placeholder="Search products, brands, categories..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="flex-1 bg-transparent text-xs text-gray-800 dark:text-slate-100 placeholder-gray-400 focus:outline-none"
+          />
+          {searchTerm && (
+            <button type="button" onClick={() => setSearchTerm('')} className="p-1 text-gray-400 hover:text-gray-600">
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </form>
+      </div>
+
+      {/* 2. Sub-Navbar (Clean Bar with Dropdown Navigation - fully responsive with smooth horizontal scroll) */}
+      <div className="bg-white dark:bg-[#121824] border-b border-gray-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 px-3 sm:px-6 lg:px-8 relative transition-colors overflow-x-auto no-scrollbar scrollbar-none">
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between min-w-max md:min-w-0 h-12 sm:h-14 gap-2 sm:gap-4">
           
-          <div className="flex items-center gap-6 xl:gap-8">
+          <div className="flex items-center gap-3 sm:gap-6 xl:gap-8">
             {/* A. Shop By Categories Dropdown Button */}
             <div 
               className="relative"
@@ -480,17 +509,17 @@ const NavbarContent = () => {
             >
               <button
                 onClick={() => toggleMenu('categories-btn')}
-                className="flex items-center gap-2.5 px-4 sm:px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer shadow-sm active:scale-95"
+                className="flex items-center gap-1.5 sm:gap-2.5 px-3 sm:px-5 py-2 sm:py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-[11px] sm:text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer shadow-sm active:scale-95 shrink-0"
               >
-                <Menu className="w-4 h-4 stroke-[2.5]" />
+                <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
                 <span>Shop By Categories</span>
-                <ChevronDown className={`w-3.5 h-3.5 ml-1 transition-transform duration-200 ${activeMenu === 'categories-btn' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ml-0.5 sm:ml-1 transition-transform duration-200 ${activeMenu === 'categories-btn' ? 'rotate-180' : ''}`} />
               </button>
 
               {/* Categories Button Dropdown Menu */}
               {activeMenu === 'categories-btn' && (
                 <div 
-                  className="absolute top-full left-0 mt-2 w-72 bg-white dark:bg-[#182230] rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 py-3 z-50 font-medium animate-in fade-in slide-in-from-top-2 duration-150"
+                  className="absolute top-full left-0 mt-2 w-72 max-w-[calc(100vw-24px)] bg-white dark:bg-[#182230] rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 py-3 z-50 font-medium animate-in fade-in slide-in-from-top-2 duration-150"
                   onMouseEnter={() => handleMouseEnter('categories-btn')}
                   onMouseLeave={handleMouseLeave}
                 >

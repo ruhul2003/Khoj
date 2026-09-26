@@ -15,10 +15,10 @@ export const PopularProducts = ({ products = [] }) => {
   };
 
   return (
-    <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 font-['Bai_Jamjuree']">
+    <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-10 font-['Bai_Jamjuree']">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 pb-2 border-b border-gray-100 dark:border-slate-800 transition-colors">
-        <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+      <div className="flex items-center justify-between mb-4 sm:mb-6 pb-2 border-b border-gray-100 dark:border-slate-800 transition-colors">
+        <h2 className="text-xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
           Popular Products
         </h2>
 
@@ -44,7 +44,7 @@ export const PopularProducts = ({ products = [] }) => {
       {/* Products Row / Grid */}
       <div
         ref={scrollRef}
-        className="grid grid-flow-col auto-cols-[minmax(240px,280px)] gap-6 overflow-x-auto pb-4 no-scrollbar scroll-smooth"
+        className="grid grid-flow-col auto-cols-[minmax(210px,260px)] sm:auto-cols-[minmax(240px,280px)] gap-4 sm:gap-6 overflow-x-auto pb-4 no-scrollbar scroll-smooth"
       >
         {products.slice(0, 8).map((product, idx) => (
           <ProductCard

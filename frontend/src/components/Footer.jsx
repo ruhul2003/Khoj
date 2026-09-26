@@ -8,8 +8,8 @@ import { useAuth } from '@/context/AuthContext';
 export const Footer = () => {
   const { userShop } = useAuth();
   return (
-    <footer className="mt-16 bg-[#17212d] border-t border-slate-800 text-slate-400 font-['Bai_Jamjuree']">
-      <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-16 grid grid-cols-1 md:grid-cols-5 gap-10 text-sm">
+    <footer className="mt-12 sm:mt-16 bg-[#17212d] border-t border-slate-800 text-slate-400 font-['Bai_Jamjuree']">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-10 sm:py-16 grid grid-cols-1 md:grid-cols-5 gap-8 sm:gap-10 text-sm">
         
         {/* Brand Column */}
         <div className="md:col-span-2 space-y-5">

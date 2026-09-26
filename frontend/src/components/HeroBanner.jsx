@@ -53,13 +53,13 @@ export const HeroBanner = () => {
 
   return (
     <div className="relative font-['Bai_Jamjuree'] overflow-hidden select-none">
-      <div className={`w-full ${slide.bgColor} transition-colors duration-700 min-h-[460px] sm:min-h-[500px] lg:min-h-[540px] flex items-center`}>
-        <div className="max-w-[1600px] w-full mx-auto px-6 lg:px-12 py-8 sm:py-10 relative">
+      <div className={`w-full ${slide.bgColor} transition-colors duration-700 min-h-[420px] sm:min-h-[500px] lg:min-h-[540px] flex items-center`}>
+        <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-10 relative">
           
-          {/* Slider Arrow Buttons */}
+          {/* Slider Arrow Buttons - hidden on mobile to prevent blocking content */}
           <button
             onClick={prevSlide}
-            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-lg transition-all z-20 cursor-pointer hover:scale-105 active:scale-95"
+            className="hidden sm:flex absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 items-center justify-center shadow-lg transition-all z-20 cursor-pointer hover:scale-105 active:scale-95"
             aria-label="Previous Slide"
           >
             <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
@@ -67,42 +67,42 @@ export const HeroBanner = () => {
 
           <button
             onClick={nextSlide}
-            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-lg transition-all z-20 cursor-pointer hover:scale-105 active:scale-95"
+            className="hidden sm:flex absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 items-center justify-center shadow-lg transition-all z-20 cursor-pointer hover:scale-105 active:scale-95"
             aria-label="Next Slide"
           >
             <ChevronRight className="w-5 h-5 stroke-[2.5]" />
           </button>
 
-          {/* Slide Content Grid with locked height */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[360px] sm:min-h-[390px] lg:min-h-[420px]">
+          {/* Slide Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
             
-            {/* Left Text Information - Fixed Height Container with smooth transition */}
+            {/* Left Text Information */}
             <div 
               key={`text-${slide.id}`}
-              className="lg:col-span-6 space-y-4 text-left z-10 pl-4 sm:pl-8 flex flex-col justify-center min-h-[220px] sm:min-h-[260px] lg:min-h-[280px] animate-in fade-in duration-500"
+              className="lg:col-span-6 space-y-3 sm:space-y-4 text-center lg:text-left z-10 pl-0 sm:pl-8 flex flex-col justify-center animate-in fade-in duration-500"
             >
               <div>
-                <span className="inline-block px-3.5 py-1.5 rounded-md bg-[#fed7aa] text-amber-950 font-black text-xs uppercase tracking-wider shadow-xs">
+                <span className="inline-block px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-md bg-[#fed7aa] text-amber-950 font-black text-[11px] sm:text-xs uppercase tracking-wider shadow-xs">
                   {slide.discountBadge}
                 </span>
               </div>
 
-              {/* Fixed height title box so varying text length never changes banner height */}
-              <div className="h-[72px] sm:h-[105px] lg:h-[125px] flex items-center overflow-hidden">
-                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.15] line-clamp-2">
+              {/* Title */}
+              <div className="min-h-[56px] sm:h-[105px] lg:h-[125px] flex items-center justify-center lg:justify-start">
+                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight line-clamp-2">
                   {slide.title}
                 </h1>
               </div>
 
-              <div className="flex items-baseline gap-2 pt-0.5">
-                <span className="text-white text-base sm:text-lg font-medium">From</span>
-                <span className="text-white text-3xl sm:text-4xl font-black tracking-tight">{slide.price}</span>
+              <div className="flex items-baseline justify-center lg:justify-start gap-2 pt-0.5">
+                <span className="text-white text-sm sm:text-lg font-medium">From</span>
+                <span className="text-white text-2xl sm:text-4xl font-black tracking-tight">{slide.price}</span>
               </div>
 
               <div className="pt-2">
                 <Link
                   href={slide.link}
-                  className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-white hover:bg-slate-900 text-slate-950 hover:text-white font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl hover:scale-105 transform cursor-pointer"
+                  className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full bg-white hover:bg-slate-900 text-slate-950 hover:text-white font-extrabold text-xs uppercase tracking-widest transition-all shadow-xl hover:scale-105 transform cursor-pointer"
                 >
                   <ShoppingCart className="w-4 h-4" />
                   <span>{slide.buttonText}</span>
@@ -110,9 +110,9 @@ export const HeroBanner = () => {
               </div>
             </div>
 
-            {/* Right Product Showcase Cutout - Fixed locked dimensions */}
+            {/* Right Product Showcase Cutout */}
             <div className="lg:col-span-6 relative flex items-center justify-center">
-              <div className="relative w-full max-w-lg sm:max-w-xl h-[220px] sm:h-[280px] lg:h-[340px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl border-4 border-white/30 bg-white/10 backdrop-blur-xs">
+              <div className="relative w-full max-w-xs sm:max-w-md lg:max-w-xl h-[180px] sm:h-[260px] lg:h-[340px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl border-4 border-white/30 bg-white/10 backdrop-blur-xs">
                 <img
                   key={`img-${slide.id}`}
                   src={slide.image}
@@ -125,16 +125,16 @@ export const HeroBanner = () => {
           </div>
 
           {/* Slide Indicator Dots */}
-          <div className="flex items-center justify-center gap-2.5 pt-4">
+          <div className="flex items-center justify-center gap-2 pt-4">
             {SLIDES.map((s, idx) => (
               <button
                 key={s.id}
                 onClick={() => setCurrentSlide(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
-                className={`h-2.5 rounded-full transition-all duration-500 cursor-pointer ${
+                className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
                   currentSlide === idx 
-                    ? 'w-10 bg-white shadow-lg shadow-white/30' 
-                    : 'w-2.5 bg-white/40 hover:bg-white/70'
+                    ? 'w-8 bg-white shadow-lg shadow-white/30' 
+                    : 'w-2 bg-white/40 hover:bg-white/70'
                 }`}
               />
             ))}

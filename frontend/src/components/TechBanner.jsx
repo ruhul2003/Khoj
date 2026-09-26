@@ -5,9 +5,9 @@ import Link from 'next/link';
 
 export const TechBanner = () => {
   return (
-    <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-8 font-['Bai_Jamjuree']">
-      <div className="bg-[#17212d] rounded-3xl overflow-hidden p-8 sm:p-12 lg:p-14 border border-slate-800 relative shadow-xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+    <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-8 font-['Bai_Jamjuree']">
+      <div className="bg-[#17212d] rounded-2xl sm:rounded-3xl overflow-hidden p-5 sm:p-12 lg:p-14 border border-slate-800 relative shadow-xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
           
           {/* Left Text */}
           <div className="lg:col-span-7 space-y-4 text-left z-10">

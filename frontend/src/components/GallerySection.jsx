@@ -39,10 +39,10 @@ export const GallerySection = () => {
   };
 
   return (
-    <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 font-['Bai_Jamjuree']">
+    <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-10 font-['Bai_Jamjuree']">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 pb-2 border-b border-gray-100 dark:border-slate-800 transition-colors">
-        <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+      <div className="flex items-center justify-between mb-4 sm:mb-6 pb-2 border-b border-gray-100 dark:border-slate-800 transition-colors">
+        <h2 className="text-xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
           From The Gallery
         </h2>
 
