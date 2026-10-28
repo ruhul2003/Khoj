@@ -4,14 +4,7 @@ import React, { useState } from 'react';
 import { 
   X, 
   PlusCircle, 
-  Loader2, 
-  Sparkles, 
-  Package, 
-  MapPin, 
-  DollarSign, 
-  User, 
-  ShieldCheck,
-  CheckCircle2
+  Loader2
 } from 'lucide-react';
 import { AdminImageManager } from './AdminImageManager';
 

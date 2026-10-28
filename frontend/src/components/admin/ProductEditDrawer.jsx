@@ -4,16 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   X, 
   Save, 
-  Loader2, 
-  Star, 
-  ShieldCheck, 
-  DollarSign, 
-  Package, 
-  FileText, 
-  MapPin, 
-  User, 
-  Check, 
-  AlertCircle 
+  Loader2
 } from 'lucide-react';
 import { AdminImageManager } from './AdminImageManager';
 
@@ -42,38 +33,44 @@ const STATUSES = [
   'Suspended'
 ];
 
-export function ProductEditDrawer({ product, isOpen, onClose, onSave }) {
-  const [formData, setFormData] = useState(null);
-  const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState('general'); // 'general' | 'pricing' | 'images' | 'seller' | 'admin'
+const getInitialProductState = (product) => {
+  if (!product) return null;
+  return {
+    title: product.title || '',
+    category: product.category || 'Electronics',
+    condition: product.condition || 'Used - Like New',
+    price: product.price || 0,
+    originalPrice: product.originalPrice || 0,
+    description: product.description || '',
+    images: Array.isArray(product.images) ? [...product.images] : [],
+    location: product.location || 'Dhaka',
+    status: product.status || 'Available',
+    isFeatured: Boolean(product.isFeatured),
+    isVerified: product.isVerified !== undefined ? Boolean(product.isVerified) : true,
+    stock: product.stock !== undefined ? product.stock : 1,
+    sku: product.sku || '',
+    tags: Array.isArray(product.tags) ? product.tags.join(', ') : '',
+    sellerId: product.sellerId || '',
+    sellerName: product.sellerName || '',
+    sellerPhone: product.sellerPhone || '',
+    sellerRating: product.sellerRating || 5.0,
+    sellerAvatar: product.sellerAvatar || '',
+    adminNotes: product.adminNotes || '',
+    views: product.views || 0
+  };
+};
 
-  useEffect(() => {
-    if (product) {
-      setFormData({
-        title: product.title || '',
-        category: product.category || 'Electronics',
-        condition: product.condition || 'Used - Like New',
-        price: product.price || 0,
-        originalPrice: product.originalPrice || 0,
-        description: product.description || '',
-        images: Array.isArray(product.images) ? [...product.images] : [],
-        location: product.location || 'Dhaka',
-        status: product.status || 'Available',
-        isFeatured: Boolean(product.isFeatured),
-        isVerified: product.isVerified !== undefined ? Boolean(product.isVerified) : true,
-        stock: product.stock !== undefined ? product.stock : 1,
-        sku: product.sku || '',
-        tags: Array.isArray(product.tags) ? product.tags.join(', ') : '',
-        sellerId: product.sellerId || '',
-        sellerName: product.sellerName || '',
-        sellerPhone: product.sellerPhone || '',
-        sellerRating: product.sellerRating || 5.0,
-        sellerAvatar: product.sellerAvatar || '',
-        adminNotes: product.adminNotes || '',
-        views: product.views || 0
-      });
-    }
-  }, [product]);
+export function ProductEditDrawer({ product, isOpen, onClose, onSave }) {
+  const [formData, setFormData] = useState(() => getInitialProductState(product));
+  const [prevProductId, setPrevProductId] = useState(product?._id || product?.id);
+  const [isSaving, setIsSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState('general');
+
+  const currentId = product?._id || product?.id;
+  if (currentId !== prevProductId) {
+    setPrevProductId(currentId);
+    setFormData(getInitialProductState(product));
+  }
 
   // Handle escape key
   useEffect(() => {

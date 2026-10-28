@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { 
-  CheckSquare, 
   X, 
   Trash2, 
   Star, 

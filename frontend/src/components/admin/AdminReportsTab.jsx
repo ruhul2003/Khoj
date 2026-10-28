@@ -4,11 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   ShieldAlert, 
   CheckCircle2, 
-  XCircle, 
   Ban, 
   Eye, 
-  ExternalLink, 
-  Clock, 
   AlertTriangle,
   RefreshCw
 } from 'lucide-react';
@@ -17,7 +14,6 @@ import { api } from '@/lib/api';
 export function AdminReportsTab({ onInspectProduct }) {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   const fetchReports = async () => {
     setLoading(true);

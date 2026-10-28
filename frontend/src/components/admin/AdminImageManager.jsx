@@ -3,12 +3,10 @@
 import React, { useState, useRef } from 'react';
 import { 
   Upload, 
-  Plus, 
   Trash2, 
   Star, 
   ArrowLeft, 
   ArrowRight, 
-  Image as ImageIcon,
   Link as LinkIcon,
   Loader2
 } from 'lucide-react';

@@ -8,7 +8,6 @@ import {
   Trash2, 
   ExternalLink, 
   MapPin, 
-  Sparkles,
   AlertCircle
 } from 'lucide-react';
 import Link from 'next/link';

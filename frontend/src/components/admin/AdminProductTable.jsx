@@ -8,11 +8,7 @@ import {
   Trash2, 
   ExternalLink, 
   MapPin, 
-  Tag, 
-  AlertCircle,
-  CheckCircle2,
-  Clock,
-  Ban
+  AlertCircle
 } from 'lucide-react';
 import Link from 'next/link';
 

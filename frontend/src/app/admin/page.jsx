@@ -5,15 +5,9 @@ import {
   Plus, 
   Download, 
   RefreshCw, 
-  ShieldCheck, 
-  Layers, 
   AlertTriangle,
   ChevronLeft,
-  ChevronRight,
-  Database,
-  CheckCircle2,
-  SlidersHorizontal,
-  PackageCheck
+  ChevronRight
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { useToast } from '@/context/ToastContext';
@@ -435,6 +429,15 @@ export default function AdminPage() {
             <span className="hidden sm:inline">Export CSV</span>
           </button>
 
+          <button
+            onClick={() => exportProductsToJson(products)}
+            title="Download full catalog JSON"
+            className="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111726] text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+          >
+            <Download className="w-3.5 h-3.5 text-slate-400" />
+            <span className="hidden sm:inline">Export JSON</span>
+          </button>
+
           {/* Create Product Button */}
           <button
             onClick={() => setIsCreateOpen(true)}
@@ -631,6 +634,7 @@ export default function AdminPage() {
 
       {/* Full Product Edit Drawer */}
       <ProductEditDrawer
+        key={editProduct?._id || editProduct?.id || 'edit-drawer'}
         product={editProduct}
         isOpen={Boolean(editProduct)}
         onClose={() => setEditProduct(null)}

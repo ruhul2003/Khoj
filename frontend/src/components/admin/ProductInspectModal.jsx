@@ -3,20 +3,12 @@
 import React, { useState } from 'react';
 import { 
   X, 
-  MapPin, 
   Star, 
-  Eye, 
   Edit3, 
   ExternalLink, 
-  Calendar, 
-  Phone, 
-  User, 
   Copy, 
   Check, 
-  Code,
-  Tag,
-  ShieldCheck,
-  Package
+  Code
 } from 'lucide-react';
 import Link from 'next/link';
 

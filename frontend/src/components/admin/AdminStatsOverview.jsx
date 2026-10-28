@@ -6,10 +6,7 @@ import {
   DollarSign, 
   Sparkles, 
   Eye, 
-  AlertTriangle, 
-  Layers,
-  ArrowUpRight,
-  ShieldCheck
+  AlertTriangle
 } from 'lucide-react';
 
 export function AdminStatsOverview({ stats, onSelectCategory, selectedCategory }) {

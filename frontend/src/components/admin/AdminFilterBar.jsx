@@ -4,9 +4,6 @@ import React from 'react';
 import { 
   Search, 
   X, 
-  Filter, 
-  SlidersHorizontal, 
-  ArrowUpDown, 
   Sparkles,
   RotateCcw,
   LayoutGrid,
