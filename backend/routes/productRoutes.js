@@ -288,6 +288,36 @@ router.post('/', async (req, res) => {
   }
 });
 
+// POST /api/products/admin/bulk-status - Bulk update status for multiple products
+router.post('/admin/bulk-status', async (req, res) => {
+  try {
+    const { ids, status } = req.body;
+    if (!ids || !Array.isArray(ids) || ids.length === 0 || !status) {
+      return res.status(400).json({ error: 'Please provide ids array and status string' });
+    }
+
+    if (getIsConnected()) {
+      const result = await Product.updateMany(
+        { _id: { $in: ids } },
+        { $set: { status, updatedAt: new Date() } }
+      );
+      return res.json({ success: true, count: result.modifiedCount, status });
+    } else {
+      let count = 0;
+      products.forEach(p => {
+        if (ids.includes(p._id) || ids.includes(p.id)) {
+          p.status = status;
+          p.updatedAt = new Date().toISOString();
+          count++;
+        }
+      });
+      return res.json({ success: true, count, status });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // PUT /api/products/:id - Update all data of a product (Admin / Owner)
 router.put('/:id', async (req, res) => {
   try {
