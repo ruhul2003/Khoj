@@ -873,7 +873,14 @@ const memoryUsers = [
   }
 ];
 
-let products = [...seedProducts];
+let products = seedProducts.map(p => ({
+  ...p,
+  stock: p.stock !== undefined ? p.stock : 1,
+  sku: p.sku || ('SKU-' + (p._id ? p._id.slice(-6).toUpperCase() : Math.floor(Math.random() * 90000 + 10000))),
+  isVerified: p.isVerified !== undefined ? p.isVerified : true,
+  tags: p.tags || [p.category],
+  adminNotes: p.adminNotes || ''
+}));
 let users = [...memoryUsers];
 let orders = [];
 let offers = [];
