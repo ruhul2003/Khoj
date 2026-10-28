@@ -418,6 +418,32 @@ router.post('/admin/bulk-discount', async (req, res) => {
   }
 });
 
+// POST /api/products/admin/bulk-delete - Delete multiple listings
+router.post('/admin/bulk-delete', async (req, res) => {
+  try {
+    const { ids } = req.body;
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ error: 'Please provide ids array' });
+    }
+
+    if (getIsConnected()) {
+      const result = await Product.deleteMany({ _id: { $in: ids } });
+      return res.json({ success: true, count: result.deletedCount });
+    } else {
+      let initialLen = products.length;
+      for (let i = products.length - 1; i >= 0; i--) {
+        if (ids.includes(products[i]._id) || ids.includes(products[i].id)) {
+          products.splice(i, 1);
+        }
+      }
+      const deletedCount = initialLen - products.length;
+      return res.json({ success: true, count: deletedCount });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // PUT /api/products/:id - Update all data of a product (Admin / Owner)
 router.put('/:id', async (req, res) => {
   try {
