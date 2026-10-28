@@ -318,6 +318,63 @@ router.post('/admin/bulk-status', async (req, res) => {
   }
 });
 
+// POST /api/products/admin/bulk-feature - Bulk feature or unfeature products
+router.post('/admin/bulk-feature', async (req, res) => {
+  try {
+    const { ids, isFeatured } = req.body;
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ error: 'Please provide ids array' });
+    }
+
+    const featureVal = Boolean(isFeatured);
+
+    if (getIsConnected()) {
+      const result = await Product.updateMany(
+        { _id: { $in: ids } },
+        { $set: { isFeatured: featureVal, updatedAt: new Date() } }
+      );
+      return res.json({ success: true, count: result.modifiedCount, isFeatured: featureVal });
+    } else {
+      let count = 0;
+      products.forEach(p => {
+        if (ids.includes(p._id) || ids.includes(p.id)) {
+          p.isFeatured = featureVal;
+          p.updatedAt = new Date().toISOString();
+          count++;
+        }
+      });
+      return res.json({ success: true, count, isFeatured: featureVal });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT /api/products/:id/featured - Quick toggle single product featured status
+router.put('/:id/featured', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { isFeatured } = req.body;
+
+    if (getIsConnected()) {
+      const target = await Product.findById(id);
+      if (!target) return res.status(404).json({ error: 'Product not found' });
+      target.isFeatured = isFeatured !== undefined ? Boolean(isFeatured) : !target.isFeatured;
+      target.updatedAt = new Date();
+      await target.save();
+      return res.json(target);
+    } else {
+      const item = products.find(p => p._id === id || p.id === id);
+      if (!item) return res.status(404).json({ error: 'Product not found' });
+      item.isFeatured = isFeatured !== undefined ? Boolean(isFeatured) : !item.isFeatured;
+      item.updatedAt = new Date().toISOString();
+      return res.json(item);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // PUT /api/products/:id - Update all data of a product (Admin / Owner)
 router.put('/:id', async (req, res) => {
   try {
