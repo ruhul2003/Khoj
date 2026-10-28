@@ -26,8 +26,11 @@ export function AdminProductTable({
   onEdit,
   onDelete,
   onToggleFeatured,
-  onUpdateStatus
+  onUpdateStatus,
+  onUpdatePrice
 }) {
+  const [editingPriceId, setEditingPriceId] = useState(null);
+  const [editingPriceVal, setEditingPriceVal] = useState('');
   const allSelected = products.length > 0 && products.every(p => selectedIds.includes(p._id || p.id));
   const someSelected = products.some(p => selectedIds.includes(p._id || p.id)) && !allSelected;
 
@@ -191,13 +194,52 @@ export function AdminProductTable({
 
                   {/* Price & Discount */}
                   <td className="py-3 px-3 whitespace-nowrap">
-                    <div className="font-bold text-slate-900 dark:text-slate-100 text-xs">
-                      {formatPrice(product.price)}
-                    </div>
-                    {hasDiscount && (
-                      <div className="flex items-center gap-1.5 text-[10px] text-slate-400">
-                        <span className="line-through">{formatPrice(product.originalPrice)}</span>
-                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">-{discountPct}%</span>
+                    {editingPriceId === id ? (
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-slate-400">৳</span>
+                        <input
+                          type="number"
+                          autoFocus
+                          value={editingPriceVal}
+                          onChange={(e) => setEditingPriceVal(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              if (onUpdatePrice && editingPriceVal) {
+                                onUpdatePrice(id, Number(editingPriceVal));
+                              }
+                              setEditingPriceId(null);
+                            } else if (e.key === 'Escape') {
+                              setEditingPriceId(null);
+                            }
+                          }}
+                          onBlur={() => {
+                            if (onUpdatePrice && editingPriceVal && Number(editingPriceVal) !== product.price) {
+                              onUpdatePrice(id, Number(editingPriceVal));
+                            }
+                            setEditingPriceId(null);
+                          }}
+                          className="w-20 px-1.5 py-0.5 text-xs font-bold rounded border border-amber-500 bg-white dark:bg-[#0c111c] text-slate-900 dark:text-slate-100 focus:outline-none"
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() => {
+                          setEditingPriceId(id);
+                          setEditingPriceVal(product.price);
+                        }}
+                        className="group/price cursor-pointer"
+                        title="Click to edit price inline"
+                      >
+                        <div className="font-bold text-slate-900 dark:text-slate-100 text-xs flex items-center gap-1">
+                          <span>{formatPrice(product.price)}</span>
+                          <span className="text-[10px] text-slate-400 opacity-0 group-hover/price:opacity-100 transition-opacity">✎</span>
+                        </div>
+                        {hasDiscount && (
+                          <div className="flex items-center gap-1.5 text-[10px] text-slate-400">
+                            <span className="line-through">{formatPrice(product.originalPrice)}</span>
+                            <span className="text-emerald-600 dark:text-emerald-400 font-bold">-{discountPct}%</span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </td>
