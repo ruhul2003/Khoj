@@ -22,9 +22,15 @@ const productSchema = new mongoose.Schema({
   sellerRating: { type: Number, default: 4.9 },
   sellerAvatar: { type: String, default: '' },
   sellerPhone: { type: String, default: '+880 1712-345678' },
-  status: { type: String, enum: ['Available', 'Pending', 'Sold'], default: 'Available' },
+  status: { type: String, enum: ['Available', 'Pending', 'Sold', 'Suspended'], default: 'Available' },
   isFeatured: { type: Boolean, default: false },
+  isVerified: { type: Boolean, default: true },
   views: { type: Number, default: 0 },
+  stock: { type: Number, default: 1 },
+  sku: { type: String, default: '' },
+  tags: [{ type: String }],
+  adminNotes: { type: String, default: '' },
+  updatedAt: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now }
 });
 
