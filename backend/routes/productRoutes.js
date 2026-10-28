@@ -147,6 +147,60 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/products/admin/stats - Admin overview analytics and distribution
+router.get('/admin/stats', async (req, res) => {
+  try {
+    let allItems = [];
+    if (getIsConnected()) {
+      allItems = await Product.find({}).lean();
+    } else {
+      allItems = products;
+    }
+
+    const total = allItems.length;
+    const available = allItems.filter(p => p.status === 'Available' || !p.status).length;
+    const sold = allItems.filter(p => p.status === 'Sold').length;
+    const pending = allItems.filter(p => p.status === 'Pending').length;
+    const suspended = allItems.filter(p => p.status === 'Suspended').length;
+    const featured = allItems.filter(p => p.isFeatured === true).length;
+
+    const totalInventoryValue = allItems.reduce((acc, p) => acc + (Number(p.price) || 0), 0);
+    const avgPrice = total > 0 ? Math.round(totalInventoryValue / total) : 0;
+    const totalViews = allItems.reduce((acc, p) => acc + (Number(p.views) || 0), 0);
+
+    const categoryBreakdown = {};
+    allItems.forEach(p => {
+      const cat = p.category || 'Other';
+      categoryBreakdown[cat] = (categoryBreakdown[cat] || 0) + 1;
+    });
+
+    const conditionBreakdown = {};
+    allItems.forEach(p => {
+      const cond = p.condition || 'Other';
+      conditionBreakdown[cond] = (conditionBreakdown[cond] || 0) + 1;
+    });
+
+    const reportedCount = (global.listingReports || []).length;
+
+    return res.json({
+      total,
+      available,
+      sold,
+      pending,
+      suspended,
+      featured,
+      totalInventoryValue,
+      avgPrice,
+      totalViews,
+      categoryBreakdown,
+      conditionBreakdown,
+      reportedCount
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET /api/products/:id - Single product details
 router.get('/:id', async (req, res) => {
   try {
