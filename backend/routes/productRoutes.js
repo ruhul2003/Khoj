@@ -548,6 +548,67 @@ router.post('/:id/report', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// GET /api/products/admin/reports - Get all reports with product info
+router.get('/admin/reports', async (req, res) => {
+  try {
+    if (!global.listingReports) {
+      global.listingReports = [];
+    }
+    const reports = [...global.listingReports];
+    
+    const enriched = await Promise.all(reports.map(async (r) => {
+      let product = null;
+      if (getIsConnected()) {
+        product = await Product.findById(r.productId).select('title images price status sellerName');
+      } else {
+        product = products.find(p => p._id === r.productId || p.id === r.productId);
+      }
+      return {
+        ...r,
+        productTitle: product ? product.title : 'Deleted Listing',
+        productImage: product && product.images && product.images.length ? product.images[0] : null,
+        productStatus: product ? product.status : 'Unknown',
+        productPrice: product ? product.price : 0,
+        sellerName: product ? product.sellerName : 'Unknown'
+      };
+    }));
+
+    return res.json(enriched);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT /api/products/admin/reports/:reportId/status - Resolve or dismiss report
+router.put('/admin/reports/:reportId/status', async (req, res) => {
+  try {
+    const { reportId } = req.params;
+    const { status, action } = req.body;
+
+    if (!global.listingReports) global.listingReports = [];
+    const report = global.listingReports.find(r => r._id === reportId);
+    if (!report) return res.status(404).json({ error: 'Report not found' });
+
+    report.status = status || 'Resolved';
+    report.resolvedAt = new Date().toISOString();
+
+    if (action === 'suspend' && report.productId) {
+      if (getIsConnected()) {
+        await Product.findByIdAndUpdate(report.productId, { status: 'Suspended' });
+      } else {
+        const p = products.find(prod => prod._id === report.productId || prod.id === report.productId);
+        if (p) p.status = 'Suspended';
+      }
+      report.actionTaken = 'Product Suspended';
+    }
+
+    return res.json({ success: true, report });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET /api/products/:id/qa - Retrieve public community Q&A for product
 router.get('/:id/qa', (req, res) => {
   try {
