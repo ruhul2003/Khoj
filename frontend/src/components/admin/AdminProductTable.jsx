@@ -219,13 +219,13 @@ export function AdminProductTable({
                       type="button"
                       onClick={() => onToggleFeatured(id, !product.isFeatured)}
                       title={product.isFeatured ? "Unfeature product" : "Feature product in catalog"}
-                      className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                      className={`p-1.5 rounded-lg transition-all duration-200 active:scale-90 cursor-pointer ${
                         product.isFeatured
-                          ? 'text-amber-500 hover:text-amber-600 bg-amber-500/10'
-                          : 'text-slate-300 dark:text-slate-600 hover:text-slate-400'
+                          ? 'text-amber-500 hover:text-amber-600 bg-amber-500/10 dark:bg-amber-500/20 shadow-xs'
+                          : 'text-slate-300 dark:text-slate-600 hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                       }`}
                     >
-                      <Star className={`w-4 h-4 ${product.isFeatured ? 'fill-amber-500' : ''}`} />
+                      <Star className={`w-4 h-4 transition-transform ${product.isFeatured ? 'fill-amber-500 scale-105' : ''}`} />
                     </button>
                   </td>
 
