@@ -221,6 +221,82 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// POST /api/products/admin/create - Direct product creation by admin
+router.post('/admin/create', async (req, res) => {
+  try {
+    const {
+      title,
+      category,
+      condition,
+      price,
+      originalPrice,
+      description,
+      images,
+      location,
+      sellerName,
+      sellerPhone,
+      sellerRating,
+      sellerAvatar,
+      sellerId,
+      status,
+      isFeatured,
+      isVerified,
+      stock,
+      sku,
+      tags,
+      adminNotes
+    } = req.body;
+
+    if (!title || !category || !condition || !price || !description) {
+      return res.status(400).json({ error: 'Title, category, condition, price, and description are required.' });
+    }
+
+    const defaultImages = images && images.length > 0 ? images : [
+      'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1000&q=80'
+    ];
+
+    const newProductData = {
+      title,
+      category,
+      condition,
+      price: Number(price),
+      originalPrice: Number(originalPrice || 0),
+      description,
+      images: defaultImages,
+      location: location || 'Dhaka, Bangladesh',
+      sellerId: sellerId || 'admin_khoj',
+      sellerName: sellerName || 'Khoj Verified Partner',
+      sellerRating: Number(sellerRating || 5.0),
+      sellerAvatar: sellerAvatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+      sellerPhone: sellerPhone || '+880 1700-000000',
+      status: status || 'Available',
+      isFeatured: Boolean(isFeatured),
+      isVerified: isVerified !== undefined ? Boolean(isVerified) : true,
+      stock: Number(stock || 1),
+      sku: sku || ('SKU-' + Date.now().toString().slice(-6)),
+      tags: Array.isArray(tags) ? tags : [],
+      adminNotes: adminNotes || 'Created via Admin Panel',
+      views: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (getIsConnected()) {
+      const created = await Product.create(newProductData);
+      return res.status(201).json(created);
+    } else {
+      const created = {
+        _id: 'prod_' + Date.now(),
+        ...newProductData
+      };
+      products.unshift(created);
+      return res.status(201).json(created);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // POST /api/products - Create new ad / listing
 router.post('/', async (req, res) => {
   try {
