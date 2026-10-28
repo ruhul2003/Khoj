@@ -364,6 +364,17 @@ const NavbarContent = () => {
                       My Profile
                     </Link>
                     <Link
+                      href="/admin"
+                      onClick={closeAllMenus}
+                      className="flex items-center justify-between px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <ShieldCheck className="w-4 h-4 text-amber-400" />
+                        <span>Admin Panel</span>
+                      </div>
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold tracking-wider">ADMIN</span>
+                    </Link>
+                    <Link
                       href="/dashboard"
                       onClick={closeAllMenus}
                       className="flex items-center gap-2.5 px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
@@ -1058,6 +1069,16 @@ const NavbarContent = () => {
               <span>{userShop ? "My Shop" : "Open Shop"}</span>
             </Link>
 
+            <Link
+              href="/admin"
+              onClick={closeAllMenus}
+              className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-700/80 hover:border-slate-600 bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-all"
+              title="Advanced Admin Panel"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+              <span>Admin</span>
+            </Link>
+
             {userShop && (
               <Link
                 href="/sell"
@@ -1120,6 +1141,15 @@ const NavbarContent = () => {
           >
             <Store className="w-4 h-4 text-amber-400" />
             <span>{userShop ? `My Shop (${userShop.name})` : "Open Your Free Shop"}</span>
+          </Link>
+
+          <Link
+            href="/admin"
+            onClick={closeAllMenus}
+            className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-800/90 border border-slate-700 text-slate-200 hover:text-white font-bold text-xs uppercase transition-colors"
+          >
+            <ShieldCheck className="w-4 h-4 text-amber-400" />
+            <span>Admin Console</span>
           </Link>
 
           {/* Theme Toggle in Mobile Drawer */}
