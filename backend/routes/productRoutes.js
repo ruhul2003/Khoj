@@ -375,6 +375,49 @@ router.put('/:id/featured', async (req, res) => {
   }
 });
 
+// POST /api/products/admin/bulk-discount - Apply percentage discount in bulk
+router.post('/admin/bulk-discount', async (req, res) => {
+  try {
+    const { ids, discountPercent } = req.body;
+    if (!ids || !Array.isArray(ids) || ids.length === 0 || !discountPercent) {
+      return res.status(400).json({ error: 'Please provide ids and discountPercent' });
+    }
+
+    const pct = Math.min(Math.max(Number(discountPercent), 1), 90);
+    const multiplier = (100 - pct) / 100;
+
+    if (getIsConnected()) {
+      const items = await Product.find({ _id: { $in: ids } });
+      let updatedCount = 0;
+      for (const item of items) {
+        if (!item.originalPrice || item.originalPrice === 0) {
+          item.originalPrice = item.price;
+        }
+        item.price = Math.round(item.price * multiplier);
+        item.updatedAt = new Date();
+        await item.save();
+        updatedCount++;
+      }
+      return res.json({ success: true, count: updatedCount, discountPercent: pct });
+    } else {
+      let count = 0;
+      products.forEach(p => {
+        if (ids.includes(p._id) || ids.includes(p.id)) {
+          if (!p.originalPrice || p.originalPrice === 0) {
+            p.originalPrice = p.price;
+          }
+          p.price = Math.round(p.price * multiplier);
+          p.updatedAt = new Date().toISOString();
+          count++;
+        }
+      });
+      return res.json({ success: true, count, discountPercent: pct });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // PUT /api/products/:id - Update all data of a product (Admin / Owner)
 router.put('/:id', async (req, res) => {
   try {
