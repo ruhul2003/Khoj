@@ -231,16 +231,19 @@ export function AdminProductTable({
 
                   {/* Status Dropdown */}
                   <td className="py-3 px-3 whitespace-nowrap">
-                    <select
-                      value={product.status || 'Available'}
-                      onChange={(e) => onUpdateStatus(id, e.target.value)}
-                      className={`text-[11px] font-semibold py-1 px-2 rounded-md border focus:outline-none cursor-pointer ${badge.bg}`}
-                    >
-                      <option value="Available">Available</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Sold">Sold</option>
-                      <option value="Suspended">Suspended</option>
-                    </select>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`w-2 h-2 rounded-full ${badge.dot} animate-pulse`} />
+                      <select
+                        value={product.status || 'Available'}
+                        onChange={(e) => onUpdateStatus(id, e.target.value)}
+                        className={`text-[11px] font-semibold py-1 px-2 rounded-md border focus:outline-none cursor-pointer transition-colors ${badge.bg}`}
+                      >
+                        <option value="Available">Available</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Sold">Sold</option>
+                        <option value="Suspended">Suspended</option>
+                      </select>
+                    </div>
                   </td>
 
                   {/* Actions */}
