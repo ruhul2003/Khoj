@@ -234,6 +234,36 @@ router.post('/', async (req, res) => {
   }
 });
 
+// PUT /api/products/:id - Update all data of a product (Admin / Owner)
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = { ...req.body, updatedAt: new Date().toISOString() };
+
+    if (updateData.price !== undefined) updateData.price = Number(updateData.price);
+    if (updateData.originalPrice !== undefined) updateData.originalPrice = Number(updateData.originalPrice);
+    if (updateData.stock !== undefined) updateData.stock = Number(updateData.stock);
+    if (updateData.views !== undefined) updateData.views = Number(updateData.views);
+    if (updateData.sellerRating !== undefined) updateData.sellerRating = Number(updateData.sellerRating);
+
+    if (getIsConnected()) {
+      const updated = await Product.findByIdAndUpdate(id, { $set: updateData }, { new: true, runValidators: false });
+      if (!updated) return res.status(404).json({ error: 'Product not found' });
+      return res.json(updated);
+    } else {
+      const itemIndex = products.findIndex(p => p._id === id || p.id === id);
+      if (itemIndex === -1) return res.status(404).json({ error: 'Product not found' });
+      products[itemIndex] = {
+        ...products[itemIndex],
+        ...updateData
+      };
+      return res.json(products[itemIndex]);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // PUT /api/products/:id/status - Mark item as Sold/Available
 router.put('/:id/status', async (req, res) => {
   try {
