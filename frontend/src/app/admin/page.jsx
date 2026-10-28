@@ -88,6 +88,35 @@ export default function AdminPage() {
     fetchData();
   }, []);
 
+  // Keyboard Shortcuts (N: new, R: refresh, Escape: close modals)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+        if (e.key === 'Escape') {
+          e.target.blur();
+        }
+        return;
+      }
+
+      if (e.key.toLowerCase() === 'n' && !isCreateOpen && !editProduct && !inspectProduct) {
+        e.preventDefault();
+        setIsCreateOpen(true);
+      } else if (e.key.toLowerCase() === 'r' && !isCreateOpen && !editProduct && !inspectProduct) {
+        e.preventDefault();
+        fetchData();
+        showToast('Catalog refreshed', 'info');
+      } else if (e.key === 'Escape') {
+        setIsCreateOpen(false);
+        setEditProduct(null);
+        setInspectProduct(null);
+        setDeleteConfirmation(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isCreateOpen, editProduct, inspectProduct]);
+
   // Filter & Sort Logic
   const filteredProducts = useMemo(() => {
     let list = [...products];
@@ -621,6 +650,15 @@ export default function AdminPage() {
         onClose={() => setIsCreateOpen(false)}
         onCreate={handleCreateProduct}
       />
+
+      {/* Minimalist Keyboard Shortcuts Footer Bar */}
+      <div className="hidden md:flex items-center justify-center gap-4 py-3 text-[11px] text-slate-400 border-t border-slate-200/60 dark:border-slate-850">
+        <span>Press <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-700">N</kbd> for new product</span>
+        <span>·</span>
+        <span>Press <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-700">R</kbd> to refresh</span>
+        <span>·</span>
+        <span>Press <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-700">Esc</kbd> to dismiss</span>
+      </div>
 
       {/* Delete Confirmation Modal */}
       {deleteConfirmation && (
